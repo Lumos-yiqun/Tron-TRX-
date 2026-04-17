@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRX 余额不足 — 获取引导原型</title>
+  <style>
+    :root {
+      --bg-chrome: #f2f2f7;
+      --bg-elevated: #ffffff;
+      --fill-secondary: rgba(0, 0, 0, 0.04);
+      --fill-tertiary: rgba(0, 0, 0, 0.06);
+      --text-primary: #1c1c1e;
+      --text-secondary: #6b7280;
+      --text-tertiary: #9ca3af;
+      --accent: #007aff;
+      --on-accent: #ffffff;
+      --stroke-primary: #c6c6c8;
+      --stroke-secondary: #d1d5db;
+      --stroke-tertiary: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #e8e8ed;
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 0 0 20px;
+    }
+    .layout {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .phone-wrap {
+      flex-shrink: 0;
+      width: 320px;
+      height: 580px;
+      background: var(--bg-chrome);
+      border-radius: 36px;
+      border: 1.5px solid var(--stroke-primary);
+      overflow: hidden;
+    }
+    #phone-root {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 0;
+    }
+    .navbar {
+      padding: 10px 16px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--stroke-tertiary);
+      position: relative;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .navbar.sub { padding: 6px 16px; }
+    .navbar-back {
+      position: absolute;
+      left: 14px;
+      color: var(--accent);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .navbar-title {
+      flex: 1;
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .navbar-sub { font-size: 11px; color: var(--text-secondary); margin-top: 1px; text-align: center; }
+    .scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 16px;
+      background: var(--bg-chrome);
+    }
+    .field-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; }
+    .field-box {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 7px 10px;
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+    .muted { opacity: 0.4; }
+    .primary-btn {
+      background: var(--accent);
+      color: var(--on-accent);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+    .secondary-btn {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid var(--stroke-secondary);
+    }
+    .sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-elevated);
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+    }
+    .sheet-handle-wrap { display: flex; justify-content: center; padding-top: 10px; padding-bottom: 2px; }
+    .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--stroke-primary); }
+    .option-row {
+      display: flex;
+      align-items: center;
+      padding: 11px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--stroke-tertiary);
+    }
+    .option-row .chev { color: var(--text-tertiary); font-size: 18px; }
+    .badge {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 6px;
+    }
+    .notes {
+      flex: 1;
+      min-width: 260px;
+      padding-top: 4px;
+    }
+    .notes h2 { font-size: 1.1rem; margin: 0 0 12px; }
+    .notes h3 { font-size: 0.95rem; margin: 16px 0 8px; }
+    .notes ul { margin: 0; padding-left: 0; list-style: none; }
+    .notes li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #374151;
+    }
+    .notes li::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--accent);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .divider { height: 1px; background: var(--stroke-tertiary); margin: 14px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border: 1px solid var(--stroke-tertiary); padding: 8px; text-align: left; }
+    th { background: var(--fill-secondary); }
+    .url-bar {
+      background: var(--fill-tertiary);
+      border-bottom: 1px solid var(--stroke-tertiary);
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+    .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--accent); flex-shrink: 0; }
+    .tron-dot { width: 18px; height: 18px; border-radius: 9px; background: #e53935; }
+    .receive-header {
+      padding: 10px 16px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--stroke-tertiary);
+      position: relative;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .help-icon {
+      position: absolute;
+      right: 14px;
+      width: 22px;
+      height: 22px;
+      border-radius: 11px;
+      border: 1.5px solid var(--stroke-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .receive-body {
+      flex: 1;
+      min-height: 0;
+      padding: 12px 14px;
+      overflow: auto;
+      background: var(--fill-tertiary);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card { background: var(--bg-elevated); border-radius: 14px; padding: 16px; box-shadow: 0 1px 0 var(--stroke-tertiary); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>TRX 余额不足 — 获取引导原型</h1>
+    <div class="layout">
+      <div class="phone-wrap">
+        <div id="phone-root"></div>
+      </div>
+      <div class="notes" id="notes-root"></div>
+    </div>
+  </div>
+
+  <script>
+    const NOTES = {
+      form: {
+        title: 'USDT 转账表单',
+        points: [
+          '起点：用户已填写收款地址、金额等信息',
+          '点击「下一步」后系统校验矿工费；若 TRX 不足则进入底部引导层（不再单独跳转错误页）',
+        ],
+      },
+      error: {
+        title: '错误提示与路径引导',
+        points: [
+          '触发条件：用户在转账页点击「下一步」，系统检测到 TRX 余额不足以覆盖矿工费',
+          '「我知道了」关闭引导层并回到转账表单，不再作为主解决路径',
+        ],
+      },
+      buy: {
+        title: '购买 TRX 流程（H5 WebView）',
+        points: [
+          '第三方 H5 无法获知钱包 TRX 余额；关闭 WebView 后仅由 App 拉取余额并展示结果',
+          '返回后在转账页上以 Bottom Sheet 展示检测结果：足够则主按钮「继续转账」，不足则 Sheet 内仍提示余额不足',
+          '系统尽力向 H5 传递参数：资产类型（TRX）和建议购买数量（13.84 TRX）',
+        ],
+      },
+      receive: {
+        title: '统一收款页（交易所 / 好友）',
+        points: [
+          '「从交易所转入」与「向好友收款」进入同一 Tron「收款」页，与钱包既有收款能力一致',
+          '含：网络说明、二维码、钱包地址、分享 / 复制；底部教育入口（其它钱包 / 交易所提币）',
+          '显著展示本次转账约需 TRX（矿工费）；主按钮「已到账，继续转账」：点击后轮询余额，满足则回到转账并提交',
+        ],
+      },
+    };
+
+    const state = {
+      screen: 'form',
+      buyState: 'webview',
+      h5Flow: 'idle',
+    };
+
+    function transferFields() {
+      return `
+        <div class="field-label">收款地址</div>
+        <div class="field-box">TKQ59AoCcF27xDtMjb1KcJAyHCJifnfi73</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="field-label">数量</span><span class="field-label">7 USDT</span>
+        </div>
+        <div class="field-box" style="padding:8px 10px;margin-bottom:10px;">
+          <div style="font-size:22px;">5</div>
+          <div class="field-label">$5.00</div>
+        </div>
+        <div class="field-label">矿工费</div>
+        <div class="field-box" style="padding:8px 10px;">
+          <div style="font-size:14px;">$4.50869926</div>
+          <div class="field-label">13.8428 TRX</div>
+        </div>`;
+    }
+
+    function navBar(title, subtitle, onBack) {
+      const back = onBack
+        ? `<span class="navbar-back" data-action="back">‹ 返回</span>`
+        : '';
+      const sub = subtitle
+        ? `<div class="navbar-title"><div>${escapeHtml(title)}</div><div class="navbar-sub">${escapeHtml(subtitle)}</div></div>`
+        : `<div class="navbar-title">${escapeHtml(title)}</div>`;
+      return `<div class="navbar ${subtitle ? 'sub' : ''}">${back}${sub}</div>`;
+    }
+
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function resetBuyAndGoError() {
+      state.buyState = 'webview';
+      state.h5Flow = 'idle';
+      state.screen = 'error';
+      render();
+    }
+
+    function renderPhone() {
+      const root = document.getElementById('phone-root');
+      let html = '';
+
+      if (state.screen === 'form') {
+        html = `
+          ${navBar('USDT 转账', 'Tron')}
+          <div class="scroll" style="display:flex;flex-direction:column;">
+            ${transferFields()}
+            <div style="flex:1;min-height:12px;"></div>
+            <div class="primary-btn" data-action="next">下一步</div>
+          </div>`;
+      } else if (state.screen === 'error') {
+        html = `
+          ${navBar('USDT 转账', 'Tron')}
+          <div class="scroll muted" style="flex:1;min-height:0;overflow:hidden;">${transferFields()}</div>
+          <div class="sheet">
+            <div class="sheet-handle-wrap"><div class="sheet-handle"></div></div>
+            <div style="padding:12px 16px 10px;">
+              <div style="font-size:16px;font-weight:600;">TRX 余额不足以支付矿工费</div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
+                本次转账需要 <span style="color:var(--accent);font-weight:600;">13.84 TRX</span>，请选择获取方式：
+              </div>
+            </div>
+            <div style="height:1px;background:var(--stroke-tertiary);"></div>
+            <div class="option-row" data-action="buy">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;display:flex;align-items:center;">
+                  购买 TRX<span class="badge">推荐</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">使用 USDT 购买 TRX，快捷买币</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+            <div class="option-row" data-action="receive">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;">从交易所转入</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">查看地址与二维码，提币至本钱包</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+            <div class="option-row" data-action="receive">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;">向好友收款</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">分享地址，请好友转入 TRX</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+            <div style="padding:12px 16px;">
+              <div data-action="iknow" style="text-align:center;color:var(--text-secondary);font-size:13px;cursor:pointer;">我知道了</div>
+            </div>
+          </div>`;
+      } else if (state.screen === 'buy') {
+        if (state.buyState === 'sheet_ok' || state.buyState === 'sheet_fail') {
+          const ok = state.buyState === 'sheet_ok';
+          html = `
+            ${navBar('USDT 转账', 'Tron', true)}
+            <div class="scroll muted" style="opacity:0.45;flex:1;min-height:0;">${transferFields()}</div>
+            <div class="sheet">
+              <div class="sheet-handle-wrap"><div class="sheet-handle"></div></div>
+              ${ok ? `
+                <div style="padding:14px 16px 10px;text-align:center;">
+                  <div style="font-size:15px;font-weight:600;">TRX 已到账</div>
+                  <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">余额已满足本次转账矿工费需求</div>
+                </div>
+                <div style="padding:0 16px 16px;">
+                  <div class="primary-btn" data-action="continue-tx">继续转账</div>
+                </div>
+              ` : `
+                <div style="padding:14px 16px 8px;text-align:center;">
+                  <div style="font-size:15px;font-weight:600;">TRX 余额仍不足</div>
+                  <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">当前约 2.3 TRX，本次仍需 13.84 TRX</div>
+                </div>
+                <div style="padding:4px 16px 16px;display:flex;flex-direction:column;gap:8px;">
+                  <div class="primary-btn" data-action="wait">继续等待到账</div>
+                  <div class="secondary-btn" data-action="other-ways">返回选择其他方式</div>
+                </div>
+              `}
+            </div>`;
+        } else {
+          html = `
+            ${navBar('购买 TRX', null, true)}
+            <div class="url-bar"><div class="dot"></div><span style="flex:1;">buy.example.com/trx?amount=13.84&asset=TRX</span></div>
+            <div class="scroll" style="display:flex;flex-direction:column;gap:10px;min-height:0;">
+              <div style="font-size:12px;color:var(--text-tertiary);text-align:center;">— 第三方买币平台 H5 页面 —</div>
+              <div>
+                <div class="field-label" style="margin-bottom:4px;">购买数量</div>
+                <div class="field-box" style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--stroke-tertiary);">
+                  <span style="font-size:20px;font-weight:500;">13.84</span>
+                  <span style="font-size:13px;color:var(--text-secondary);">≈ 4.51 USDT</span>
+                </div>
+              </div>
+              <div class="field-box" style="padding:10px 14px;border:1px solid var(--stroke-tertiary);">
+                <div style="font-size:12px;color:var(--text-secondary);">支付方式：USDT</div>
+              </div>
+              ${state.h5Flow === 'idle' ? `
+                <div class="primary-btn" data-action="h5-buy">立即购买</div>
+              ` : `
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div style="background:var(--fill-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text-secondary);text-align:center;">
+                    订单已提交（模拟关闭 H5 返回 App）
+                  </div>
+                  <div style="font-size:10px;color:var(--text-tertiary);text-align:center;">模拟关闭 H5 后 App 检测余额的结果</div>
+                  <div style="display:flex;gap:8px;">
+                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:10px 0;text-align:center;font-size:13px;color:var(--accent);font-weight:500;cursor:pointer;" data-action="sheet-ok">余额充足</div>
+                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:10px 0;text-align:center;font-size:13px;color:var(--text-secondary);cursor:pointer;" data-action="sheet-fail">余额不足</div>
+                  </div>
+                </div>
+              `}
+              <div style="flex:1;"></div>
+              ${state.h5Flow === 'idle' ? `
+                <div style="border-top:1px solid var(--stroke-tertiary);padding-top:10px;">
+                  <div style="font-size:10px;color:var(--text-tertiary);text-align:center;margin-bottom:8px;">原型快捷：跳过支付，直接模拟返回后余额</div>
+                  <div style="display:flex;gap:8px;">
+                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:8px 0;text-align:center;font-size:12px;color:var(--accent);cursor:pointer;" data-action="sheet-ok">余额充足</div>
+                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:8px 0;text-align:center;font-size:12px;color:var(--text-secondary);cursor:pointer;" data-action="sheet-fail">余额不足</div>
+                  </div>
+                </div>
+              ` : ''}
+            </div>`;
+        }
+      } else if (state.screen === 'receive') {
+        const qr = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 80 80" style="color:var(--text-primary);">
+            <rect x="4" y="4" width="28" height="28" fill="none" stroke="currentColor" stroke-width="4" />
+            <rect x="12" y="12" width="12" height="12" fill="currentColor" />
+            <rect x="48" y="4" width="28" height="28" fill="none" stroke="currentColor" stroke-width="4" />
+            <rect x="56" y="12" width="12" height="12" fill="currentColor" />
+            <rect x="4" y="48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="4" />
+            <rect x="12" y="56" width="12" height="12" fill="currentColor" />
+            <rect x="40" y="40" width="5" height="5" fill="currentColor" />
+            <rect x="50" y="40" width="5" height="5" fill="currentColor" />
+            <rect x="60" y="40" width="5" height="5" fill="currentColor" />
+            <rect x="40" y="50" width="5" height="5" fill="currentColor" />
+            <rect x="60" y="50" width="5" height="5" fill="currentColor" />
+            <rect x="50" y="60" width="5" height="5" fill="currentColor" />
+          </svg>`;
+        html = `
+          <div style="display:flex;flex-direction:column;height:100%;background:var(--fill-tertiary);min-height:0;">
+          <div class="receive-header">
+            <span class="navbar-back" data-action="back-receive" style="position:absolute;left:14px;">‹</span>
+            <div style="flex:1;text-align:center;font-weight:600;font-size:15px;">收款</div>
+            <div class="help-icon">?</div>
+          </div>
+          <div class="receive-body">
+            <div class="card">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <div class="tron-dot"></div>
+                <span style="font-size:15px;font-weight:600;">Tron</span>
+              </div>
+              <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:14px;">仅支持 Tron 资产 (TRC10/TRC20)</div>
+              <div style="display:flex;justify-content:center;margin-bottom:12px;">${qr}</div>
+              <div style="font-size:11px;color:var(--text-tertiary);text-align:center;margin-bottom:4px;">钱包地址</div>
+              <div style="font-size:12px;text-align:center;line-height:1.55;word-break:break-all;padding:0 4px;">
+                <strong>TAyF</strong>41wtngf67eZJMofh7orZ7iNnF<strong>vBuH</strong>
+              </div>
+              <div style="height:1px;background:var(--stroke-tertiary);margin:14px 0 12px;"></div>
+              <div style="display:flex;">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;color:var(--text-secondary);font-size:12px;">分享</div>
+                <div style="width:1px;background:var(--stroke-tertiary);"></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;color:var(--text-secondary);font-size:12px;">复制</div>
+              </div>
+            </div>
+            <div style="background:var(--fill-secondary);border-radius:10px;padding:10px 12px;">
+              <div style="font-size:12px;color:var(--text-secondary);">
+                本次转账约需 <span style="color:var(--accent);font-weight:600;">13.84 TRX</span>（矿工费）
+              </div>
+              <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">最小充值 1 TRX · 预计到账 10–30 分钟</div>
+            </div>
+            <div style="background:var(--bg-elevated);border-radius:12px;overflow:hidden;border:1px solid var(--stroke-tertiary);">
+              <div style="display:flex;justify-content:space-between;padding:12px 14px;font-size:13px;">如何从其它钱包转入？ <span style="color:var(--text-tertiary);">›</span></div>
+              <div style="height:1px;background:var(--stroke-tertiary);"></div>
+              <div style="display:flex;justify-content:space-between;padding:12px 14px;font-size:13px;">如何从交易所提币？ <span style="color:var(--text-tertiary);">›</span></div>
+            </div>
+            <div style="flex:1;min-height:4px;"></div>
+            <div class="primary-btn" data-action="receive-done">已到账，继续转账</div>
+          </div></div>`;
+      }
+
+      root.innerHTML = html;
+      bindPhone();
+    }
+
+    function bindPhone() {
+      const root = document.getElementById('phone-root');
+      root.querySelector('[data-action="next"]')?.addEventListener('click', () => {
+        state.screen = 'error';
+        render();
+      });
+      root.querySelector('[data-action="iknow"]')?.addEventListener('click', () => {
+        state.screen = 'form';
+        render();
+      });
+      root.querySelector('[data-action="buy"]')?.addEventListener('click', () => {
+        state.buyState = 'webview';
+        state.h5Flow = 'idle';
+        state.screen = 'buy';
+        render();
+      });
+      root.querySelectorAll('[data-action="receive"]').forEach((el) => {
+        el.addEventListener('click', () => {
+          state.screen = 'receive';
+          render();
+        });
+      });
+      root.querySelector('[data-action="back"]')?.addEventListener('click', resetBuyAndGoError);
+      root.querySelector('[data-action="h5-buy"]')?.addEventListener('click', () => {
+        state.h5Flow = 'afterPurchase';
+        render();
+      });
+      root.querySelectorAll('[data-action="sheet-ok"]').forEach((el) => {
+        el.addEventListener('click', () => {
+          state.buyState = 'sheet_ok';
+          render();
+        });
+      });
+      root.querySelectorAll('[data-action="sheet-fail"]').forEach((el) => {
+        el.addEventListener('click', () => {
+          state.buyState = 'sheet_fail';
+          render();
+        });
+      });
+      root.querySelector('[data-action="continue-tx"]')?.addEventListener('click', () => {
+        state.buyState = 'webview';
+        state.h5Flow = 'idle';
+        state.screen = 'form';
+        render();
+      });
+      root.querySelector('[data-action="other-ways"]')?.addEventListener('click', resetBuyAndGoError);
+      root.querySelector('[data-action="wait"]')?.addEventListener('click', () => {});
+      root.querySelector('[data-action="back-receive"]')?.addEventListener('click', () => {
+        state.screen = 'error';
+        render();
+      });
+      root.querySelector('[data-action="receive-done"]')?.addEventListener('click', () => {
+        state.screen = 'form';
+        render();
+      });
+    }
+
+    function renderNotes() {
+      const n = NOTES[state.screen];
+      const extra = [];
+      if (state.screen === 'form') {
+        extra.push(`<div class="divider"></div><h3>交互顺序</h3><p style="font-size:14px;color:#374151;line-height:1.5;">填写/确认表单 → 点击「下一步」→ 若 TRX 不足则弹出底部引导层。</p>`);
+      }
+      if (state.screen === 'error') {
+        extra.push(`
+          <div class="divider"></div>
+          <h3>路径对比</h3>
+          <table>
+            <tr><th>路径</th><th>速度</th><th>适合场景</th></tr>
+            <tr><td>购买 TRX</td><td>-</td><td>使用 USDT 购买</td></tr>
+            <tr><td>从交易所转入 / 向好友收款</td><td>10–30 分钟 / 不确定</td><td>同一「收款」页：地址、二维码、分享/复制</td></tr>
+          </table>`);
+      }
+      if (state.screen === 'receive') {
+        extra.push(`<div class="divider"></div><h3>与设计稿对齐</h3><p style="font-size:14px;color:#374151;line-height:1.5;">标题「收款」、Tron 标识、仅支持 TRC10/TRC20、二维码、钱包地址（首尾加粗）、分享/复制、教育入口；底部主按钮「已到账，继续转账」对应 PRD 轮询后回到转账。</p>`);
+      }
+      if (state.screen === 'buy') {
+        extra.push(`
+          <div class="divider"></div>
+          <h3>购买后余额检测流程</h3>
+          <table>
+            <tr><th>返回场景</th><th>展示内容</th><th>后续操作</th></tr>
+            <tr><td>余额已满足</td><td>「TRX 已到账，余额满足需求」</td><td>一键返回转账页并自动提交</td></tr>
+            <tr><td>余额仍不足</td><td>「余额仍不足，当前 X TRX」</td><td>继续等待 或 返回选其他方式</td></tr>
+          </table>`);
+      }
+      const ul = n.points.map((p) => `<li>${escapeHtml(p)}</li>`).join('');
+      document.getElementById('notes-root').innerHTML = `
+        <h2>${escapeHtml(n.title)}</h2>
+        <ul>${ul}</ul>
+        ${extra.join('')}
+      `;
+    }
+
+    function render() {
+      renderPhone();
+      renderNotes();
+    }
+
+    render();
+  </script>
+</body>
+</html>
