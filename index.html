@@ -1,606 +1,2057 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRX 余额不足 — 获取引导原型</title>
-  <style>
-    :root {
-      --bg-chrome: #f2f2f7;
-      --bg-elevated: #ffffff;
-      --fill-secondary: rgba(0, 0, 0, 0.04);
-      --fill-tertiary: rgba(0, 0, 0, 0.06);
-      --text-primary: #1c1c1e;
-      --text-secondary: #6b7280;
-      --text-tertiary: #9ca3af;
-      --accent: #007aff;
-      --on-accent: #ffffff;
-      --stroke-primary: #c6c6c8;
-      --stroke-secondary: #d1d5db;
-      --stroke-tertiary: #e5e7eb;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: #e8e8ed;
-      color: var(--text-primary);
-      min-height: 100vh;
-    }
-    .page {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin: 0 0 20px;
-    }
-    .layout {
-      display: flex;
-      gap: 32px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-    .phone-wrap {
-      flex-shrink: 0;
-      width: 320px;
-      height: 580px;
-      background: var(--bg-chrome);
-      border-radius: 36px;
-      border: 1.5px solid var(--stroke-primary);
-      overflow: hidden;
-    }
-    #phone-root {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      min-height: 0;
-    }
-    .navbar {
-      padding: 10px 16px;
-      background: var(--bg-elevated);
-      border-bottom: 1px solid var(--stroke-tertiary);
-      position: relative;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-    }
-    .navbar.sub { padding: 6px 16px; }
-    .navbar-back {
-      position: absolute;
-      left: 14px;
-      color: var(--accent);
-      font-size: 13px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .navbar-title {
-      flex: 1;
-      text-align: center;
-      font-weight: 600;
-      font-size: 15px;
-    }
-    .navbar-sub { font-size: 11px; color: var(--text-secondary); margin-top: 1px; text-align: center; }
-    .scroll {
-      flex: 1;
-      min-height: 0;
-      overflow: auto;
-      padding: 16px;
-      background: var(--bg-chrome);
-    }
-    .field-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; }
-    .field-box {
-      background: var(--bg-elevated);
-      border-radius: 8px;
-      padding: 7px 10px;
-      margin-bottom: 10px;
-      font-size: 11px;
-    }
-    .muted { opacity: 0.4; }
-    .primary-btn {
-      background: var(--accent);
-      color: var(--on-accent);
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      user-select: none;
-    }
-    .secondary-btn {
-      background: var(--bg-elevated);
-      color: var(--text-primary);
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-      font-size: 14px;
-      cursor: pointer;
-      border: 1px solid var(--stroke-secondary);
-    }
-    .sheet {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--bg-elevated);
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
-    }
-    .sheet-handle-wrap { display: flex; justify-content: center; padding-top: 10px; padding-bottom: 2px; }
-    .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--stroke-primary); }
-    .option-row {
-      display: flex;
-      align-items: center;
-      padding: 11px 16px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--stroke-tertiary);
-    }
-    .option-row .chev { color: var(--text-tertiary); font-size: 18px; }
-    .badge {
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      padding: 1px 5px;
-      margin-left: 6px;
-    }
-    .notes {
-      flex: 1;
-      min-width: 260px;
-      padding-top: 4px;
-    }
-    .notes h2 { font-size: 1.1rem; margin: 0 0 12px; }
-    .notes h3 { font-size: 0.95rem; margin: 16px 0 8px; }
-    .notes ul { margin: 0; padding-left: 0; list-style: none; }
-    .notes li {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #374151;
-    }
-    .notes li::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 3px;
-      background: var(--accent);
-      margin-top: 8px;
-      flex-shrink: 0;
-    }
-    .divider { height: 1px; background: var(--stroke-tertiary); margin: 14px 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { border: 1px solid var(--stroke-tertiary); padding: 8px; text-align: left; }
-    th { background: var(--fill-secondary); }
-    .url-bar {
-      background: var(--fill-tertiary);
-      border-bottom: 1px solid var(--stroke-tertiary);
-      padding: 5px 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      color: var(--text-secondary);
-    }
-    .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--accent); flex-shrink: 0; }
-    .tron-dot { width: 18px; height: 18px; border-radius: 9px; background: #e53935; }
-    .receive-header {
-      padding: 10px 16px;
-      background: var(--bg-elevated);
-      border-bottom: 1px solid var(--stroke-tertiary);
-      position: relative;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-    }
-    .help-icon {
-      position: absolute;
-      right: 14px;
-      width: 22px;
-      height: 22px;
-      border-radius: 11px;
-      border: 1.5px solid var(--stroke-secondary);
-      color: var(--text-secondary);
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .receive-body {
-      flex: 1;
-      min-height: 0;
-      padding: 12px 14px;
-      overflow: auto;
-      background: var(--fill-tertiary);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .card { background: var(--bg-elevated); border-radius: 14px; padding: 16px; box-shadow: 0 1px 0 var(--stroke-tertiary); }
-  </style>
-</head>
-<body>
-  <div class="page">
-    <h1>TRX 余额不足 — 获取引导原型</h1>
-    <div class="layout">
-      <div class="phone-wrap">
-        <div id="phone-root"></div>
-      </div>
-      <div class="notes" id="notes-root"></div>
-    </div>
-  </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TRON Resource Manager</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --panel: #ffffff;
+        --panel-soft: #f9fafb;
+        --text: #172026;
+        --muted: #66717d;
+        --line: #dce2e8;
+        --line-strong: #c4ced8;
+        --tron: #e50914;
+        --tron-dark: #ba0610;
+        --blue: #2563eb;
+        --blue-soft: #eff6ff;
+        --green: #0f8a5f;
+        --green-soft: #ecfdf5;
+        --amber: #a16207;
+        --amber-soft: #fffbeb;
+        --red: #b42318;
+        --red-soft: #fff1f0;
+        --shadow: 0 18px 48px rgba(20, 32, 45, 0.08);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
 
-  <script>
-    const NOTES = {
-      form: {
-        title: 'USDT 转账表单',
-        points: [
-          '起点：用户已填写收款地址、金额等信息',
-          '点击「下一步」后系统校验矿工费；若 TRX 不足则进入底部引导层（不再单独跳转错误页）',
-        ],
-      },
-      error: {
-        title: '错误提示与路径引导',
-        points: [
-          '触发条件：用户在转账页点击「下一步」，系统检测到 TRX 余额不足以覆盖矿工费',
-          '「我知道了」关闭引导层并回到转账表单，不再作为主解决路径',
-        ],
-      },
-      buy: {
-        title: '购买 TRX 流程（H5 WebView）',
-        points: [
-          '第三方 H5 无法获知钱包 TRX 余额；关闭 WebView 后仅由 App 拉取余额并展示结果',
-          '返回后在转账页上以 Bottom Sheet 展示检测结果：足够则主按钮「继续转账」，不足则 Sheet 内仍提示余额不足',
-          '系统尽力向 H5 传递参数：资产类型（TRX）和建议购买数量（13.84 TRX）',
-        ],
-      },
-      receive: {
-        title: '统一收款页（交易所 / 好友）',
-        points: [
-          '「从交易所转入」与「向好友收款」进入同一 Tron「收款」页，与钱包既有收款能力一致',
-          '含：网络说明、二维码、钱包地址、分享 / 复制；底部教育入口（其它钱包 / 交易所提币）',
-          '显著展示本次转账约需 TRX（矿工费）；主按钮「已到账，继续转账」：点击后轮询余额，满足则回到转账并提交',
-        ],
-      },
-    };
+      * {
+        box-sizing: border-box;
+      }
 
-    const state = {
-      screen: 'form',
-      buyState: 'webview',
-      h5Flow: 'idle',
-    };
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          linear-gradient(180deg, rgba(229, 9, 20, 0.08), rgba(246, 247, 249, 0) 320px),
+          var(--bg);
+        color: var(--text);
+      }
 
-    function transferFields() {
-      return `
-        <div class="field-label">收款地址</div>
-        <div class="field-box">TKQ59AoCcF27xDtMjb1KcJAyHCJifnfi73</div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="field-label">数量</span><span class="field-label">7 USDT</span>
-        </div>
-        <div class="field-box" style="padding:8px 10px;margin-bottom:10px;">
-          <div style="font-size:22px;">5</div>
-          <div class="field-label">$5.00</div>
-        </div>
-        <div class="field-label">矿工费</div>
-        <div class="field-box" style="padding:8px 10px;">
-          <div style="font-size:14px;">$4.50869926</div>
-          <div class="field-label">13.8428 TRX</div>
-        </div>`;
-    }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
 
-    function navBar(title, subtitle, onBack) {
-      const back = onBack
-        ? `<span class="navbar-back" data-action="back">‹ 返回</span>`
-        : '';
-      const sub = subtitle
-        ? `<div class="navbar-title"><div>${escapeHtml(title)}</div><div class="navbar-sub">${escapeHtml(subtitle)}</div></div>`
-        : `<div class="navbar-title">${escapeHtml(title)}</div>`;
-      return `<div class="navbar ${subtitle ? 'sub' : ''}">${back}${sub}</div>`;
-    }
+      button {
+        min-height: 42px;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--text);
+        cursor: pointer;
+        padding: 0 14px;
+        font-weight: 750;
+      }
 
-    function escapeHtml(s) {
-      const d = document.createElement('div');
-      d.textContent = s;
-      return d.innerHTML;
-    }
+      button:hover:not(:disabled) {
+        border-color: #94a3b8;
+        background: #f8fafc;
+      }
 
-    function resetBuyAndGoError() {
-      state.buyState = 'webview';
-      state.h5Flow = 'idle';
-      state.screen = 'error';
-      render();
-    }
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
 
-    function renderPhone() {
-      const root = document.getElementById('phone-root');
-      let html = '';
+      button.primary {
+        border-color: var(--tron);
+        background: var(--tron);
+        color: #fff;
+      }
 
-      if (state.screen === 'form') {
-        html = `
-          ${navBar('USDT 转账', 'Tron')}
-          <div class="scroll" style="display:flex;flex-direction:column;">
-            ${transferFields()}
-            <div style="flex:1;min-height:12px;"></div>
-            <div class="primary-btn" data-action="next">下一步</div>
-          </div>`;
-      } else if (state.screen === 'error') {
-        html = `
-          ${navBar('USDT 转账', 'Tron')}
-          <div class="scroll muted" style="flex:1;min-height:0;overflow:hidden;">${transferFields()}</div>
-          <div class="sheet">
-            <div class="sheet-handle-wrap"><div class="sheet-handle"></div></div>
-            <div style="padding:12px 16px 10px;">
-              <div style="font-size:16px;font-weight:600;">TRX 余额不足以支付矿工费</div>
-              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
-                本次转账需要 <span style="color:var(--accent);font-weight:600;">13.84 TRX</span>，请选择获取方式：
-              </div>
-            </div>
-            <div style="height:1px;background:var(--stroke-tertiary);"></div>
-            <div class="option-row" data-action="buy">
-              <div style="flex:1;">
-                <div style="font-size:14px;font-weight:500;display:flex;align-items:center;">
-                  购买 TRX<span class="badge">推荐</span>
-                </div>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">使用 USDT 购买 TRX，快捷买币</div>
-              </div>
-              <span class="chev">›</span>
-            </div>
-            <div class="option-row" data-action="receive">
-              <div style="flex:1;">
-                <div style="font-size:14px;font-weight:500;">从交易所转入</div>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">查看地址与二维码，提币至本钱包</div>
-              </div>
-              <span class="chev">›</span>
-            </div>
-            <div class="option-row" data-action="receive">
-              <div style="flex:1;">
-                <div style="font-size:14px;font-weight:500;">向好友收款</div>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">分享地址，请好友转入 TRX</div>
-              </div>
-              <span class="chev">›</span>
-            </div>
-            <div style="padding:12px 16px;">
-              <div data-action="iknow" style="text-align:center;color:var(--text-secondary);font-size:13px;cursor:pointer;">我知道了</div>
-            </div>
-          </div>`;
-      } else if (state.screen === 'buy') {
-        if (state.buyState === 'sheet_ok' || state.buyState === 'sheet_fail') {
-          const ok = state.buyState === 'sheet_ok';
-          html = `
-            ${navBar('USDT 转账', 'Tron', true)}
-            <div class="scroll muted" style="opacity:0.45;flex:1;min-height:0;">${transferFields()}</div>
-            <div class="sheet">
-              <div class="sheet-handle-wrap"><div class="sheet-handle"></div></div>
-              ${ok ? `
-                <div style="padding:14px 16px 10px;text-align:center;">
-                  <div style="font-size:15px;font-weight:600;">TRX 已到账</div>
-                  <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">余额已满足本次转账矿工费需求</div>
-                </div>
-                <div style="padding:0 16px 16px;">
-                  <div class="primary-btn" data-action="continue-tx">继续转账</div>
-                </div>
-              ` : `
-                <div style="padding:14px 16px 8px;text-align:center;">
-                  <div style="font-size:15px;font-weight:600;">TRX 余额仍不足</div>
-                  <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">当前约 2.3 TRX，本次仍需 13.84 TRX</div>
-                </div>
-                <div style="padding:4px 16px 16px;display:flex;flex-direction:column;gap:8px;">
-                  <div class="primary-btn" data-action="wait">继续等待到账</div>
-                  <div class="secondary-btn" data-action="other-ways">返回选择其他方式</div>
-                </div>
-              `}
-            </div>`;
-        } else {
-          html = `
-            ${navBar('购买 TRX', null, true)}
-            <div class="url-bar"><div class="dot"></div><span style="flex:1;">buy.example.com/trx?amount=13.84&asset=TRX</span></div>
-            <div class="scroll" style="display:flex;flex-direction:column;gap:10px;min-height:0;">
-              <div style="font-size:12px;color:var(--text-tertiary);text-align:center;">— 第三方买币平台 H5 页面 —</div>
-              <div>
-                <div class="field-label" style="margin-bottom:4px;">购买数量</div>
-                <div class="field-box" style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--stroke-tertiary);">
-                  <span style="font-size:20px;font-weight:500;">13.84</span>
-                  <span style="font-size:13px;color:var(--text-secondary);">≈ 4.51 USDT</span>
-                </div>
-              </div>
-              <div class="field-box" style="padding:10px 14px;border:1px solid var(--stroke-tertiary);">
-                <div style="font-size:12px;color:var(--text-secondary);">支付方式：USDT</div>
-              </div>
-              ${state.h5Flow === 'idle' ? `
-                <div class="primary-btn" data-action="h5-buy">立即购买</div>
-              ` : `
-                <div style="display:flex;flex-direction:column;gap:10px;">
-                  <div style="background:var(--fill-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text-secondary);text-align:center;">
-                    订单已提交（模拟关闭 H5 返回 App）
-                  </div>
-                  <div style="font-size:10px;color:var(--text-tertiary);text-align:center;">模拟关闭 H5 后 App 检测余额的结果</div>
-                  <div style="display:flex;gap:8px;">
-                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:10px 0;text-align:center;font-size:13px;color:var(--accent);font-weight:500;cursor:pointer;" data-action="sheet-ok">余额充足</div>
-                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:10px 0;text-align:center;font-size:13px;color:var(--text-secondary);cursor:pointer;" data-action="sheet-fail">余额不足</div>
-                  </div>
-                </div>
-              `}
-              <div style="flex:1;"></div>
-              ${state.h5Flow === 'idle' ? `
-                <div style="border-top:1px solid var(--stroke-tertiary);padding-top:10px;">
-                  <div style="font-size:10px;color:var(--text-tertiary);text-align:center;margin-bottom:8px;">原型快捷：跳过支付，直接模拟返回后余额</div>
-                  <div style="display:flex;gap:8px;">
-                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:8px 0;text-align:center;font-size:12px;color:var(--accent);cursor:pointer;" data-action="sheet-ok">余额充足</div>
-                    <div style="flex:1;background:var(--fill-secondary);border-radius:8px;padding:8px 0;text-align:center;font-size:12px;color:var(--text-secondary);cursor:pointer;" data-action="sheet-fail">余额不足</div>
-                  </div>
-                </div>
-              ` : ''}
-            </div>`;
+      button.primary:hover:not(:disabled) {
+        border-color: var(--tron-dark);
+        background: var(--tron-dark);
+      }
+
+      button.soft {
+        border-color: #fecdd3;
+        background: #fff5f5;
+        color: var(--tron-dark);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--text);
+        outline: none;
+      }
+
+      input,
+      select {
+        min-height: 42px;
+        padding: 0 11px;
+      }
+
+      textarea {
+        min-height: 180px;
+        resize: vertical;
+        padding: 11px;
+        font: 12px/1.5 "SFMono-Regular", Consolas, Menlo, monospace;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        min-width: 0;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        margin-bottom: 0;
+        font-size: 32px;
+        line-height: 1.05;
+      }
+
+      h2 {
+        margin-bottom: 0;
+        font-size: 18px;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .shell {
+        width: min(1280px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 26px 0 36px;
+      }
+
+      .topbar,
+      .row,
+      .section-head,
+      .status-pill,
+      .tabbar,
+      .checkbox-line,
+      .table-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .topbar {
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background: var(--tron);
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+        box-shadow: var(--shadow);
+      }
+
+      .eyebrow {
+        margin: 0 0 3px;
+        color: var(--tron-dark);
+        font-size: 12px;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .row {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .status {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .status-cell,
+      .panel,
+      .metric,
+      .inline-box {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .status-cell {
+        min-width: 0;
+        padding: 12px 14px;
+      }
+
+      .status-cell span {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .status-cell strong {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .notice {
+        margin-bottom: 14px;
+        border: 1px solid #fecdd3;
+        border-radius: 8px;
+        background: var(--red-soft);
+        padding: 12px 14px;
+        color: #7a1c14;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .notice strong {
+        color: var(--red);
+      }
+
+      .main-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 14px;
+        align-items: start;
+        min-width: 0;
+      }
+
+      .panel {
+        min-width: 0;
+        padding: 16px;
+        box-shadow: 0 8px 24px rgba(20, 32, 45, 0.04);
+      }
+
+      .section-head {
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .status-pill {
+        min-height: 28px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 0 10px;
+        white-space: nowrap;
+      }
+
+      .status-pill.ok {
+        background: var(--green-soft);
+        color: var(--green);
+      }
+
+      .status-pill.warn {
+        background: var(--amber-soft);
+        color: var(--amber);
+      }
+
+      .status-pill.danger {
+        background: var(--red-soft);
+        color: var(--red);
+      }
+
+      .tabbar {
+        gap: 8px;
+        margin-bottom: 14px;
+        overflow-x: auto;
+      }
+
+      .tabbar button {
+        min-height: 40px;
+        white-space: nowrap;
+      }
+
+      .tabbar button.active {
+        border-color: var(--text);
+        background: var(--text);
+        color: #fff;
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: grid;
+        gap: 14px;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .metric {
+        min-width: 0;
+        padding: 14px;
+      }
+
+      .metric-label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .metric-value {
+        margin-top: 7px;
+        font-size: 24px;
+        font-weight: 850;
+      }
+
+      .metric-sub {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .bar {
+        height: 8px;
+        margin-top: 10px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e5e7eb;
+      }
+
+      .bar span {
+        display: block;
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--blue);
+      }
+
+      .bar.energy span {
+        background: var(--green);
+      }
+
+      .bar.bandwidth span {
+        background: var(--tron);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .form-grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .inline-box {
+        display: grid;
+        gap: 8px;
+        background: var(--panel-soft);
+        padding: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .inline-box strong {
+        color: var(--text);
+      }
+
+      .checkbox-line {
+        grid-template-columns: auto 1fr;
+        gap: 9px;
+      }
+
+      .checkbox-line input {
+        width: 18px;
+        min-height: 18px;
+      }
+
+      .mt {
+        margin-top: 12px;
+      }
+
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+        background: #fff;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 10px 11px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .mono {
+        font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .table-actions {
+        gap: 8px;
+      }
+
+      .table-actions button {
+        min-height: 32px;
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .log-list {
+        display: grid;
+        gap: 8px;
+        max-height: 380px;
+        overflow: auto;
+      }
+
+      .log-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .log-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .tx-preview {
+        max-height: 260px;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #0f172a;
+        color: #e5e7eb;
+        padding: 12px;
+        font: 12px/1.5 "SFMono-Regular", Consolas, Menlo, monospace;
+      }
+
+      .console-toggle {
+        display: none;
+        min-height: 34px;
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .console-content {
+        display: grid;
+        gap: 12px;
+      }
+
+      .mobile-quickbar {
+        display: none;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      @media (max-width: 1040px) {
+        .main-grid,
+        .status,
+        .metric-grid,
+        .split {
+          grid-template-columns: 1fr;
         }
-      } else if (state.screen === 'receive') {
-        const qr = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 80 80" style="color:var(--text-primary);">
-            <rect x="4" y="4" width="28" height="28" fill="none" stroke="currentColor" stroke-width="4" />
-            <rect x="12" y="12" width="12" height="12" fill="currentColor" />
-            <rect x="48" y="4" width="28" height="28" fill="none" stroke="currentColor" stroke-width="4" />
-            <rect x="56" y="12" width="12" height="12" fill="currentColor" />
-            <rect x="4" y="48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="4" />
-            <rect x="12" y="56" width="12" height="12" fill="currentColor" />
-            <rect x="40" y="40" width="5" height="5" fill="currentColor" />
-            <rect x="50" y="40" width="5" height="5" fill="currentColor" />
-            <rect x="60" y="40" width="5" height="5" fill="currentColor" />
-            <rect x="40" y="50" width="5" height="5" fill="currentColor" />
-            <rect x="60" y="50" width="5" height="5" fill="currentColor" />
-            <rect x="50" y="60" width="5" height="5" fill="currentColor" />
-          </svg>`;
-        html = `
-          <div style="display:flex;flex-direction:column;height:100%;background:var(--fill-tertiary);min-height:0;">
-          <div class="receive-header">
-            <span class="navbar-back" data-action="back-receive" style="position:absolute;left:14px;">‹</span>
-            <div style="flex:1;text-align:center;font-weight:600;font-size:15px;">收款</div>
-            <div class="help-icon">?</div>
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding-bottom: calc(78px + env(safe-area-inset-bottom));
+        }
+
+        .shell {
+          width: 100%;
+          padding: 12px 10px 18px;
+        }
+
+        .topbar {
+          align-items: center;
+          flex-direction: row;
+          margin-bottom: 10px;
+        }
+
+        .brand-mark {
+          width: 38px;
+          height: 38px;
+          font-size: 13px;
+          box-shadow: none;
+        }
+
+        h1 {
+          font-size: 20px;
+          line-height: 1.1;
+        }
+
+        h2 {
+          font-size: 16px;
+        }
+
+        .eyebrow {
+          font-size: 10px;
+        }
+
+        .notice {
+          margin-bottom: 10px;
+          padding: 10px 11px;
+          font-size: 12px;
+        }
+
+        .topbar > .row {
+          display: none;
+        }
+
+        .status {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+
+        .status-cell {
+          padding: 10px;
+        }
+
+        .status-cell span {
+          font-size: 11px;
+        }
+
+        .status-cell strong {
+          font-size: 13px;
+        }
+
+        .panel {
+          border-radius: 0;
+          border-left: 0;
+          border-right: 0;
+          padding: 12px 10px;
+          box-shadow: none;
+        }
+
+        .main-grid {
+          gap: 10px;
+        }
+
+        .tabbar {
+          position: sticky;
+          top: 0;
+          z-index: 10;
+          gap: 6px;
+          margin: -12px -10px 12px;
+          padding: 10px 10px 8px;
+          width: calc(100vw - 20px);
+          max-width: calc(100vw - 20px);
+          background: rgba(246, 247, 249, 0.96);
+          backdrop-filter: blur(12px);
+          scrollbar-width: none;
+        }
+
+        .tabbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        .tabbar button {
+          flex: 0 0 auto;
+          min-height: 38px;
+          padding: 0 12px;
+          font-size: 13px;
+        }
+
+        .section-head {
+          align-items: flex-start;
+          margin-bottom: 10px;
+        }
+
+        .section-head .status-pill {
+          max-width: 48%;
+          justify-content: center;
+          white-space: normal;
+          text-align: center;
+        }
+
+        .view.active {
+          gap: 12px;
+        }
+
+        .metric-grid {
+          gap: 8px;
+        }
+
+        .metric {
+          padding: 12px;
+        }
+
+        .metric-value {
+          margin-top: 5px;
+          font-size: 22px;
+        }
+
+        .split {
+          gap: 8px;
+        }
+
+        .inline-box {
+          padding: 10px;
+          font-size: 12px;
+        }
+
+        .row,
+        .row button,
+        .form-grid,
+        .form-grid.three {
+          width: 100%;
+          grid-template-columns: 1fr;
+        }
+
+        .row button {
+          flex: 1 1 auto;
+        }
+
+        .row.mt {
+          gap: 8px;
+        }
+
+        .row.mt button {
+          min-height: 48px;
+        }
+
+        .table-wrap {
+          overflow: visible;
+          border: 0;
+          border-radius: 0;
+        }
+
+        table,
+        thead,
+        tbody,
+        tr,
+        td {
+          display: block;
+        }
+
+        table {
+          min-width: 0;
+          background: transparent;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tbody {
+          display: grid;
+          gap: 10px;
+        }
+
+        tr {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: #fff;
+          padding: 8px 10px;
+        }
+
+        td {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          border-bottom: 1px solid #eef2f6;
+          padding: 9px 0;
+          text-align: right;
+          word-break: break-word;
+        }
+
+        td:last-child {
+          border-bottom: 0;
+        }
+
+        td::before {
+          content: attr(data-label);
+          flex: 0 0 96px;
+          color: var(--muted);
+          font-size: 11px;
+          font-weight: 800;
+          text-align: left;
+          text-transform: uppercase;
+        }
+
+        td[colspan] {
+          display: block;
+          text-align: left;
+        }
+
+        td[colspan]::before {
+          content: "";
+          display: none;
+        }
+
+        .table-actions {
+          justify-content: flex-end;
+        }
+
+        .table-actions button {
+          min-height: 36px;
+        }
+
+        .tx-console {
+          margin-bottom: 0;
+        }
+
+        .console-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .tx-console.collapsed .console-content {
+          display: none;
+        }
+
+        .tx-preview {
+          max-height: 180px;
+        }
+
+        .mobile-quickbar {
+          position: fixed;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 30;
+          display: grid;
+          grid-template-columns: 1fr 1.5fr;
+          gap: 8px;
+          padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+          border-top: 1px solid var(--line);
+          background: rgba(255, 255, 255, 0.96);
+          backdrop-filter: blur(14px);
+          box-shadow: 0 -12px 32px rgba(20, 32, 45, 0.12);
+        }
+
+        .mobile-quickbar button {
+          min-height: 48px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">TRX</div>
+          <div>
+            <p class="eyebrow">TRON Mainnet DApp</p>
+            <h1>TRON Resource Manager</h1>
           </div>
-          <div class="receive-body">
-            <div class="card">
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <div class="tron-dot"></div>
-                <span style="font-size:15px;font-weight:600;">Tron</span>
+        </div>
+        <div class="row">
+          <button id="refreshBtn" type="button">刷新数据</button>
+          <button id="connectBtn" type="button" class="primary">连接钱包</button>
+        </div>
+      </header>
+
+      <section class="notice">
+        <strong>正式环境提示：</strong>
+        本页面只构造交易并调用用户钱包签名，所有 Stake、Unstake、Delegate、Reclaim、Withdraw 操作都会发生在 TRON 主网。请先用小额账户验证流程。
+      </section>
+
+      <section class="status" aria-label="wallet status">
+        <div class="status-cell">
+          <span>钱包</span>
+          <strong id="walletStatus">未连接</strong>
+        </div>
+        <div class="status-cell">
+          <span>地址</span>
+          <strong id="addressStatus">-</strong>
+        </div>
+        <div class="status-cell">
+          <span>网络</span>
+          <strong id="networkStatus">TRON Mainnet</strong>
+        </div>
+        <div class="status-cell">
+          <span>TRX 余额</span>
+          <strong id="balanceStatus">-</strong>
+        </div>
+      </section>
+
+      <section class="main-grid">
+        <section class="panel">
+          <div class="tabbar" role="tablist" aria-label="resource views">
+            <button type="button" class="active" data-tab="overview">资源总览</button>
+            <button type="button" data-tab="stake">Stake</button>
+            <button type="button" data-tab="delegate">Delegate</button>
+            <button type="button" data-tab="unstake">Unstake</button>
+            <button type="button" data-tab="tools">费用估算</button>
+          </div>
+
+          <section id="overviewView" class="view active">
+            <div class="section-head">
+              <h2>账户资源</h2>
+              <span id="freshnessPill" class="status-pill warn">等待连接</span>
+            </div>
+
+            <div class="metric-grid">
+              <article class="metric">
+                <div class="metric-label">Energy 可用</div>
+                <div id="energyAvailable" class="metric-value">-</div>
+                <div id="energySub" class="metric-sub">-</div>
+                <div class="bar energy"><span id="energyBar"></span></div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">Bandwidth 可用</div>
+                <div id="bandwidthAvailable" class="metric-value">-</div>
+                <div id="bandwidthSub" class="metric-sub">-</div>
+                <div class="bar bandwidth"><span id="bandwidthBar"></span></div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">TRON Power</div>
+                <div id="tpAvailable" class="metric-value">-</div>
+                <div id="tpSub" class="metric-sub">-</div>
+                <div class="bar"><span id="tpBar"></span></div>
+              </article>
+            </div>
+
+            <div class="split">
+              <div class="inline-box">
+                <strong>链上参数</strong>
+                <div id="chainParamsBox">-</div>
               </div>
-              <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:14px;">仅支持 Tron 资产 (TRC10/TRC20)</div>
-              <div style="display:flex;justify-content:center;margin-bottom:12px;">${qr}</div>
-              <div style="font-size:11px;color:var(--text-tertiary);text-align:center;margin-bottom:4px;">钱包地址</div>
-              <div style="font-size:12px;text-align:center;line-height:1.55;word-break:break-all;padding:0 4px;">
-                <strong>TAyF</strong>41wtngf67eZJMofh7orZ7iNnF<strong>vBuH</strong>
-              </div>
-              <div style="height:1px;background:var(--stroke-tertiary);margin:14px 0 12px;"></div>
-              <div style="display:flex;">
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;color:var(--text-secondary);font-size:12px;">分享</div>
-                <div style="width:1px;background:var(--stroke-tertiary);"></div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;color:var(--text-secondary);font-size:12px;">复制</div>
+              <div class="inline-box">
+                <strong>可操作额度</strong>
+                <div id="limitsBox">-</div>
               </div>
             </div>
-            <div style="background:var(--fill-secondary);border-radius:10px;padding:10px 12px;">
-              <div style="font-size:12px;color:var(--text-secondary);">
-                本次转账约需 <span style="color:var(--accent);font-weight:600;">13.84 TRX</span>（矿工费）
+
+            <section>
+              <div class="section-head">
+                <h2>我委托出去的资源</h2>
+                <span id="outDelegationCount" class="status-pill">0 条</span>
               </div>
-              <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">最小充值 1 TRX · 预计到账 10–30 分钟</div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>接收地址</th>
+                      <th>资源</th>
+                      <th>质押份额</th>
+                      <th>锁定状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="delegationsOutBody">
+                    <tr><td colspan="5" class="muted">连接钱包后加载</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section>
+              <div class="section-head">
+                <h2>别人委托给我的资源</h2>
+                <span id="inDelegationCount" class="status-pill">0 条</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>来源地址</th>
+                      <th>资源</th>
+                      <th>质押份额</th>
+                      <th>锁定状态</th>
+                      <th>说明</th>
+                    </tr>
+                  </thead>
+                  <tbody id="delegationsInBody">
+                    <tr><td colspan="5" class="muted">连接钱包后加载</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <section id="stakeView" class="view">
+            <div class="section-head">
+              <h2>质押 TRX 获取资源</h2>
+              <span class="status-pill ok">FreezeBalanceV2</span>
             </div>
-            <div style="background:var(--bg-elevated);border-radius:12px;overflow:hidden;border:1px solid var(--stroke-tertiary);">
-              <div style="display:flex;justify-content:space-between;padding:12px 14px;font-size:13px;">如何从其它钱包转入？ <span style="color:var(--text-tertiary);">›</span></div>
-              <div style="height:1px;background:var(--stroke-tertiary);"></div>
-              <div style="display:flex;justify-content:space-between;padding:12px 14px;font-size:13px;">如何从交易所提币？ <span style="color:var(--text-tertiary);">›</span></div>
+            <div class="form-grid three">
+              <label>
+                资源类型
+                <select id="stakeResource">
+                  <option value="ENERGY">Energy</option>
+                  <option value="BANDWIDTH">Bandwidth</option>
+                </select>
+              </label>
+              <label>
+                质押数量 TRX
+                <input id="stakeAmount" inputmode="decimal" placeholder="例如 100" />
+              </label>
+              <label>
+                预估获得资源
+                <input id="stakeEstimate" readonly value="-" />
+              </label>
             </div>
-            <div style="flex:1;min-height:4px;"></div>
-            <div class="primary-btn" data-action="receive-done">已到账，继续转账</div>
-          </div></div>`;
+            <div class="inline-box mt">
+              <strong>执行结果</strong>
+              质押会立即获得对应资源和等量 TRON Power。后续取消质押需要等待网络参数指定的解锁期，目前主网通常为 14 天。
+            </div>
+            <div class="row mt">
+              <button id="stakeBtn" type="button" class="primary">发起 Stake</button>
+            </div>
+          </section>
+
+          <section id="delegateView" class="view">
+            <div class="section-head">
+              <h2>委托与取回资源</h2>
+              <span class="status-pill ok">DelegateResource</span>
+            </div>
+            <div class="form-grid">
+              <label>
+                资源类型
+                <select id="delegateResource">
+                  <option value="ENERGY">Energy</option>
+                  <option value="BANDWIDTH">Bandwidth</option>
+                </select>
+              </label>
+              <label>
+                质押份额 TRX
+                <input id="delegateAmount" inputmode="decimal" placeholder="例如 50" />
+              </label>
+              <label>
+                接收地址
+                <input id="delegateReceiver" autocomplete="off" placeholder="T..." />
+              </label>
+              <label>
+                预估资源数量
+                <input id="delegateEstimate" readonly value="-" />
+              </label>
+            </div>
+            <label class="checkbox-line mt">
+              <input id="delegateLock" type="checkbox" />
+              锁定委托，锁定期间不能取回，主网最短约 3 天
+            </label>
+            <label id="lockPeriodLabel" class="mt" style="display: none">
+              锁定区块数
+              <input id="lockPeriod" inputmode="numeric" value="86400" />
+            </label>
+            <div class="inline-box mt">
+              <strong>地址校验</strong>
+              委托目标必须是已激活的普通 TRON 账户，不能是合约地址，也不能是当前钱包地址。这里的数量是 API 需要的质押份额，不是直接输入 Energy/Bandwidth 单位。
+            </div>
+            <div class="row mt">
+              <button id="delegateBtn" type="button" class="primary">发起 Delegate</button>
+            </div>
+
+            <div class="section-head mt">
+              <h2>取回已委托资源</h2>
+              <span class="status-pill">UndelegateResource</span>
+            </div>
+            <div class="form-grid">
+              <label>
+                资源类型
+                <select id="reclaimResource">
+                  <option value="ENERGY">Energy</option>
+                  <option value="BANDWIDTH">Bandwidth</option>
+                </select>
+              </label>
+              <label>
+                取回质押份额 TRX
+                <input id="reclaimAmount" inputmode="decimal" placeholder="例如 50" />
+              </label>
+              <label>
+                原接收地址
+                <input id="reclaimReceiver" autocomplete="off" placeholder="T..." />
+              </label>
+              <label>
+                可取回提示
+                <input id="reclaimHint" readonly value="可从总览列表填入" />
+              </label>
+            </div>
+            <div class="row mt">
+              <button id="reclaimBtn" type="button" class="soft">发起 Reclaim</button>
+            </div>
+          </section>
+
+          <section id="unstakeView" class="view">
+            <div class="section-head">
+              <h2>取消质押与提现</h2>
+              <span class="status-pill warn">UnfreezeBalanceV2</span>
+            </div>
+            <div class="form-grid three">
+              <label>
+                资源类型
+                <select id="unstakeResource">
+                  <option value="ENERGY">Energy</option>
+                  <option value="BANDWIDTH">Bandwidth</option>
+                </select>
+              </label>
+              <label>
+                取消质押 TRX
+                <input id="unstakeAmount" inputmode="decimal" placeholder="例如 20" />
+              </label>
+              <label>
+                剩余发起次数
+                <input id="unfreezeCount" readonly value="-" />
+              </label>
+            </div>
+            <div class="inline-box mt">
+              <strong>重要规则</strong>
+              已委托出去的资源对应的质押份额不能直接 Unstake，需要先 Reclaim。Unstake 后进入等待期，到期后才能 Withdraw。Cancel 会取消所有等待中的 Unstake 请求。
+            </div>
+            <div class="row mt">
+              <button id="unstakeBtn" type="button" class="primary">发起 Unstake</button>
+              <button id="withdrawBtn" type="button">Withdraw 到期 TRX</button>
+              <button id="cancelUnstakeBtn" type="button" class="soft">Cancel 所有 Unstake</button>
+            </div>
+
+            <section class="mt">
+              <div class="section-head">
+                <h2>等待提现记录</h2>
+                <span id="withdrawablePill" class="status-pill">-</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>资源</th>
+                      <th>数量</th>
+                      <th>到期时间</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody id="unfreezeBody">
+                    <tr><td colspan="4" class="muted">连接钱包后加载</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <section id="toolsView" class="view">
+            <div class="section-head">
+              <h2>资源费用估算</h2>
+              <span class="status-pill">本地计算</span>
+            </div>
+            <div class="form-grid">
+              <label>
+                预计 Energy 消耗
+                <input id="calcEnergy" inputmode="numeric" value="65000" />
+              </label>
+              <label>
+                预计 Bandwidth 消耗
+                <input id="calcBandwidth" inputmode="numeric" value="350" />
+              </label>
+            </div>
+            <div class="inline-box mt">
+              <strong>估算结果</strong>
+              <div id="feeCalcResult">连接钱包后会结合当前账户可用资源和链上单价计算。</div>
+            </div>
+          </section>
+        </section>
+
+        <aside id="txConsole" class="panel tx-console">
+          <div class="section-head">
+            <h2>交易控制台</h2>
+            <div class="row">
+              <button id="toggleConsoleBtn" type="button" class="console-toggle">展开</button>
+              <span id="actionPill" class="status-pill warn">Idle</span>
+            </div>
+          </div>
+          <div id="consoleContent" class="console-content">
+            <div class="tx-preview" id="txPreview">尚未构造交易。</div>
+            <div class="section-head">
+              <h2>日志</h2>
+              <button id="clearLogsBtn" type="button">清空</button>
+            </div>
+            <div id="logList" class="log-list">
+              <div class="log-item">
+                <strong>Ready</strong>
+                连接 TronLink 后开始读取主网资源。
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <nav class="mobile-quickbar" aria-label="mobile actions">
+        <button id="mobileRefreshBtn" type="button">刷新</button>
+        <button id="mobileConnectBtn" type="button" class="primary">连接钱包</button>
+      </nav>
+    </main>
+
+    <script>
+      const SUN = 1_000_000n;
+      const BLOCKS_PER_3_DAYS = 86_400;
+      const state = {
+        address: null,
+        account: null,
+        resources: null,
+        params: {},
+        delegationsOut: [],
+        delegationsIn: [],
+        maxDelegatable: { ENERGY: null, BANDWIDTH: null },
+        availableUnfreezeCount: null,
+        withdrawableAmount: null,
+        lastRefresh: null,
+      };
+
+      const $ = (id) => document.getElementById(id);
+      const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
+      const fmtInt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+
+      const els = {
+        actionPill: $("actionPill"),
+        addressStatus: $("addressStatus"),
+        balanceStatus: $("balanceStatus"),
+        bandwidthAvailable: $("bandwidthAvailable"),
+        bandwidthBar: $("bandwidthBar"),
+        bandwidthSub: $("bandwidthSub"),
+        calcBandwidth: $("calcBandwidth"),
+        calcEnergy: $("calcEnergy"),
+        cancelUnstakeBtn: $("cancelUnstakeBtn"),
+        chainParamsBox: $("chainParamsBox"),
+        clearLogsBtn: $("clearLogsBtn"),
+        connectBtn: $("connectBtn"),
+        delegateAmount: $("delegateAmount"),
+        delegateBtn: $("delegateBtn"),
+        delegateEstimate: $("delegateEstimate"),
+        delegateLock: $("delegateLock"),
+        delegateReceiver: $("delegateReceiver"),
+        delegateResource: $("delegateResource"),
+        delegationsInBody: $("delegationsInBody"),
+        delegationsOutBody: $("delegationsOutBody"),
+        energyAvailable: $("energyAvailable"),
+        energyBar: $("energyBar"),
+        energySub: $("energySub"),
+        feeCalcResult: $("feeCalcResult"),
+        freshnessPill: $("freshnessPill"),
+        inDelegationCount: $("inDelegationCount"),
+        limitsBox: $("limitsBox"),
+        lockPeriod: $("lockPeriod"),
+        lockPeriodLabel: $("lockPeriodLabel"),
+        logList: $("logList"),
+        mobileConnectBtn: $("mobileConnectBtn"),
+        mobileRefreshBtn: $("mobileRefreshBtn"),
+        networkStatus: $("networkStatus"),
+        outDelegationCount: $("outDelegationCount"),
+        reclaimAmount: $("reclaimAmount"),
+        reclaimBtn: $("reclaimBtn"),
+        reclaimHint: $("reclaimHint"),
+        reclaimReceiver: $("reclaimReceiver"),
+        reclaimResource: $("reclaimResource"),
+        refreshBtn: $("refreshBtn"),
+        stakeAmount: $("stakeAmount"),
+        stakeBtn: $("stakeBtn"),
+        stakeEstimate: $("stakeEstimate"),
+        stakeResource: $("stakeResource"),
+        tpAvailable: $("tpAvailable"),
+        tpBar: $("tpBar"),
+        tpSub: $("tpSub"),
+        toggleConsoleBtn: $("toggleConsoleBtn"),
+        txPreview: $("txPreview"),
+        txConsole: $("txConsole"),
+        unfreezeBody: $("unfreezeBody"),
+        unfreezeCount: $("unfreezeCount"),
+        unstakeAmount: $("unstakeAmount"),
+        unstakeBtn: $("unstakeBtn"),
+        unstakeResource: $("unstakeResource"),
+        walletStatus: $("walletStatus"),
+        withdrawBtn: $("withdrawBtn"),
+        withdrawablePill: $("withdrawablePill"),
+      };
+
+      function getTronWeb() {
+        return window.tronWeb || window.tronLink?.tronWeb || null;
       }
 
-      root.innerHTML = html;
-      bindPhone();
-    }
+      function hasWallet() {
+        return Boolean(window.tronLink || getTronWeb());
+      }
 
-    function bindPhone() {
-      const root = document.getElementById('phone-root');
-      root.querySelector('[data-action="next"]')?.addEventListener('click', () => {
-        state.screen = 'error';
-        render();
-      });
-      root.querySelector('[data-action="iknow"]')?.addEventListener('click', () => {
-        state.screen = 'form';
-        render();
-      });
-      root.querySelector('[data-action="buy"]')?.addEventListener('click', () => {
-        state.buyState = 'webview';
-        state.h5Flow = 'idle';
-        state.screen = 'buy';
-        render();
-      });
-      root.querySelectorAll('[data-action="receive"]').forEach((el) => {
-        el.addEventListener('click', () => {
-          state.screen = 'receive';
+      function setAction(text, tone = "warn") {
+        els.actionPill.textContent = text;
+        els.actionPill.className = `status-pill ${tone}`;
+      }
+
+      function addLog(title, body, kind = "info") {
+        const item = document.createElement("div");
+        item.className = "log-item";
+        item.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(body)}`;
+        if (kind === "error") item.style.borderColor = "#fecdd3";
+        els.logList.prepend(item);
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function requireWallet() {
+        const tronWeb = getTronWeb();
+        if (!tronWeb) {
+          throw new Error("未检测到 TronLink 或兼容 TRON 钱包。请安装钱包后刷新页面。");
+        }
+        if (!state.address) {
+          throw new Error("请先连接钱包。");
+        }
+        return tronWeb;
+      }
+
+      async function connectWallet() {
+        try {
+          setAction("Connecting", "warn");
+          if (!hasWallet()) {
+            throw new Error("未检测到 TronLink。请在浏览器安装 TronLink，并在 GitHub Pages 的 https 页面中打开。");
+          }
+
+          if (window.tronLink?.request) {
+            const result = await window.tronLink.request({ method: "tron_requestAccounts" });
+            if (result?.code && result.code !== 200) {
+              throw new Error(result.message || "钱包拒绝连接。");
+            }
+          }
+
+          await waitForWalletReady();
+          const tronWeb = getTronWeb();
+          const address = tronWeb?.defaultAddress?.base58;
+          if (!address) throw new Error("钱包未返回当前地址。");
+
+          state.address = address;
+          els.walletStatus.textContent = "已连接";
+          els.addressStatus.textContent = address;
+          els.connectBtn.textContent = shortAddress(address);
+          els.mobileConnectBtn.textContent = shortAddress(address);
+          addLog("Wallet connected", address);
+          await refreshAll();
+          setAction("Ready", "ok");
+        } catch (error) {
+          setAction("Connect failed", "danger");
+          addLog("连接失败", getErrorMessage(error), "error");
+        }
+      }
+
+      async function waitForWalletReady() {
+        for (let i = 0; i < 30; i += 1) {
+          const tronWeb = getTronWeb();
+          if (tronWeb?.ready && tronWeb?.defaultAddress?.base58) return;
+          if (tronWeb?.defaultAddress?.base58) return;
+          await delay(200);
+        }
+      }
+
+      async function refreshAll() {
+        if (!state.address) return;
+        const tronWeb = requireWallet();
+        setAction("Loading", "warn");
+        try {
+          const [account, resources, params] = await Promise.all([
+            getAccount(tronWeb, state.address),
+            getAccountResources(tronWeb, state.address),
+            getChainParameters(tronWeb),
+          ]);
+
+          state.account = account || {};
+          state.resources = resources || {};
+          state.params = paramsToMap(params);
+
+          const [maxEnergy, maxBandwidth, count, withdrawable] = await Promise.all([
+            tryRead(() => tronWeb.trx.getCanDelegatedMaxSize(state.address, "ENERGY")),
+            tryRead(() => tronWeb.trx.getCanDelegatedMaxSize(state.address, "BANDWIDTH")),
+            tryRead(() => tronWeb.trx.getAvailableUnfreezeCount(state.address)),
+            tryRead(() => tronWeb.trx.getCanWithdrawUnfreezeAmount(state.address)),
+          ]);
+
+          state.maxDelegatable.ENERGY = readAmountField(maxEnergy, ["max_size", "maxSize", "amount"]);
+          state.maxDelegatable.BANDWIDTH = readAmountField(maxBandwidth, [
+            "max_size",
+            "maxSize",
+            "amount",
+          ]);
+          state.availableUnfreezeCount = readAmountField(count, ["count", "available_count"]);
+          state.withdrawableAmount = readAmountField(withdrawable, ["amount", "withdrawable_amount"]);
+
+          await loadDelegations(tronWeb);
+
+          state.lastRefresh = new Date();
           render();
-        });
-      });
-      root.querySelector('[data-action="back"]')?.addEventListener('click', resetBuyAndGoError);
-      root.querySelector('[data-action="h5-buy"]')?.addEventListener('click', () => {
-        state.h5Flow = 'afterPurchase';
-        render();
-      });
-      root.querySelectorAll('[data-action="sheet-ok"]').forEach((el) => {
-        el.addEventListener('click', () => {
-          state.buyState = 'sheet_ok';
-          render();
-        });
-      });
-      root.querySelectorAll('[data-action="sheet-fail"]').forEach((el) => {
-        el.addEventListener('click', () => {
-          state.buyState = 'sheet_fail';
-          render();
-        });
-      });
-      root.querySelector('[data-action="continue-tx"]')?.addEventListener('click', () => {
-        state.buyState = 'webview';
-        state.h5Flow = 'idle';
-        state.screen = 'form';
-        render();
-      });
-      root.querySelector('[data-action="other-ways"]')?.addEventListener('click', resetBuyAndGoError);
-      root.querySelector('[data-action="wait"]')?.addEventListener('click', () => {});
-      root.querySelector('[data-action="back-receive"]')?.addEventListener('click', () => {
-        state.screen = 'error';
-        render();
-      });
-      root.querySelector('[data-action="receive-done"]')?.addEventListener('click', () => {
-        state.screen = 'form';
-        render();
-      });
-    }
+          addLog("数据已刷新", state.lastRefresh.toLocaleString());
+          setAction("Ready", "ok");
+        } catch (error) {
+          setAction("Load failed", "danger");
+          addLog("刷新失败", getErrorMessage(error), "error");
+        }
+      }
 
-    function renderNotes() {
-      const n = NOTES[state.screen];
-      const extra = [];
-      if (state.screen === 'form') {
-        extra.push(`<div class="divider"></div><h3>交互顺序</h3><p style="font-size:14px;color:#374151;line-height:1.5;">填写/确认表单 → 点击「下一步」→ 若 TRX 不足则弹出底部引导层。</p>`);
+      async function getAccount(tronWeb, address) {
+        if (tronWeb.trx.getAccount) return tronWeb.trx.getAccount(address);
+        return tronWeb.fullNode.request("wallet/getaccount", { address: tronWeb.address.toHex(address) }, "post");
       }
-      if (state.screen === 'error') {
-        extra.push(`
-          <div class="divider"></div>
-          <h3>路径对比</h3>
-          <table>
-            <tr><th>路径</th><th>速度</th><th>适合场景</th></tr>
-            <tr><td>购买 TRX</td><td>-</td><td>使用 USDT 购买</td></tr>
-            <tr><td>从交易所转入 / 向好友收款</td><td>10–30 分钟 / 不确定</td><td>同一「收款」页：地址、二维码、分享/复制</td></tr>
-          </table>`);
-      }
-      if (state.screen === 'receive') {
-        extra.push(`<div class="divider"></div><h3>与设计稿对齐</h3><p style="font-size:14px;color:#374151;line-height:1.5;">标题「收款」、Tron 标识、仅支持 TRC10/TRC20、二维码、钱包地址（首尾加粗）、分享/复制、教育入口；底部主按钮「已到账，继续转账」对应 PRD 轮询后回到转账。</p>`);
-      }
-      if (state.screen === 'buy') {
-        extra.push(`
-          <div class="divider"></div>
-          <h3>购买后余额检测流程</h3>
-          <table>
-            <tr><th>返回场景</th><th>展示内容</th><th>后续操作</th></tr>
-            <tr><td>余额已满足</td><td>「TRX 已到账，余额满足需求」</td><td>一键返回转账页并自动提交</td></tr>
-            <tr><td>余额仍不足</td><td>「余额仍不足，当前 X TRX」</td><td>继续等待 或 返回选其他方式</td></tr>
-          </table>`);
-      }
-      const ul = n.points.map((p) => `<li>${escapeHtml(p)}</li>`).join('');
-      document.getElementById('notes-root').innerHTML = `
-        <h2>${escapeHtml(n.title)}</h2>
-        <ul>${ul}</ul>
-        ${extra.join('')}
-      `;
-    }
 
-    function render() {
-      renderPhone();
-      renderNotes();
-    }
+      async function getAccountResources(tronWeb, address) {
+        if (tronWeb.trx.getAccountResources) return tronWeb.trx.getAccountResources(address);
+        return tronWeb.fullNode.request(
+          "wallet/getaccountresource",
+          { address: tronWeb.address.toHex(address) },
+          "post",
+        );
+      }
 
-    render();
-  </script>
-</body>
+      async function getChainParameters(tronWeb) {
+        if (tronWeb.trx.getChainParameters) return tronWeb.trx.getChainParameters();
+        const result = await tronWeb.fullNode.request("wallet/getchainparameters", {}, "get");
+        return result?.chainParameter || result || [];
+      }
+
+      async function loadDelegations(tronWeb) {
+        state.delegationsOut = [];
+        state.delegationsIn = [];
+
+        const index = await tryRead(() => tronWeb.trx.getDelegatedResourceAccountIndexV2(state.address));
+        const toAccounts = normalizeAddressList(index?.toAccounts || index?.to_accounts || []);
+        const fromAccounts = normalizeAddressList(index?.fromAccounts || index?.from_accounts || []);
+
+        const outgoing = await Promise.all(
+          toAccounts.map((to) => readDelegationPair(tronWeb, state.address, to, "out")),
+        );
+        const incoming = await Promise.all(
+          fromAccounts.map((from) => readDelegationPair(tronWeb, from, state.address, "in")),
+        );
+
+        state.delegationsOut = outgoing.flat().filter(Boolean);
+        state.delegationsIn = incoming.flat().filter(Boolean);
+      }
+
+      async function readDelegationPair(tronWeb, from, to, direction) {
+        const result = await tryRead(() => tronWeb.trx.getDelegatedResourceV2(from, to));
+        const items = result?.delegatedResource || result?.delegated_resource || [];
+        return items.flatMap((item) => normalizeDelegationItem(tronWeb, item, from, to, direction));
+      }
+
+      function normalizeDelegationItem(tronWeb, item, from, to, direction) {
+        const fromAddress = normalizeAddress(tronWeb, item.from || item.from_address || from);
+        const toAddress = normalizeAddress(tronWeb, item.to || item.to_address || to);
+        const energy = toBigIntSafe(
+          item.frozen_balance_for_energy || item.frozenBalanceForEnergy || item.energy_balance,
+        );
+        const bandwidth = toBigIntSafe(
+          item.frozen_balance_for_bandwidth ||
+            item.frozenBalanceForBandwidth ||
+            item.bandwidth_balance,
+        );
+        const rows = [];
+        if (energy > 0n) {
+          rows.push({
+            amountSun: energy,
+            counterparty: direction === "out" ? toAddress : fromAddress,
+            direction,
+            expireTime:
+              item.expire_time_for_energy || item.expireTimeForEnergy || item.energy_expire_time || null,
+            resource: "ENERGY",
+          });
+        }
+        if (bandwidth > 0n) {
+          rows.push({
+            amountSun: bandwidth,
+            counterparty: direction === "out" ? toAddress : fromAddress,
+            direction,
+            expireTime:
+              item.expire_time_for_bandwidth ||
+              item.expireTimeForBandwidth ||
+              item.bandwidth_expire_time ||
+              null,
+            resource: "BANDWIDTH",
+          });
+        }
+        return rows;
+      }
+
+      function render() {
+        const account = state.account || {};
+        const resources = state.resources || {};
+        const balance = toBigIntSafe(account.balance);
+        const networkHost = getTronWeb()?.fullNode?.host || getTronWeb()?.fullNode?.node?.host || "injected";
+        const mainnet = !/shasta|nile/i.test(String(networkHost));
+
+        els.networkStatus.textContent = mainnet ? "TRON Mainnet" : `非主网: ${networkHost}`;
+        els.networkStatus.style.color = mainnet ? "" : "var(--red)";
+        els.balanceStatus.textContent = `${formatSun(balance)} TRX`;
+
+        const energyLimit = toBigIntSafe(resources.EnergyLimit);
+        const energyUsed = toBigIntSafe(resources.EnergyUsed);
+        const energyAvailable = clamp(energyLimit - energyUsed);
+
+        const freeNetLimit = toBigIntSafe(resources.freeNetLimit);
+        const freeNetUsed = toBigIntSafe(resources.freeNetUsed);
+        const netLimit = toBigIntSafe(resources.NetLimit);
+        const netUsed = toBigIntSafe(resources.NetUsed);
+        const bandwidthLimit = freeNetLimit + netLimit;
+        const bandwidthUsed = freeNetUsed + netUsed;
+        const bandwidthAvailable = clamp(bandwidthLimit - bandwidthUsed);
+
+        const tpLimit = toBigIntSafe(resources.tronPowerLimit);
+        const tpUsed = toBigIntSafe(resources.tronPowerUsed);
+        const tpAvailable = clamp(tpLimit - tpUsed);
+
+        els.energyAvailable.textContent = formatUnits(energyAvailable);
+        els.energySub.textContent = `已用 ${formatUnits(energyUsed)} / 总量 ${formatUnits(energyLimit)}`;
+        els.energyBar.style.width = `${percent(energyAvailable, energyLimit)}%`;
+
+        els.bandwidthAvailable.textContent = formatUnits(bandwidthAvailable);
+        els.bandwidthSub.textContent =
+          `Free ${formatUnits(clamp(freeNetLimit - freeNetUsed))} + Staked ${formatUnits(clamp(netLimit - netUsed))}`;
+        els.bandwidthBar.style.width = `${percent(bandwidthAvailable, bandwidthLimit)}%`;
+
+        els.tpAvailable.textContent = formatUnits(tpAvailable);
+        els.tpSub.textContent = `已投票 ${formatUnits(tpUsed)} / 总 TP ${formatUnits(tpLimit)}`;
+        els.tpBar.style.width = `${percent(tpAvailable, tpLimit)}%`;
+
+        els.chainParamsBox.innerHTML = renderChainParams();
+        els.limitsBox.innerHTML = renderLimits();
+        els.unfreezeCount.value = state.availableUnfreezeCount ?? "-";
+        els.withdrawablePill.textContent =
+          state.withdrawableAmount === null ? "-" : `${formatSun(state.withdrawableAmount)} TRX 可提现`;
+
+        renderDelegationTable("out");
+        renderDelegationTable("in");
+        renderUnfreezeTable();
+        updateEstimates();
+        updateFeeCalc();
+
+        els.freshnessPill.textContent = state.lastRefresh
+          ? `更新于 ${state.lastRefresh.toLocaleTimeString()}`
+          : "已连接";
+        els.freshnessPill.className = "status-pill ok";
+      }
+
+      function renderChainParams() {
+        const energyFee = state.params.getEnergyFee ?? 100;
+        const trxFee = state.params.getTransactionFee ?? 1000;
+        const unfreezeDays = state.params.getUnfreezeDelayDays ?? 14;
+        const freeNetLimit = state.params.getFreeNetLimit ?? 600;
+        return [
+          `Energy 单价: ${formatSun(BigInt(energyFee))} TRX / Energy`,
+          `Bandwidth 单价: ${formatSun(BigInt(trxFee))} TRX / byte`,
+          `免费 Bandwidth: ${fmtInt.format(Number(freeNetLimit))} / day`,
+          `Unstake 等待期: ${unfreezeDays} 天`,
+        ].join("<br />");
+      }
+
+      function renderLimits() {
+        const energyMax = state.maxDelegatable.ENERGY;
+        const bandwidthMax = state.maxDelegatable.BANDWIDTH;
+        const withdrawable = state.withdrawableAmount;
+        return [
+          `Energy 可委托质押份额: ${energyMax === null ? "-" : `${formatSun(energyMax)} TRX`}`,
+          `Bandwidth 可委托质押份额: ${bandwidthMax === null ? "-" : `${formatSun(bandwidthMax)} TRX`}`,
+          `可提现已解锁 TRX: ${withdrawable === null ? "-" : `${formatSun(withdrawable)} TRX`}`,
+          `剩余 Unstake 发起次数: ${state.availableUnfreezeCount ?? "-"}`,
+        ].join("<br />");
+      }
+
+      function renderDelegationTable(direction) {
+        const rows = direction === "out" ? state.delegationsOut : state.delegationsIn;
+        const body = direction === "out" ? els.delegationsOutBody : els.delegationsInBody;
+        const count = direction === "out" ? els.outDelegationCount : els.inDelegationCount;
+        count.textContent = `${rows.length} 条`;
+
+        if (!rows.length) {
+          body.innerHTML = `<tr><td colspan="5" class="muted">暂无记录</td></tr>`;
+          return;
+        }
+
+        body.innerHTML = rows
+          .map((row, index) => {
+            const lockText = formatExpire(row.expireTime);
+            const action =
+              direction === "out"
+                ? `<button type="button" data-fill-reclaim="${index}">填入取回</button>`
+                : `<span class="muted">只能由来源地址取回</span>`;
+            return `<tr>
+              <td data-label="${direction === "out" ? "接收地址" : "来源地址"}" class="mono">${escapeHtml(shortAddress(row.counterparty))}<br /><span class="muted">${escapeHtml(row.counterparty)}</span></td>
+              <td data-label="资源">${row.resource}</td>
+              <td data-label="质押份额">${formatSun(row.amountSun)} TRX</td>
+              <td data-label="锁定状态">${lockText}</td>
+              <td data-label="${direction === "out" ? "操作" : "说明"}"><div class="table-actions">${action}</div></td>
+            </tr>`;
+          })
+          .join("");
+
+        if (direction === "out") {
+          body.querySelectorAll("[data-fill-reclaim]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const row = rows[Number(button.dataset.fillReclaim)];
+              els.reclaimResource.value = row.resource;
+              els.reclaimAmount.value = formatSun(row.amountSun);
+              els.reclaimReceiver.value = row.counterparty;
+              els.reclaimHint.value = `${row.resource} ${formatSun(row.amountSun)} TRX share`;
+              switchTab("delegate");
+            });
+          });
+        }
+      }
+
+      function renderUnfreezeTable() {
+        const items = state.account?.unfrozenV2 || state.account?.unfreezeV2 || [];
+        if (!Array.isArray(items) || !items.length) {
+          els.unfreezeBody.innerHTML = `<tr><td colspan="4" class="muted">暂无等待提现记录</td></tr>`;
+          return;
+        }
+
+        const now = Date.now();
+        els.unfreezeBody.innerHTML = items
+          .map((item) => {
+            const amount = toBigIntSafe(
+              item.unfreeze_amount || item.unfreezeAmount || item.amount || item.balance,
+            );
+            const expire = Number(item.unfreeze_expire_time || item.unfreezeExpireTime || item.expire_time || 0);
+            const resource = item.type || item.resource || "-";
+            const ready = expire > 0 && expire <= now;
+            return `<tr>
+              <td data-label="资源">${escapeHtml(resource)}</td>
+              <td data-label="数量">${formatSun(amount)} TRX</td>
+              <td data-label="到期时间">${expire ? new Date(expire).toLocaleString() : "-"}</td>
+              <td data-label="状态">${ready ? "可提现" : "等待中"}</td>
+            </tr>`;
+          })
+          .join("");
+      }
+
+      function updateEstimates() {
+        updateResourceEstimate(els.stakeAmount, els.stakeResource, els.stakeEstimate);
+        updateResourceEstimate(els.delegateAmount, els.delegateResource, els.delegateEstimate);
+      }
+
+      function updateResourceEstimate(amountEl, resourceEl, resultEl) {
+        try {
+          const amountSun = parseTrxToSun(amountEl.value || "0");
+          if (amountSun <= 0n) {
+            resultEl.value = "-";
+            return;
+          }
+          const resource = resourceEl.value;
+          const estimated = estimateResourceFromStake(amountSun, resource);
+          resultEl.value = estimated === null ? "缺少链上权重" : formatUnits(estimated);
+        } catch {
+          resultEl.value = "-";
+        }
+      }
+
+      function updateFeeCalc() {
+        if (!state.resources) return;
+        const resources = state.resources;
+        const energyNeed = toBigIntSafe(els.calcEnergy.value);
+        const bandwidthNeed = toBigIntSafe(els.calcBandwidth.value);
+        const energyAvailable = clamp(toBigIntSafe(resources.EnergyLimit) - toBigIntSafe(resources.EnergyUsed));
+        const bandwidthAvailable =
+          clamp(toBigIntSafe(resources.freeNetLimit) - toBigIntSafe(resources.freeNetUsed)) +
+          clamp(toBigIntSafe(resources.NetLimit) - toBigIntSafe(resources.NetUsed));
+
+        const paidEnergy = clamp(energyNeed - energyAvailable);
+        const paidBandwidth = clamp(bandwidthNeed - bandwidthAvailable);
+        const energyFee = BigInt(state.params.getEnergyFee ?? 100);
+        const bandwidthFee = BigInt(state.params.getTransactionFee ?? 1000);
+        const burn = paidEnergy * energyFee + paidBandwidth * bandwidthFee;
+        els.feeCalcResult.innerHTML = [
+          `需额外支付 Energy: ${formatUnits(paidEnergy)}`,
+          `需额外支付 Bandwidth: ${formatUnits(paidBandwidth)}`,
+          `预计燃烧: ${formatSun(burn)} TRX`,
+        ].join("<br />");
+      }
+
+      function estimateResourceFromStake(amountSun, resource) {
+        const resources = state.resources || {};
+        const amountTrx = amountSun / SUN;
+        if (amountTrx <= 0n) return 0n;
+        if (resource === "ENERGY") {
+          const totalLimit = toBigIntSafe(resources.TotalEnergyLimit);
+          const totalWeight = toBigIntSafe(resources.TotalEnergyWeight);
+          if (totalLimit <= 0n || totalWeight <= 0n) return null;
+          return (amountTrx * totalLimit) / totalWeight;
+        }
+        const totalLimit = toBigIntSafe(resources.TotalNetLimit);
+        const totalWeight = toBigIntSafe(resources.TotalNetWeight);
+        if (totalLimit <= 0n || totalWeight <= 0n) return null;
+        return (amountTrx * totalLimit) / totalWeight;
+      }
+
+      async function buildAndSend(name, builder) {
+        try {
+          const tronWeb = requireWallet();
+          setAction("Building", "warn");
+          const tx = await builder(tronWeb);
+          els.txPreview.textContent = JSON.stringify(tx, null, 2);
+          setAction("Signing", "warn");
+          addLog(name, "请在钱包中确认交易。");
+          const signed = await tronWeb.trx.sign(tx);
+          if (!signed || !signed.signature) throw new Error("钱包未返回签名交易。");
+
+          setAction("Broadcasting", "warn");
+          const receipt = await tronWeb.trx.sendRawTransaction(signed);
+          if (receipt?.result === false || receipt?.code) {
+            throw new Error(decodeTronError(receipt.message) || receipt.message || receipt.code || "广播失败");
+          }
+          const txid = receipt?.txid || receipt?.transaction?.txID || signed.txID || tx.txID;
+          addLog("交易已广播", txid ? `TxID: ${txid}` : JSON.stringify(receipt));
+          setAction("Confirming", "warn");
+          if (txid) await waitForConfirmation(tronWeb, txid);
+          await delay(1200);
+          await refreshAll();
+          setAction("Confirmed", "ok");
+        } catch (error) {
+          setAction("Failed", "danger");
+          addLog(`${name} 失败`, getErrorMessage(error), "error");
+        }
+      }
+
+      async function waitForConfirmation(tronWeb, txid) {
+        for (let i = 0; i < 25; i += 1) {
+          const info = await tryRead(() => tronWeb.trx.getTransactionInfo(txid));
+          if (info && Object.keys(info).length) {
+            const result = info.receipt?.result || info.contractResult?.[0] || "CONFIRMED";
+            addLog("链上已确认", `${txid}<br />Result: ${result}`);
+            return info;
+          }
+          await delay(3000);
+        }
+        addLog("确认轮询结束", `${txid}<br />交易可能仍在确认中，请稍后刷新。`);
+        return null;
+      }
+
+      async function validateDelegateTarget(tronWeb, receiver) {
+        if (!isTronAddress(tronWeb, receiver)) throw new Error("接收地址不是有效 TRON 地址。");
+        if (sameAddress(tronWeb, receiver, state.address)) throw new Error("不能把资源委托给当前钱包地址。");
+
+        const account = await tryRead(() => tronWeb.trx.getAccount(receiver));
+        if (!account || !account.address) {
+          throw new Error("接收地址尚未激活。请先让该地址收到一笔 TRX 或完成账户激活。");
+        }
+
+        const contract = await tryRead(() =>
+          tronWeb.fullNode.request(
+            "wallet/getcontract",
+            { value: tronWeb.address.toHex(receiver), visible: false },
+            "post",
+          ),
+        );
+        if (contract?.contract_address || contract?.abi || contract?.bytecode) {
+          throw new Error("接收地址是合约地址，不能接收资源委托。");
+        }
+      }
+
+      function setupEvents() {
+        els.connectBtn.addEventListener("click", connectWallet);
+        els.mobileConnectBtn.addEventListener("click", connectWallet);
+        els.refreshBtn.addEventListener("click", refreshAll);
+        els.mobileRefreshBtn.addEventListener("click", refreshAll);
+        els.clearLogsBtn.addEventListener("click", () => {
+          els.logList.innerHTML = "";
+          addLog("Ready", "日志已清空。");
+        });
+        els.toggleConsoleBtn.addEventListener("click", () => {
+          const collapsed = els.txConsole.classList.toggle("collapsed");
+          els.toggleConsoleBtn.textContent = collapsed ? "展开" : "收起";
+        });
+
+        document.querySelectorAll("[data-tab]").forEach((button) => {
+          button.addEventListener("click", () => switchTab(button.dataset.tab));
+        });
+
+        [els.stakeAmount, els.stakeResource, els.delegateAmount, els.delegateResource].forEach((el) => {
+          el.addEventListener("input", updateEstimates);
+          el.addEventListener("change", updateEstimates);
+        });
+
+        [els.calcEnergy, els.calcBandwidth].forEach((el) => {
+          el.addEventListener("input", updateFeeCalc);
+        });
+
+        els.delegateLock.addEventListener("change", () => {
+          els.lockPeriodLabel.style.display = els.delegateLock.checked ? "grid" : "none";
+          if (els.delegateLock.checked && !els.lockPeriod.value) {
+            els.lockPeriod.value = String(BLOCKS_PER_3_DAYS);
+          }
+        });
+
+        els.stakeBtn.addEventListener("click", () =>
+          buildAndSend("Stake", async (tronWeb) => {
+            const amountSun = parsePositiveTrx(els.stakeAmount.value);
+            const resource = els.stakeResource.value;
+            return tronWeb.transactionBuilder.freezeBalanceV2(
+              toSafeNumber(amountSun),
+              resource,
+              state.address,
+            );
+          }),
+        );
+
+        els.delegateBtn.addEventListener("click", () =>
+          buildAndSend("Delegate", async (tronWeb) => {
+            const amountSun = parsePositiveTrx(els.delegateAmount.value);
+            const resource = els.delegateResource.value;
+            const receiver = els.delegateReceiver.value.trim();
+            const max = state.maxDelegatable[resource];
+            if (max !== null && amountSun > max) {
+              throw new Error(`可委托 ${resource} 质押份额不足，当前最多 ${formatSun(max)} TRX。`);
+            }
+            await validateDelegateTarget(tronWeb, receiver);
+            const lock = els.delegateLock.checked;
+            const lockPeriod = lock ? Number.parseInt(els.lockPeriod.value, 10) : 0;
+            if (lock && (!Number.isFinite(lockPeriod) || lockPeriod < BLOCKS_PER_3_DAYS)) {
+              throw new Error("锁定区块数不能低于 86400，约等于 3 天。");
+            }
+            return tronWeb.transactionBuilder.delegateResource(
+              toSafeNumber(amountSun),
+              receiver,
+              resource,
+              state.address,
+              lock,
+              lockPeriod,
+            );
+          }),
+        );
+
+        els.reclaimBtn.addEventListener("click", () =>
+          buildAndSend("Reclaim", async (tronWeb) => {
+            const amountSun = parsePositiveTrx(els.reclaimAmount.value);
+            const resource = els.reclaimResource.value;
+            const receiver = els.reclaimReceiver.value.trim();
+            if (!isTronAddress(tronWeb, receiver)) throw new Error("原接收地址不是有效 TRON 地址。");
+            return tronWeb.transactionBuilder.undelegateResource(
+              toSafeNumber(amountSun),
+              receiver,
+              resource,
+              state.address,
+            );
+          }),
+        );
+
+        els.unstakeBtn.addEventListener("click", () =>
+          buildAndSend("Unstake", async (tronWeb) => {
+            const amountSun = parsePositiveTrx(els.unstakeAmount.value);
+            const resource = els.unstakeResource.value;
+            if (state.availableUnfreezeCount !== null && Number(state.availableUnfreezeCount) <= 0) {
+              throw new Error("当前没有剩余 Unstake 发起次数，请等待已有请求到期或取消。");
+            }
+            return tronWeb.transactionBuilder.unfreezeBalanceV2(
+              toSafeNumber(amountSun),
+              resource,
+              state.address,
+            );
+          }),
+        );
+
+        els.withdrawBtn.addEventListener("click", () =>
+          buildAndSend("Withdraw", async (tronWeb) => {
+            if (state.withdrawableAmount !== null && state.withdrawableAmount <= 0n) {
+              throw new Error("当前没有已到期可提现的 TRX。");
+            }
+            return callBuilderWithFallback(tronWeb, "withdrawExpireUnfreeze", [state.address]);
+          }),
+        );
+
+        els.cancelUnstakeBtn.addEventListener("click", () =>
+          buildAndSend("Cancel Unstake", async (tronWeb) =>
+            callBuilderWithFallback(tronWeb, "cancelUnfreezeBalanceV2", [state.address]),
+          ),
+        );
+
+        if (window.tronLink?.on) {
+          window.tronLink.on("accountsChanged", () => {
+            addLog("账户变化", "检测到账户变化，正在刷新。");
+            state.address = getTronWeb()?.defaultAddress?.base58 || null;
+            if (state.address) {
+              els.addressStatus.textContent = state.address;
+              els.connectBtn.textContent = shortAddress(state.address);
+              els.mobileConnectBtn.textContent = shortAddress(state.address);
+              refreshAll();
+            }
+          });
+          window.tronLink.on("chainChanged", () => {
+            addLog("网络变化", "检测到网络变化，正在刷新。");
+            refreshAll();
+          });
+        }
+      }
+
+      async function callBuilderWithFallback(tronWeb, name, args) {
+        try {
+          return await tronWeb.transactionBuilder[name](...args);
+        } catch (firstError) {
+          if (!args.length) throw firstError;
+          return tronWeb.transactionBuilder[name]();
+        }
+      }
+
+      function switchTab(tab) {
+        document.querySelectorAll("[data-tab]").forEach((button) => {
+          button.classList.toggle("active", button.dataset.tab === tab);
+        });
+        document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
+        $(`${tab}View`).classList.add("active");
+      }
+
+      function paramsToMap(params) {
+        const map = {};
+        const list = Array.isArray(params) ? params : params?.chainParameter || [];
+        list.forEach((item) => {
+          if (item?.key) map[item.key] = Number(item.value);
+        });
+        return map;
+      }
+
+      function parsePositiveTrx(value) {
+        const parsed = parseTrxToSun(value);
+        if (parsed <= 0n) throw new Error("请输入大于 0 的 TRX 数量。");
+        return parsed;
+      }
+
+      function parseTrxToSun(value) {
+        const text = String(value || "").trim();
+        if (!/^\d+(\.\d{1,6})?$/.test(text)) {
+          throw new Error("TRX 数量最多支持 6 位小数。");
+        }
+        const [whole, frac = ""] = text.split(".");
+        return BigInt(whole) * SUN + BigInt(frac.padEnd(6, "0"));
+      }
+
+      function formatSun(value) {
+        const amount = toBigIntSafe(value);
+        const sign = amount < 0n ? "-" : "";
+        const abs = amount < 0n ? -amount : amount;
+        const whole = abs / SUN;
+        const frac = String(abs % SUN).padStart(6, "0").replace(/0+$/, "");
+        return `${sign}${formatBigIntWithCommas(whole)}${frac ? `.${frac}` : ""}`;
+      }
+
+      function formatBigIntWithCommas(value) {
+        return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      function formatUnits(value) {
+        const amount = toBigIntSafe(value);
+        if (amount < 1_000n) return amount.toString();
+        if (amount < 1_000_000n) return fmt.format(Number(amount));
+        if (amount < 1_000_000_000n) return `${fmt.format(Number(amount) / 1_000_000)}M`;
+        return `${fmt.format(Number(amount) / 1_000_000_000)}B`;
+      }
+
+      function toBigIntSafe(value) {
+        if (value === undefined || value === null || value === "") return 0n;
+        if (typeof value === "bigint") return value;
+        if (typeof value === "number") {
+          return Number.isFinite(value) && value > 0 ? BigInt(Math.floor(value)) : 0n;
+        }
+        const text = String(value);
+        if (/^\d+$/.test(text)) return BigInt(text);
+        return 0n;
+      }
+
+      function toSafeNumber(value) {
+        const amount = toBigIntSafe(value);
+        if (amount > BigInt(Number.MAX_SAFE_INTEGER)) {
+          throw new Error("当前输入超过 JavaScript 安全整数范围，请拆分为更小的多笔操作。");
+        }
+        return Number(amount);
+      }
+
+      function readAmountField(value, keys) {
+        if (value === null || value === undefined) return null;
+        if (typeof value === "number" || typeof value === "string" || typeof value === "bigint") {
+          return toBigIntSafe(value);
+        }
+        for (const key of keys) {
+          if (value[key] !== undefined) return toBigIntSafe(value[key]);
+        }
+        return null;
+      }
+
+      function normalizeAddressList(items) {
+        const tronWeb = getTronWeb();
+        return [...new Set((items || []).map((item) => normalizeAddress(tronWeb, item)).filter(Boolean))];
+      }
+
+      function normalizeAddress(tronWeb, value) {
+        if (!value) return "";
+        const text = String(value);
+        if (/^41[0-9a-fA-F]{40}$/.test(text) && tronWeb?.address?.fromHex) {
+          return tronWeb.address.fromHex(text);
+        }
+        return text;
+      }
+
+      function isTronAddress(tronWeb, address) {
+        if (!address) return false;
+        if (tronWeb?.isAddress) return tronWeb.isAddress(address);
+        if (window.TronWeb?.isAddress) return window.TronWeb.isAddress(address);
+        return /^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(address);
+      }
+
+      function sameAddress(tronWeb, a, b) {
+        if (!a || !b) return false;
+        try {
+          return tronWeb.address.toHex(a).toLowerCase() === tronWeb.address.toHex(b).toLowerCase();
+        } catch {
+          return a === b;
+        }
+      }
+
+      function shortAddress(address) {
+        if (!address || address.length < 12) return address || "-";
+        return `${address.slice(0, 6)}...${address.slice(-6)}`;
+      }
+
+      function percent(available, limit) {
+        const total = toBigIntSafe(limit);
+        if (total <= 0n) return 0;
+        const value = clamp(toBigIntSafe(available));
+        return Math.max(0, Math.min(100, Number((value * 10_000n) / total) / 100));
+      }
+
+      function clamp(value) {
+        return value > 0n ? value : 0n;
+      }
+
+      function formatExpire(value) {
+        const time = Number(value || 0);
+        if (!time) return "未锁定或未知";
+        const date = new Date(time);
+        if (Number.isNaN(date.getTime())) return "未知";
+        return date.getTime() > Date.now() ? `锁定至 ${date.toLocaleString()}` : "可取回";
+      }
+
+      async function tryRead(fn) {
+        try {
+          return await fn();
+        } catch {
+          return null;
+        }
+      }
+
+      function decodeTronError(message) {
+        if (!message) return null;
+        const text = String(message);
+        if (!/^[0-9a-fA-F]+$/.test(text)) return text;
+        try {
+          const bytes = text.match(/.{1,2}/g) || [];
+          return bytes.map((byte) => String.fromCharCode(Number.parseInt(byte, 16))).join("");
+        } catch {
+          return text;
+        }
+      }
+
+      function getErrorMessage(error) {
+        if (!error) return "未知错误";
+        if (typeof error === "string") return error;
+        return error.message || JSON.stringify(error);
+      }
+
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      function init() {
+        setupEvents();
+        if (hasWallet()) {
+          els.walletStatus.textContent = "检测到钱包";
+          const address = getTronWeb()?.defaultAddress?.base58;
+          if (address) {
+            state.address = address;
+            els.addressStatus.textContent = address;
+            els.connectBtn.textContent = shortAddress(address);
+            els.mobileConnectBtn.textContent = shortAddress(address);
+            refreshAll();
+          }
+        }
+        if (window.matchMedia("(max-width: 720px)").matches) {
+          els.txConsole.classList.add("collapsed");
+          els.toggleConsoleBtn.textContent = "展开";
+        } else {
+          els.toggleConsoleBtn.textContent = "收起";
+        }
+        updateEstimates();
+      }
+
+      init();
+    </script>
+  </body>
 </html>
