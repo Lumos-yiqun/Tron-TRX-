@@ -2842,12 +2842,20 @@
         clearMobilePlaceholders();
         const energyStaked = getFrozenSunByResource(input.account, "ENERGY");
         const bandwidthStaked = getFrozenSunByResource(input.account, "BANDWIDTH");
-        const totalStaked = energyStaked + bandwidthStaked;
+        const energyLent = sumDelegationSun(state.delegationsOut, "ENERGY");
+        const bandwidthLent = sumDelegationSun(state.delegationsOut, "BANDWIDTH");
+        const delegatedEnergyStake = maxBigInt(
+          getDelegatedFrozenSunByResource(input.account, "ENERGY"),
+          energyLent,
+        );
+        const delegatedBandwidthStake = maxBigInt(
+          getDelegatedFrozenSunByResource(input.account, "BANDWIDTH"),
+          bandwidthLent,
+        );
+        const totalStaked = energyStaked + bandwidthStaked + delegatedEnergyStake + delegatedBandwidthStake;
         const pendingRedeem = getPendingUnfreezeSun(input.account);
         const redeemable = state.withdrawableAmount ?? 0n;
         const walletTotal = input.balance + totalStaked + pendingRedeem;
-        const energyLent = sumDelegationSun(state.delegationsOut, "ENERGY");
-        const bandwidthLent = sumDelegationSun(state.delegationsOut, "BANDWIDTH");
         const energyBorrowed = sumDelegationSun(state.delegationsIn, "ENERGY");
         const bandwidthBorrowed = sumDelegationSun(state.delegationsIn, "BANDWIDTH");
 
@@ -3116,6 +3124,29 @@
         return total;
       }
 
+      function getDelegatedFrozenSunByResource(account, resource) {
+        const accountResource = account?.account_resource || account?.accountResource || {};
+        if (resource === "ENERGY") {
+          return toBigIntSafe(
+            accountResource.delegated_frozenV2_balance_for_energy ??
+              accountResource.delegatedFrozenV2BalanceForEnergy ??
+              accountResource.delegated_frozen_balance_for_energy ??
+              accountResource.delegatedFrozenBalanceForEnergy,
+          );
+        }
+
+        return toBigIntSafe(
+          account?.delegated_frozenV2_balance_for_bandwidth ??
+            account?.delegatedFrozenV2BalanceForBandwidth ??
+            account?.delegated_frozen_balance_for_bandwidth ??
+            account?.delegatedFrozenBalanceForBandwidth ??
+            accountResource.delegated_frozenV2_balance_for_bandwidth ??
+            accountResource.delegatedFrozenV2BalanceForBandwidth ??
+            accountResource.delegated_frozen_balance_for_bandwidth ??
+            accountResource.delegatedFrozenBalanceForBandwidth,
+        );
+      }
+
       function getPendingUnfreezeSun(account) {
         const items = account?.unfrozenV2 || account?.unfreezeV2 || [];
         if (!Array.isArray(items)) return 0n;
@@ -3130,6 +3161,13 @@
         return rows
           .filter((row) => row.resource === resource)
           .reduce((sum, row) => sum + toBigIntSafe(row.amountSun), 0n);
+      }
+
+      function maxBigInt(...values) {
+        return values.reduce((max, value) => {
+          const amount = toBigIntSafe(value);
+          return amount > max ? amount : max;
+        }, 0n);
       }
 
       function updateEstimates() {
