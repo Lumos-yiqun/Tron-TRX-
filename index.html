@@ -658,7 +658,10 @@
       .mobile-balance-value.is-placeholder,
       .mobile-detail-value.is-placeholder,
       .mobile-resource-usage.is-placeholder,
-      .mobile-resource-cost.is-placeholder {
+      .mobile-resource-cost.is-placeholder,
+      .mobile-detail-value.is-empty,
+      .mobile-resource-usage.is-empty,
+      .mobile-resource-cost.is-empty {
         color: #a1acba;
         font-weight: 650;
       }
@@ -667,14 +670,14 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         border-top: 1px solid #edf1f5;
-        padding: 18px 16px 20px;
-        gap: 12px;
+        padding: 14px 14px 16px;
+        gap: 10px;
       }
 
       .mobile-action {
         display: grid;
         place-items: center;
-        min-height: 56px;
+        min-height: 52px;
         border: 1px solid #cbd5e1;
         border-radius: 8px;
         background: #fff;
@@ -718,7 +721,7 @@
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 12px;
         align-items: center;
-        padding: 26px 24px 14px;
+        padding: 22px 24px 10px;
       }
 
       .mobile-resource-icon {
@@ -746,7 +749,7 @@
         gap: 6px;
         min-width: 0;
         overflow: hidden;
-        font-size: 20px;
+        font-size: 19px;
         font-weight: 800;
         line-height: 1.15;
         text-overflow: ellipsis;
@@ -775,7 +778,7 @@
       .mobile-resource-usage {
         display: block;
         overflow: hidden;
-        font-size: 22px;
+        font-size: 21px;
         font-weight: 800;
         line-height: 1.1;
         text-overflow: ellipsis;
@@ -783,7 +786,7 @@
       }
 
       .mobile-resource-cost {
-        margin: -6px 24px 18px;
+        margin: -4px 24px 14px;
         color: #697486;
         font-size: 13px;
         font-weight: 750;
@@ -800,7 +803,7 @@
 
       .mobile-segment-bar {
         height: 14px;
-        margin: 0 24px 22px;
+        margin: 0 24px 18px;
         overflow: hidden;
         border-radius: 4px;
         background:
@@ -816,6 +819,15 @@
           repeating-linear-gradient(
             90deg,
             rgba(255, 115, 183, 0.16) 0 6px,
+            transparent 6px 8px
+          );
+      }
+
+      .mobile-resource-card.is-empty .mobile-segment-bar {
+        background:
+          repeating-linear-gradient(
+            90deg,
+            rgba(148, 163, 184, 0.08) 0 6px,
             transparent 6px 8px
           );
       }
@@ -842,13 +854,13 @@
 
       .mobile-resource-detail {
         display: grid;
-        gap: 9px;
-        padding: 0 24px 26px;
+        gap: 8px;
+        padding: 0 24px 22px;
       }
 
       .mobile-detail-value {
         margin-top: 0;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 750;
         line-height: 1.2;
       }
@@ -1282,7 +1294,7 @@
         }
 
         .mobile-action {
-          min-height: 56px;
+          min-height: 52px;
           font-size: 15px;
         }
 
@@ -1304,7 +1316,7 @@
         .mobile-resource-head {
           grid-template-columns: minmax(0, 1fr) auto;
           gap: 14px;
-          padding: 26px 24px 12px;
+          padding: 22px 24px 10px;
         }
 
         .mobile-resource-icon {
@@ -1315,7 +1327,7 @@
         }
 
         .mobile-resource-title {
-          font-size: 20px;
+          font-size: 19px;
           line-height: 1.15;
         }
 
@@ -1325,13 +1337,13 @@
 
         .mobile-resource-usage {
           display: block;
-          font-size: clamp(21px, 5.1vw, 23px);
+          font-size: clamp(20px, 5vw, 22px);
           line-height: 1.1;
         }
 
         .mobile-resource-cost {
           display: block;
-          margin: -6px 24px 18px;
+          margin: -4px 24px 14px;
           color: #697486;
           font-size: 13px;
           line-height: 1.1;
@@ -1344,7 +1356,7 @@
 
         .mobile-segment-bar {
           height: 14px;
-          margin: 0 24px 22px;
+          margin: 0 24px 18px;
           border-radius: 4px;
           background:
             repeating-linear-gradient(
@@ -1359,6 +1371,15 @@
             repeating-linear-gradient(
               90deg,
               rgba(255, 115, 183, 0.16) 0 7px,
+              transparent 7px 10px
+            );
+        }
+
+        .mobile-resource-card.is-empty .mobile-segment-bar {
+          background:
+            repeating-linear-gradient(
+              90deg,
+              rgba(148, 163, 184, 0.08) 0 7px,
               transparent 7px 10px
             );
         }
@@ -1382,13 +1403,13 @@
         }
 
         .mobile-resource-detail {
-          gap: 9px;
-          padding: 0 24px 26px;
+          gap: 8px;
+          padding: 0 24px 22px;
         }
 
         .mobile-detail-value {
           margin-top: 0;
-          font-size: 18px;
+          font-size: 17px;
           line-height: 1.2;
         }
 
@@ -1874,7 +1895,7 @@
         </section>
 
         <section class="mobile-resource-panel" aria-label="资源总览">
-          <section class="mobile-resource-card energy">
+          <section id="mobileEnergyCard" class="mobile-resource-card energy">
             <div class="mobile-resource-head">
               <span class="mobile-resource-title">能量 <span class="mobile-resource-info" aria-hidden="true">i</span></span>
               <span class="mobile-resource-values">
@@ -1885,21 +1906,21 @@
             <div id="mobileEnergyCost" class="mobile-resource-cost is-placeholder">- TRX</div>
             <div class="mobile-resource-detail">
               <div>
-                <div class="mobile-detail-label">质押能量</div>
+                <div class="mobile-detail-label">质押</div>
                 <div id="mobileEnergyStaked" class="mobile-detail-value is-placeholder">-</div>
               </div>
               <div>
-                <div class="mobile-detail-label">借出能量</div>
+                <div class="mobile-detail-label">借出</div>
                 <div id="mobileEnergyLent" class="mobile-detail-value is-placeholder">-</div>
               </div>
               <div>
-                <div class="mobile-detail-label">借入能量</div>
+                <div class="mobile-detail-label">借入</div>
                 <div id="mobileEnergyBorrowed" class="mobile-detail-value is-placeholder">-</div>
               </div>
             </div>
           </section>
 
-          <section class="mobile-resource-card bandwidth">
+          <section id="mobileBandwidthCard" class="mobile-resource-card bandwidth">
             <div class="mobile-resource-head">
               <span class="mobile-resource-title">带宽 <span class="mobile-resource-info" aria-hidden="true">i</span></span>
               <span class="mobile-resource-values">
@@ -1910,15 +1931,15 @@
             <div id="mobileBandwidthCost" class="mobile-resource-cost is-placeholder">- TRX</div>
             <div class="mobile-resource-detail">
               <div>
-                <div class="mobile-detail-label">质押带宽</div>
+                <div class="mobile-detail-label">质押</div>
                 <div id="mobileBandwidthStaked" class="mobile-detail-value is-placeholder">-</div>
               </div>
               <div>
-                <div class="mobile-detail-label">借出带宽</div>
+                <div class="mobile-detail-label">借出</div>
                 <div id="mobileBandwidthLent" class="mobile-detail-value is-placeholder">-</div>
               </div>
               <div>
-                <div class="mobile-detail-label">借入带宽</div>
+                <div class="mobile-detail-label">借入</div>
                 <div id="mobileBandwidthBorrowed" class="mobile-detail-value is-placeholder">-</div>
               </div>
             </div>
@@ -2418,6 +2439,7 @@
         logList: $("logList"),
         mobileAvailableBalance: $("mobileAvailableBalance"),
         mobileBandwidthBorrowed: $("mobileBandwidthBorrowed"),
+        mobileBandwidthCard: $("mobileBandwidthCard"),
         mobileBandwidthCost: $("mobileBandwidthCost"),
         mobileBandwidthFill: $("mobileBandwidthFill"),
         mobileBandwidthLent: $("mobileBandwidthLent"),
@@ -2425,6 +2447,7 @@
         mobileBandwidthUsage: $("mobileBandwidthUsage"),
         mobileDelegateAction: $("mobileDelegateAction"),
         mobileEnergyBorrowed: $("mobileEnergyBorrowed"),
+        mobileEnergyCard: $("mobileEnergyCard"),
         mobileEnergyCost: $("mobileEnergyCost"),
         mobileEnergyFill: $("mobileEnergyFill"),
         mobileEnergyLent: $("mobileEnergyLent"),
@@ -2839,21 +2862,47 @@
         els.mobilePendingRedeem.textContent = formatSun(pendingRedeem);
         els.mobileRedeemableBalance.textContent = formatSun(redeemable);
 
-        els.mobileEnergyUsage.textContent =
-          `${formatUnits(input.energyAvailable)} / ${formatUnits(input.energyLimit)}`;
-        els.mobileEnergyCost.textContent = `质押 ${formatSun(energyStaked)} TRX`;
-        els.mobileEnergyFill.style.width = `${percent(input.energyAvailable, input.energyLimit)}%`;
-        els.mobileEnergyStaked.textContent = formatMobileShare(energyStaked);
-        els.mobileEnergyLent.textContent = formatMobileShare(energyLent);
-        els.mobileEnergyBorrowed.textContent = formatMobileShare(energyBorrowed);
+        const energyEmpty = toBigIntSafe(input.energyAvailable) <= 0n && toBigIntSafe(input.energyLimit) <= 0n;
+        const bandwidthEmpty =
+          toBigIntSafe(input.bandwidthAvailable) <= 0n && toBigIntSafe(input.bandwidthLimit) <= 0n;
 
-        els.mobileBandwidthUsage.textContent =
-          `${formatUnits(input.bandwidthAvailable)} / ${formatUnits(input.bandwidthLimit)}`;
-        els.mobileBandwidthCost.textContent = `质押 ${formatSun(bandwidthStaked)} TRX`;
+        els.mobileEnergyCard.classList.toggle("is-empty", energyEmpty);
+        setMobileText(
+          els.mobileEnergyUsage,
+          `${formatUnits(input.energyAvailable)} / ${formatUnits(input.energyLimit)}`,
+          energyEmpty,
+        );
+        setMobileText(els.mobileEnergyCost, `质押 ${formatSun(energyStaked)} TRX`, energyStaked <= 0n);
+        els.mobileEnergyFill.style.width = `${percent(input.energyAvailable, input.energyLimit)}%`;
+        setMobileShare(els.mobileEnergyStaked, energyStaked);
+        setMobileShare(els.mobileEnergyLent, energyLent);
+        setMobileShare(els.mobileEnergyBorrowed, energyBorrowed);
+
+        els.mobileBandwidthCard.classList.toggle("is-empty", bandwidthEmpty);
+        setMobileText(
+          els.mobileBandwidthUsage,
+          `${formatUnits(input.bandwidthAvailable)} / ${formatUnits(input.bandwidthLimit)}`,
+          bandwidthEmpty,
+        );
+        setMobileText(
+          els.mobileBandwidthCost,
+          `质押 ${formatSun(bandwidthStaked)} TRX`,
+          bandwidthStaked <= 0n,
+        );
         els.mobileBandwidthFill.style.width = `${percent(input.bandwidthAvailable, input.bandwidthLimit)}%`;
-        els.mobileBandwidthStaked.textContent = formatMobileShare(bandwidthStaked);
-        els.mobileBandwidthLent.textContent = formatMobileShare(bandwidthLent);
-        els.mobileBandwidthBorrowed.textContent = formatMobileShare(bandwidthBorrowed);
+        setMobileShare(els.mobileBandwidthStaked, bandwidthStaked);
+        setMobileShare(els.mobileBandwidthLent, bandwidthLent);
+        setMobileShare(els.mobileBandwidthBorrowed, bandwidthBorrowed);
+      }
+
+      function setMobileText(el, text, isEmpty = false) {
+        el.textContent = text;
+        el.classList.toggle("is-empty", Boolean(isEmpty));
+      }
+
+      function setMobileShare(el, value) {
+        const amount = toBigIntSafe(value);
+        setMobileText(el, amount > 0n ? formatSun(amount) : "-", amount <= 0n);
       }
 
       function clearMobilePlaceholders() {
@@ -3075,11 +3124,6 @@
         return rows
           .filter((row) => row.resource === resource)
           .reduce((sum, row) => sum + toBigIntSafe(row.amountSun), 0n);
-      }
-
-      function formatMobileShare(value) {
-        const amount = toBigIntSafe(value);
-        return amount > 0n ? formatSun(amount) : "-";
       }
 
       function updateEstimates() {
