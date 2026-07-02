@@ -541,12 +541,12 @@
         box-shadow: 0 12px 28px rgba(20, 32, 45, 0.06);
       }
 
-      .mobile-wallet-card {
-        grid-area: wallet;
-        background: var(--tron);
-        color: #fff;
-        padding: 22px 28px 56px;
-      }
+        .mobile-wallet-card {
+          grid-area: wallet;
+          background: #f00818;
+          color: #fff;
+          padding: 22px 28px 56px;
+        }
 
       .mobile-wallet-top {
         display: flex;
@@ -1020,12 +1020,13 @@
 
       @media (max-width: 720px) {
         body {
-          padding-bottom: calc(78px + env(safe-area-inset-bottom));
+          padding-bottom: calc(118px + env(safe-area-inset-bottom));
+          background: #f2f4f7;
         }
 
         .shell {
           width: 100%;
-          padding: 12px 10px 18px;
+          padding: 12px 10px 26px;
         }
 
         .topbar {
@@ -1081,8 +1082,196 @@
             "bandwidth"
             "rent"
             "guide";
-          gap: 14px;
+          gap: 12px;
           margin-bottom: 14px;
+        }
+
+        .mobile-wallet-card,
+        .mobile-balance-sheet,
+        .mobile-resource-card,
+        .mobile-list-button {
+          border-radius: 17px;
+          box-shadow: none;
+        }
+
+        .mobile-wallet-card {
+          min-height: 134px;
+          padding: 28px 24px 54px;
+        }
+
+        .mobile-wallet-top {
+          gap: 12px;
+        }
+
+        .mobile-wallet-name {
+          font-size: 22px;
+          line-height: 1.1;
+          white-space: nowrap;
+        }
+
+        .mobile-wallet-address,
+        .mobile-wallet-fiat {
+          margin-top: 8px;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .mobile-wallet-balance {
+          max-width: 46vw;
+          overflow: hidden;
+          font-size: clamp(18px, 6vw, 25px);
+          line-height: 1.12;
+          text-overflow: ellipsis;
+        }
+
+        .mobile-balance-sheet {
+          margin-top: -36px;
+        }
+
+        .mobile-balance-grid {
+          padding: 24px 24px 10px;
+        }
+
+        .mobile-balance-item {
+          padding-bottom: 16px;
+        }
+
+        .mobile-balance-label,
+        .mobile-detail-label {
+          color: #8792a3;
+          font-size: 14px;
+          line-height: 1.2;
+        }
+
+        .mobile-balance-value {
+          margin-top: 9px;
+          font-size: 22px;
+          line-height: 1.15;
+        }
+
+        .mobile-action {
+          min-height: 58px;
+          gap: 5px;
+          font-size: 13px;
+        }
+
+        .mobile-action-icon {
+          width: 28px;
+          height: 24px;
+          font-size: 21px;
+        }
+
+        .mobile-resource-card {
+          background: #fff;
+        }
+
+        .mobile-resource-head {
+          grid-template-columns: auto 1fr auto;
+          gap: 14px;
+          padding: 28px 24px 12px;
+        }
+
+        .mobile-resource-icon {
+          width: 30px;
+          height: 30px;
+          border-radius: 10px;
+          font-size: 15px;
+        }
+
+        .mobile-resource-title {
+          font-size: 22px;
+          line-height: 1.1;
+        }
+
+        .mobile-resource-values {
+          min-width: 112px;
+        }
+
+        .mobile-resource-usage {
+          display: block;
+          font-size: 25px;
+          line-height: 1.1;
+        }
+
+        .mobile-resource-cost {
+          display: block;
+          margin-top: 8px;
+          color: #697486;
+          font-size: 14px;
+          line-height: 1.1;
+        }
+
+        .mobile-segment-bar {
+          height: 14px;
+          margin: 0 24px 24px 66px;
+          border-radius: 4px;
+          background:
+            repeating-linear-gradient(
+              90deg,
+              rgba(124, 124, 255, 0.12) 0 7px,
+              transparent 7px 10px
+            );
+        }
+
+        .mobile-resource-card.energy .mobile-segment-bar {
+          background:
+            repeating-linear-gradient(
+              90deg,
+              rgba(255, 115, 183, 0.16) 0 7px,
+              transparent 7px 10px
+            );
+        }
+
+        .mobile-segment-fill {
+          background:
+            repeating-linear-gradient(
+              90deg,
+              #7474ff 0 7px,
+              transparent 7px 10px
+            );
+        }
+
+        .mobile-resource-card.energy .mobile-segment-fill {
+          background:
+            repeating-linear-gradient(
+              90deg,
+              #de4fec 0 7px,
+              transparent 7px 10px
+            );
+        }
+
+        .mobile-resource-detail {
+          gap: 0;
+          padding: 18px 24px 14px;
+        }
+
+        .mobile-detail-value {
+          margin-top: 8px;
+          font-size: 23px;
+          line-height: 1.1;
+        }
+
+        .mobile-list-button {
+          min-height: 84px;
+          padding: 0 24px;
+        }
+
+        .mobile-list-left {
+          gap: 16px;
+          font-size: 20px;
+        }
+
+        .mobile-list-icon {
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          background: #f5f7fb;
+          font-size: 14px;
+        }
+
+        .mobile-chevron {
+          font-size: 34px;
+          font-weight: 300;
         }
 
         .status {
@@ -1459,16 +1648,37 @@
           z-index: 30;
           display: grid;
           grid-template-columns: 1fr 1.5fr;
-          gap: 8px;
-          padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-          border-top: 1px solid var(--line);
-          background: rgba(255, 255, 255, 0.96);
+          gap: 10px;
+          padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
+          border-top: 1px solid #dce4ee;
+          background: rgba(255, 255, 255, 0.97);
           backdrop-filter: blur(14px);
-          box-shadow: 0 -12px 32px rgba(20, 32, 45, 0.12);
+          box-shadow: 0 -8px 24px rgba(20, 32, 45, 0.08);
         }
 
         .mobile-quickbar button {
-          min-height: 48px;
+          min-height: 58px;
+          border-radius: 17px;
+          font-size: 18px;
+          font-weight: 850;
+        }
+
+        .mobile-quickbar button.primary.is-connected {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          border-color: #d5dee9;
+          background: #fff;
+          color: #111821;
+        }
+
+        .mobile-quickbar button.primary.is-connected::before {
+          content: "";
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          background: #17b26a;
         }
       }
     </style>
@@ -2141,6 +2351,13 @@
         els.actionPill.className = `status-pill ${tone}`;
       }
 
+      function setConnectedAddress(address) {
+        const label = shortAddress(address);
+        els.connectBtn.textContent = label;
+        els.mobileConnectBtn.textContent = label;
+        els.mobileConnectBtn.classList.add("is-connected");
+      }
+
       function addLog(title, body, kind = "info") {
         const item = document.createElement("div");
         item.className = "log-item";
@@ -2190,8 +2407,7 @@
           state.address = address;
           els.walletStatus.textContent = "已连接";
           els.addressStatus.textContent = address;
-          els.connectBtn.textContent = shortAddress(address);
-          els.mobileConnectBtn.textContent = shortAddress(address);
+          setConnectedAddress(address);
           addLog("Wallet connected", address);
           await refreshAll();
           setAction("Ready", "ok");
@@ -2938,8 +3154,7 @@
             state.address = getTronWeb()?.defaultAddress?.base58 || null;
             if (state.address) {
               els.addressStatus.textContent = state.address;
-              els.connectBtn.textContent = shortAddress(state.address);
-              els.mobileConnectBtn.textContent = shortAddress(state.address);
+              setConnectedAddress(state.address);
               refreshAll();
             }
           });
@@ -3156,8 +3371,7 @@
           if (address) {
             state.address = address;
             els.addressStatus.textContent = address;
-            els.connectBtn.textContent = shortAddress(address);
-            els.mobileConnectBtn.textContent = shortAddress(address);
+            setConnectedAddress(address);
             refreshAll();
           }
         }
