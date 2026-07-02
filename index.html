@@ -574,6 +574,11 @@
         white-space: nowrap;
       }
 
+      .mobile-wallet-balance.is-placeholder {
+        color: rgba(255, 255, 255, 0.76);
+        font-weight: 750;
+      }
+
       .mobile-balance-sheet {
         grid-area: balance;
         overflow: hidden;
@@ -624,6 +629,14 @@
         white-space: nowrap;
       }
 
+      .mobile-balance-value.is-placeholder,
+      .mobile-detail-value.is-placeholder,
+      .mobile-resource-usage.is-placeholder,
+      .mobile-resource-cost.is-placeholder {
+        color: #a1acba;
+        font-weight: 650;
+      }
+
       .mobile-action-strip {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -633,14 +646,14 @@
       .mobile-action {
         display: grid;
         place-items: center;
-        gap: 6px;
+        gap: 5px;
         min-height: 72px;
         border: 0;
         border-radius: 0;
         background: #fff;
         color: #141b22;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 13px;
+        font-weight: 800;
         padding: 8px 4px;
       }
 
@@ -654,7 +667,8 @@
         width: 24px;
         height: 24px;
         color: #111827;
-        font-size: 18px;
+        font-size: 17px;
+        font-weight: 750;
         line-height: 1;
       }
 
@@ -718,7 +732,7 @@
         display: block;
         overflow: hidden;
         font-size: 18px;
-        font-weight: 800;
+        font-weight: 850;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
@@ -732,9 +746,9 @@
       .mobile-resource-caption {
         display: block;
         margin-bottom: 3px;
-        color: #8792a3;
+        color: #8b95a5;
         font-size: 11px;
-        font-weight: 750;
+        font-weight: 650;
       }
 
       .mobile-segment-bar {
@@ -1218,14 +1232,14 @@
 
         .mobile-action {
           min-height: 58px;
-          gap: 5px;
-          font-size: 13px;
+          gap: 4px;
+          font-size: 14px;
         }
 
         .mobile-action-icon {
-          width: 28px;
-          height: 24px;
-          font-size: 21px;
+          width: 24px;
+          height: 22px;
+          font-size: 18px;
         }
 
         .mobile-resource-card {
@@ -1246,7 +1260,7 @@
         }
 
         .mobile-resource-title {
-          font-size: 20px;
+          font-size: 19px;
           line-height: 1.1;
         }
 
@@ -1256,7 +1270,7 @@
 
         .mobile-resource-usage {
           display: block;
-          font-size: clamp(18px, 4.8vw, 22px);
+          font-size: clamp(19px, 4.6vw, 21px);
           line-height: 1.1;
         }
 
@@ -1779,8 +1793,8 @@
               <div id="mobileWalletAddress" class="mobile-wallet-address">连接钱包查看地址</div>
             </div>
             <div>
-              <div id="mobileWalletBalance" class="mobile-wallet-balance">- TRX</div>
-              <div id="mobileWalletFiat" class="mobile-wallet-fiat">主网资产</div>
+              <div id="mobileWalletBalance" class="mobile-wallet-balance is-placeholder">- TRX</div>
+              <div id="mobileWalletFiat" class="mobile-wallet-fiat">TRX 余额</div>
             </div>
           </div>
         </section>
@@ -1789,19 +1803,19 @@
           <div class="mobile-balance-grid">
             <div class="mobile-balance-item">
               <div class="mobile-balance-label">可用余额</div>
-              <div id="mobileAvailableBalance" class="mobile-balance-value">-</div>
+              <div id="mobileAvailableBalance" class="mobile-balance-value is-placeholder">-</div>
             </div>
             <div class="mobile-balance-item">
               <div class="mobile-balance-label">质押中</div>
-              <div id="mobileStakedBalance" class="mobile-balance-value">-</div>
+              <div id="mobileStakedBalance" class="mobile-balance-value is-placeholder">-</div>
             </div>
             <div class="mobile-balance-item">
               <div class="mobile-balance-label">等待赎回</div>
-              <div id="mobilePendingRedeem" class="mobile-balance-value">-</div>
+              <div id="mobilePendingRedeem" class="mobile-balance-value is-placeholder">-</div>
             </div>
             <div class="mobile-balance-item">
-              <div class="mobile-balance-label">赎回</div>
-              <div id="mobileRedeemableBalance" class="mobile-balance-value">-</div>
+              <div class="mobile-balance-label">可提现</div>
+              <div id="mobileRedeemableBalance" class="mobile-balance-value is-placeholder">-</div>
             </div>
           </div>
           <div class="mobile-action-strip">
@@ -1830,23 +1844,23 @@
             <span class="mobile-resource-title">能量</span>
             <span class="mobile-resource-values">
               <span class="mobile-resource-caption">可用 / 总量</span>
-              <span id="mobileEnergyUsage" class="mobile-resource-usage">- / -</span>
-              <span id="mobileEnergyCost" class="mobile-resource-cost">- TRX</span>
+              <span id="mobileEnergyUsage" class="mobile-resource-usage is-placeholder">- / -</span>
+              <span id="mobileEnergyCost" class="mobile-resource-cost is-placeholder">- TRX</span>
             </span>
           </div>
           <div class="mobile-segment-bar"><div id="mobileEnergyFill" class="mobile-segment-fill"></div></div>
           <div class="mobile-resource-detail">
             <div>
               <div class="mobile-detail-label">质押</div>
-              <div id="mobileEnergyStaked" class="mobile-detail-value">-</div>
+              <div id="mobileEnergyStaked" class="mobile-detail-value is-placeholder">-</div>
             </div>
             <div>
               <div class="mobile-detail-label">借出</div>
-              <div id="mobileEnergyLent" class="mobile-detail-value">-</div>
+              <div id="mobileEnergyLent" class="mobile-detail-value is-placeholder">-</div>
             </div>
             <div>
               <div class="mobile-detail-label">借入</div>
-              <div id="mobileEnergyBorrowed" class="mobile-detail-value">-</div>
+              <div id="mobileEnergyBorrowed" class="mobile-detail-value is-placeholder">-</div>
             </div>
           </div>
         </section>
@@ -1857,23 +1871,23 @@
             <span class="mobile-resource-title">带宽</span>
             <span class="mobile-resource-values">
               <span class="mobile-resource-caption">可用 / 总量</span>
-              <span id="mobileBandwidthUsage" class="mobile-resource-usage">- / -</span>
-              <span id="mobileBandwidthCost" class="mobile-resource-cost">- TRX</span>
+              <span id="mobileBandwidthUsage" class="mobile-resource-usage is-placeholder">- / -</span>
+              <span id="mobileBandwidthCost" class="mobile-resource-cost is-placeholder">- TRX</span>
             </span>
           </div>
           <div class="mobile-segment-bar"><div id="mobileBandwidthFill" class="mobile-segment-fill"></div></div>
           <div class="mobile-resource-detail">
             <div>
               <div class="mobile-detail-label">质押</div>
-              <div id="mobileBandwidthStaked" class="mobile-detail-value">-</div>
+              <div id="mobileBandwidthStaked" class="mobile-detail-value is-placeholder">-</div>
             </div>
             <div>
               <div class="mobile-detail-label">借出</div>
-              <div id="mobileBandwidthLent" class="mobile-detail-value">-</div>
+              <div id="mobileBandwidthLent" class="mobile-detail-value is-placeholder">-</div>
             </div>
             <div>
               <div class="mobile-detail-label">借入</div>
-              <div id="mobileBandwidthBorrowed" class="mobile-detail-value">-</div>
+              <div id="mobileBandwidthBorrowed" class="mobile-detail-value is-placeholder">-</div>
             </div>
           </div>
         </section>
@@ -2747,6 +2761,7 @@
       }
 
       function renderMobileStakingOverview(input) {
+        clearMobilePlaceholders();
         const energyStaked = getFrozenSunByResource(input.account, "ENERGY");
         const bandwidthStaked = getFrozenSunByResource(input.account, "BANDWIDTH");
         const totalStaked = energyStaked + bandwidthStaked;
@@ -2760,7 +2775,7 @@
 
         els.mobileWalletAddress.textContent = state.address ? shortAddress(state.address) : "连接钱包查看地址";
         els.mobileWalletBalance.textContent = `${formatSun(walletTotal)} TRX`;
-        els.mobileWalletFiat.textContent = "TRON 主网资源";
+        els.mobileWalletFiat.textContent = "TRX 余额";
         els.mobileAvailableBalance.textContent = formatSun(input.balance);
         els.mobileStakedBalance.textContent = formatSun(totalStaked);
         els.mobilePendingRedeem.textContent = formatSun(pendingRedeem);
@@ -2781,6 +2796,26 @@
         els.mobileBandwidthStaked.textContent = formatMobileShare(bandwidthStaked);
         els.mobileBandwidthLent.textContent = formatMobileShare(bandwidthLent);
         els.mobileBandwidthBorrowed.textContent = formatMobileShare(bandwidthBorrowed);
+      }
+
+      function clearMobilePlaceholders() {
+        [
+          els.mobileWalletBalance,
+          els.mobileAvailableBalance,
+          els.mobileStakedBalance,
+          els.mobilePendingRedeem,
+          els.mobileRedeemableBalance,
+          els.mobileEnergyUsage,
+          els.mobileEnergyCost,
+          els.mobileEnergyStaked,
+          els.mobileEnergyLent,
+          els.mobileEnergyBorrowed,
+          els.mobileBandwidthUsage,
+          els.mobileBandwidthCost,
+          els.mobileBandwidthStaked,
+          els.mobileBandwidthLent,
+          els.mobileBandwidthBorrowed,
+        ].forEach((el) => el?.classList.remove("is-placeholder"));
       }
 
       function renderChainParams() {
