@@ -521,8 +521,8 @@
         display: grid;
         grid-template-columns: minmax(330px, 0.9fr) minmax(0, 1fr) minmax(0, 1fr);
         grid-template-areas:
-          "wallet energy bandwidth"
-          "balance energy bandwidth";
+          "wallet resources resources"
+          "balance resources resources";
         gap: 14px;
         align-items: stretch;
         margin-bottom: 14px;
@@ -530,6 +530,7 @@
 
       .mobile-wallet-card,
       .mobile-balance-sheet,
+      .mobile-resource-panel,
       .mobile-resource-card {
         border-radius: 8px;
         box-shadow: 0 12px 28px rgba(20, 32, 45, 0.06);
@@ -543,16 +544,18 @@
       }
 
       .mobile-wallet-top {
-        display: flex;
-        justify-content: space-between;
-        gap: 16px;
+        display: grid;
+        justify-content: start;
+        gap: 8px;
       }
 
       .mobile-wallet-top > div {
+        display: contents;
         min-width: 0;
       }
 
       .mobile-wallet-name {
+        display: none;
         overflow: hidden;
         font-size: 22px;
         font-weight: 800;
@@ -562,21 +565,44 @@
 
       .mobile-wallet-address,
       .mobile-wallet-fiat {
-        margin-top: 6px;
+        margin-top: 0;
         color: rgba(255, 255, 255, 0.72);
-        font-size: 13px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      .mobile-wallet-address {
+        width: fit-content;
+        min-height: 0;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        text-align: left;
+      }
+
+      .mobile-wallet-address:hover:not(:disabled) {
+        border-color: transparent;
+        background: transparent;
       }
 
       .mobile-wallet-balance {
-        text-align: right;
-        font-size: 20px;
-        font-weight: 850;
+        overflow: hidden;
+        text-align: left;
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.1;
+        text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      .mobile-wallet-fiat {
+        display: none;
       }
 
       .mobile-wallet-balance.is-placeholder {
         color: rgba(255, 255, 255, 0.76);
-        font-weight: 750;
+        font-weight: 700;
       }
 
       .mobile-balance-sheet {
@@ -641,24 +667,21 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         border-top: 1px solid #edf1f5;
+        padding: 18px 16px 20px;
+        gap: 12px;
       }
 
       .mobile-action {
         display: grid;
         place-items: center;
-        gap: 5px;
-        min-height: 72px;
-        border: 0;
-        border-radius: 0;
+        min-height: 56px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
         background: #fff;
         color: #141b22;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 800;
         padding: 8px 4px;
-      }
-
-      .mobile-action + .mobile-action {
-        border-left: 1px solid #edf1f5;
       }
 
       .mobile-action-icon {
@@ -672,26 +695,30 @@
         line-height: 1;
       }
 
-      .mobile-resource-card {
-        min-width: 0;
+      .mobile-resource-panel {
+        grid-area: resources;
         overflow: hidden;
         background: #fff;
       }
 
-      .mobile-resource-card.energy {
-        grid-area: energy;
+      .mobile-resource-card {
+        min-width: 0;
+        overflow: hidden;
+        background: #fff;
+        border-radius: 0;
+        box-shadow: none;
       }
 
-      .mobile-resource-card.bandwidth {
-        grid-area: bandwidth;
+      .mobile-resource-card + .mobile-resource-card {
+        border-top: 1px solid #edf1f5;
       }
 
       .mobile-resource-head {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: minmax(0, 1fr) auto;
         gap: 12px;
         align-items: center;
-        padding: 22px 24px 14px;
+        padding: 26px 24px 14px;
       }
 
       .mobile-resource-icon {
@@ -714,12 +741,29 @@
       }
 
       .mobile-resource-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
         min-width: 0;
         overflow: hidden;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 800;
+        line-height: 1.15;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      .mobile-resource-info {
+        display: inline-grid;
+        place-items: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #506176;
+        color: #fff;
+        font-size: 9px;
+        font-weight: 900;
+        line-height: 1;
       }
 
       .mobile-resource-values {
@@ -731,16 +775,19 @@
       .mobile-resource-usage {
         display: block;
         overflow: hidden;
-        font-size: 18px;
-        font-weight: 850;
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.1;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
       .mobile-resource-cost {
-        margin-top: 4px;
-        color: #506176;
-        font-size: 12px;
+        margin: -6px 24px 18px;
+        color: #697486;
+        font-size: 13px;
+        font-weight: 750;
+        text-align: right;
       }
 
       .mobile-resource-caption {
@@ -752,10 +799,10 @@
       }
 
       .mobile-segment-bar {
-        height: 12px;
-        margin: 0 24px 18px 66px;
+        height: 14px;
+        margin: 0 24px 22px;
         overflow: hidden;
-        border-radius: 2px;
+        border-radius: 4px;
         background:
           repeating-linear-gradient(
             90deg,
@@ -795,16 +842,21 @@
 
       .mobile-resource-detail {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-        border-top: 1px solid #edf1f5;
-        padding: 16px 24px 18px;
+        gap: 9px;
+        padding: 0 24px 26px;
       }
 
       .mobile-detail-value {
-        margin-top: 8px;
+        margin-top: 0;
         font-size: 18px;
         font-weight: 750;
+        line-height: 1.2;
+      }
+
+      .mobile-resource-detail > div {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
       }
 
       .desktop-status {
@@ -1086,7 +1138,7 @@
           grid-template-areas:
             "wallet wallet"
             "balance balance"
-            "energy bandwidth";
+            "resources resources";
         }
       }
 
@@ -1155,14 +1207,14 @@
           grid-template-areas:
             "wallet"
             "balance"
-            "energy"
-            "bandwidth";
+            "resources";
           gap: 12px;
           margin-bottom: 14px;
         }
 
         .mobile-wallet-card,
         .mobile-balance-sheet,
+        .mobile-resource-panel,
         .mobile-resource-card {
           border-radius: 17px;
           box-shadow: none;
@@ -1171,7 +1223,6 @@
         .mobile-wallet-card {
           min-height: 134px;
           padding: 28px 24px 54px;
-          cursor: pointer;
           -webkit-tap-highlight-color: transparent;
         }
 
@@ -1181,7 +1232,7 @@
         }
 
         .mobile-wallet-top {
-          gap: 12px;
+          gap: 10px;
         }
 
         .mobile-wallet-name {
@@ -1192,15 +1243,15 @@
 
         .mobile-wallet-address,
         .mobile-wallet-fiat {
-          margin-top: 8px;
-          font-size: 14px;
+          margin-top: 0;
+          font-size: 15px;
           line-height: 1.2;
         }
 
         .mobile-wallet-balance {
-          max-width: 46vw;
+          max-width: 100%;
           overflow: hidden;
-          font-size: clamp(17px, 5vw, 22px);
+          font-size: clamp(25px, 6.8vw, 30px);
           line-height: 1.12;
           text-overflow: ellipsis;
         }
@@ -1231,9 +1282,8 @@
         }
 
         .mobile-action {
-          min-height: 58px;
-          gap: 4px;
-          font-size: 14px;
+          min-height: 56px;
+          font-size: 15px;
         }
 
         .mobile-action-icon {
@@ -1242,14 +1292,19 @@
           font-size: 18px;
         }
 
+        .mobile-resource-panel,
         .mobile-resource-card {
           background: #fff;
         }
 
+        .mobile-resource-card {
+          border-radius: 0;
+        }
+
         .mobile-resource-head {
-          grid-template-columns: auto 1fr auto;
+          grid-template-columns: minmax(0, 1fr) auto;
           gap: 14px;
-          padding: 28px 24px 12px;
+          padding: 26px 24px 12px;
         }
 
         .mobile-resource-icon {
@@ -1260,8 +1315,8 @@
         }
 
         .mobile-resource-title {
-          font-size: 19px;
-          line-height: 1.1;
+          font-size: 20px;
+          line-height: 1.15;
         }
 
         .mobile-resource-values {
@@ -1270,13 +1325,13 @@
 
         .mobile-resource-usage {
           display: block;
-          font-size: clamp(19px, 4.6vw, 21px);
+          font-size: clamp(21px, 5.1vw, 23px);
           line-height: 1.1;
         }
 
         .mobile-resource-cost {
           display: block;
-          margin-top: 8px;
+          margin: -6px 24px 18px;
           color: #697486;
           font-size: 13px;
           line-height: 1.1;
@@ -1289,7 +1344,7 @@
 
         .mobile-segment-bar {
           height: 14px;
-          margin: 0 24px 24px 66px;
+          margin: 0 24px 22px;
           border-radius: 4px;
           background:
             repeating-linear-gradient(
@@ -1327,14 +1382,14 @@
         }
 
         .mobile-resource-detail {
-          gap: 0;
-          padding: 18px 24px 14px;
+          gap: 9px;
+          padding: 0 24px 26px;
         }
 
         .mobile-detail-value {
-          margin-top: 8px;
-          font-size: 23px;
-          line-height: 1.1;
+          margin-top: 0;
+          font-size: 18px;
+          line-height: 1.2;
         }
 
         .status {
@@ -1783,17 +1838,15 @@
         <section
           id="mobileWalletCard"
           class="mobile-wallet-card"
-          role="button"
-          tabindex="0"
-          aria-label="连接钱包或查看钱包状态"
+          aria-label="TRON 钱包信息"
         >
           <div class="mobile-wallet-top">
             <div>
               <div class="mobile-wallet-name">TRON Wallet</div>
-              <div id="mobileWalletAddress" class="mobile-wallet-address">连接钱包查看地址</div>
+              <button id="mobileWalletAddress" type="button" class="mobile-wallet-address">连接钱包</button>
             </div>
             <div>
-              <div id="mobileWalletBalance" class="mobile-wallet-balance is-placeholder">- TRX</div>
+              <div id="mobileWalletBalance" class="mobile-wallet-balance is-placeholder" hidden>- TRX</div>
               <div id="mobileWalletFiat" class="mobile-wallet-fiat">TRX 余额</div>
             </div>
           </div>
@@ -1818,77 +1871,72 @@
               <div id="mobileRedeemableBalance" class="mobile-balance-value is-placeholder">-</div>
             </div>
           </div>
+        </section>
+
+        <section class="mobile-resource-panel" aria-label="资源总览">
+          <section class="mobile-resource-card energy">
+            <div class="mobile-resource-head">
+              <span class="mobile-resource-title">能量 <span class="mobile-resource-info" aria-hidden="true">i</span></span>
+              <span class="mobile-resource-values">
+                <span id="mobileEnergyUsage" class="mobile-resource-usage is-placeholder">- / -</span>
+              </span>
+            </div>
+            <div class="mobile-segment-bar"><div id="mobileEnergyFill" class="mobile-segment-fill"></div></div>
+            <div id="mobileEnergyCost" class="mobile-resource-cost is-placeholder">- TRX</div>
+            <div class="mobile-resource-detail">
+              <div>
+                <div class="mobile-detail-label">质押能量</div>
+                <div id="mobileEnergyStaked" class="mobile-detail-value is-placeholder">-</div>
+              </div>
+              <div>
+                <div class="mobile-detail-label">借出能量</div>
+                <div id="mobileEnergyLent" class="mobile-detail-value is-placeholder">-</div>
+              </div>
+              <div>
+                <div class="mobile-detail-label">借入能量</div>
+                <div id="mobileEnergyBorrowed" class="mobile-detail-value is-placeholder">-</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mobile-resource-card bandwidth">
+            <div class="mobile-resource-head">
+              <span class="mobile-resource-title">带宽 <span class="mobile-resource-info" aria-hidden="true">i</span></span>
+              <span class="mobile-resource-values">
+                <span id="mobileBandwidthUsage" class="mobile-resource-usage is-placeholder">- / -</span>
+              </span>
+            </div>
+            <div class="mobile-segment-bar"><div id="mobileBandwidthFill" class="mobile-segment-fill"></div></div>
+            <div id="mobileBandwidthCost" class="mobile-resource-cost is-placeholder">- TRX</div>
+            <div class="mobile-resource-detail">
+              <div>
+                <div class="mobile-detail-label">质押带宽</div>
+                <div id="mobileBandwidthStaked" class="mobile-detail-value is-placeholder">-</div>
+              </div>
+              <div>
+                <div class="mobile-detail-label">借出带宽</div>
+                <div id="mobileBandwidthLent" class="mobile-detail-value is-placeholder">-</div>
+              </div>
+              <div>
+                <div class="mobile-detail-label">借入带宽</div>
+                <div id="mobileBandwidthBorrowed" class="mobile-detail-value is-placeholder">-</div>
+              </div>
+            </div>
+          </section>
+
           <div class="mobile-action-strip">
             <button id="mobileStakeAction" type="button" class="mobile-action">
-              <span class="mobile-action-icon">+</span>
               <span>质押</span>
             </button>
             <button id="mobileRedeemAction" type="button" class="mobile-action">
-              <span class="mobile-action-icon">-</span>
               <span>赎回</span>
             </button>
             <button id="mobileDelegateAction" type="button" class="mobile-action">
-              <span class="mobile-action-icon">→</span>
               <span>借出</span>
             </button>
             <button id="mobileReclaimAction" type="button" class="mobile-action">
-              <span class="mobile-action-icon">←</span>
               <span>取回</span>
             </button>
-          </div>
-        </section>
-
-        <section class="mobile-resource-card energy">
-          <div class="mobile-resource-head">
-            <span class="mobile-resource-icon energy">E</span>
-            <span class="mobile-resource-title">能量</span>
-            <span class="mobile-resource-values">
-              <span class="mobile-resource-caption">可用 / 总量</span>
-              <span id="mobileEnergyUsage" class="mobile-resource-usage is-placeholder">- / -</span>
-              <span id="mobileEnergyCost" class="mobile-resource-cost is-placeholder">- TRX</span>
-            </span>
-          </div>
-          <div class="mobile-segment-bar"><div id="mobileEnergyFill" class="mobile-segment-fill"></div></div>
-          <div class="mobile-resource-detail">
-            <div>
-              <div class="mobile-detail-label">质押</div>
-              <div id="mobileEnergyStaked" class="mobile-detail-value is-placeholder">-</div>
-            </div>
-            <div>
-              <div class="mobile-detail-label">借出</div>
-              <div id="mobileEnergyLent" class="mobile-detail-value is-placeholder">-</div>
-            </div>
-            <div>
-              <div class="mobile-detail-label">借入</div>
-              <div id="mobileEnergyBorrowed" class="mobile-detail-value is-placeholder">-</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="mobile-resource-card bandwidth">
-          <div class="mobile-resource-head">
-            <span class="mobile-resource-icon bandwidth">B</span>
-            <span class="mobile-resource-title">带宽</span>
-            <span class="mobile-resource-values">
-              <span class="mobile-resource-caption">可用 / 总量</span>
-              <span id="mobileBandwidthUsage" class="mobile-resource-usage is-placeholder">- / -</span>
-              <span id="mobileBandwidthCost" class="mobile-resource-cost is-placeholder">- TRX</span>
-            </span>
-          </div>
-          <div class="mobile-segment-bar"><div id="mobileBandwidthFill" class="mobile-segment-fill"></div></div>
-          <div class="mobile-resource-detail">
-            <div>
-              <div class="mobile-detail-label">质押</div>
-              <div id="mobileBandwidthStaked" class="mobile-detail-value is-placeholder">-</div>
-            </div>
-            <div>
-              <div class="mobile-detail-label">借出</div>
-              <div id="mobileBandwidthLent" class="mobile-detail-value is-placeholder">-</div>
-            </div>
-            <div>
-              <div class="mobile-detail-label">借入</div>
-              <div id="mobileBandwidthBorrowed" class="mobile-detail-value is-placeholder">-</div>
-            </div>
           </div>
         </section>
 
@@ -2133,7 +2181,9 @@
                   </label>
                   <label>
                     取回方地址
-                    <input id="reclaimReceiver" autocomplete="off" placeholder="T..." />
+                    <select id="reclaimReceiver">
+                      <option value="">连接钱包后选择借出地址</option>
+                    </select>
                   </label>
                   <label>
                     数量
@@ -2444,6 +2494,8 @@
       function setConnectedAddress(address) {
         const label = shortAddress(address);
         els.connectBtn.textContent = label;
+        els.mobileWalletAddress.textContent = label;
+        els.mobileWalletAddress.setAttribute("aria-label", `钱包地址 ${address}`);
       }
 
       function transactionButtons() {
@@ -2751,6 +2803,7 @@
         renderDelegationTable("out");
         renderDelegationTable("in");
         renderUnfreezeTable();
+        renderReclaimReceiverOptions();
         updateEstimates();
         updateFeeCalc();
 
@@ -2773,8 +2826,13 @@
         const energyBorrowed = sumDelegationSun(state.delegationsIn, "ENERGY");
         const bandwidthBorrowed = sumDelegationSun(state.delegationsIn, "BANDWIDTH");
 
-        els.mobileWalletAddress.textContent = state.address ? shortAddress(state.address) : "连接钱包查看地址";
+        els.mobileWalletAddress.textContent = state.address ? shortAddress(state.address) : "连接钱包";
+        els.mobileWalletAddress.setAttribute(
+          "aria-label",
+          state.address ? `钱包地址 ${state.address}` : "连接钱包",
+        );
         els.mobileWalletBalance.textContent = `${formatSun(walletTotal)} TRX`;
+        els.mobileWalletBalance.hidden = false;
         els.mobileWalletFiat.textContent = "TRX 余额";
         els.mobileAvailableBalance.textContent = formatSun(input.balance);
         els.mobileStakedBalance.textContent = formatSun(totalStaked);
@@ -2876,6 +2934,7 @@
             button.addEventListener("click", () => {
               const row = rows[Number(button.dataset.fillReclaim)];
               els.reclaimResource.value = row.resource;
+              renderReclaimReceiverOptions(row.counterparty);
               els.reclaimAmount.value = formatSun(row.amountSun);
               els.reclaimReceiver.value = row.counterparty;
               els.reclaimHint.value = `${resourceLabel(row.resource)} ${formatSun(row.amountSun)} TRX 质押份额`;
@@ -2885,6 +2944,60 @@
             });
           });
         }
+      }
+
+      function renderReclaimReceiverOptions(preferredReceiver) {
+        const resource = els.reclaimResource.value;
+        const choices = getReclaimReceiverChoices(resource);
+        const current = preferredReceiver || els.reclaimReceiver.value;
+        const selected =
+          choices.find((choice) => sameAddress(getTronWeb(), choice.address, current))?.address ||
+          choices[0]?.address ||
+          "";
+
+        if (!choices.length) {
+          els.reclaimReceiver.innerHTML =
+            `<option value="">暂无可取回${resourceLabel(resource)}地址</option>`;
+          return;
+        }
+
+        els.reclaimReceiver.innerHTML = choices
+          .map((choice) => {
+            const selectedAttr = sameAddress(getTronWeb(), choice.address, selected) ? " selected" : "";
+            const label =
+              `${shortAddress(choice.address)} · 可取回 ${formatSun(choice.amountSun)} TRX`;
+            return `<option value="${escapeHtml(choice.address)}"${selectedAttr}>${escapeHtml(label)}</option>`;
+          })
+          .join("");
+      }
+
+      function getReclaimReceiverChoices(resource) {
+        const tronWeb = getTronWeb();
+        const grouped = new Map();
+        state.delegationsOut
+          .filter((row) => row.resource === resource)
+          .forEach((row) => {
+            let key = row.counterparty;
+            try {
+              key = tronWeb?.address?.toHex ? tronWeb.address.toHex(row.counterparty) : row.counterparty;
+            } catch {
+              key = row.counterparty;
+            }
+            const existing = grouped.get(key) || {
+              address: row.counterparty,
+              amountSun: 0n,
+              expireTime: null,
+            };
+            existing.amountSun += toBigIntSafe(row.amountSun);
+            if (!existing.expireTime || Number(row.expireTime || 0) > Number(existing.expireTime || 0)) {
+              existing.expireTime = row.expireTime;
+            }
+            grouped.set(key, existing);
+          });
+
+        return [...grouped.values()].sort((a, b) =>
+          a.address.localeCompare(b.address),
+        );
       }
 
       function renderUnfreezeTable() {
@@ -3019,8 +3132,10 @@
         const balance = toBigIntSafe(account.balance);
         const unstakeAvailable = getFrozenSunByResource(account, els.unstakeResource.value);
         const delegateMax = state.maxDelegatable[els.delegateResource.value];
+        const reclaimResource = els.reclaimResource.value;
+        const reclaimChoices = getReclaimReceiverChoices(reclaimResource);
         const reclaimAvailable = getReclaimableSun(
-          els.reclaimResource.value,
+          reclaimResource,
           els.reclaimReceiver.value.trim(),
         );
         els.stakeAmount.placeholder = `可质押 TRX=${formatSun(balance)}`;
@@ -3028,11 +3143,11 @@
         els.delegateAmount.placeholder =
           `可借出${resourceLabel(els.delegateResource.value)}=${delegateMax === null ? "-" : `${formatSun(delegateMax)} TRX`}`;
         els.reclaimAmount.placeholder = reclaimAvailable === null
-          ? "先输入取回方地址"
-          : `可取回${resourceLabel(els.reclaimResource.value)}=${formatSun(reclaimAvailable)} TRX`;
+          ? (reclaimChoices.length ? "先选择取回方地址" : `暂无可取回${resourceLabel(reclaimResource)}地址`)
+          : `可取回${resourceLabel(reclaimResource)}=${formatSun(reclaimAvailable)} TRX`;
         els.reclaimHint.value = reclaimAvailable === null
-          ? "输入取回方地址后显示额度"
-          : `${resourceLabel(els.reclaimResource.value)} ${formatSun(reclaimAvailable)} TRX 质押份额`;
+          ? (reclaimChoices.length ? "选择取回方地址后显示额度" : `当前没有借出的${resourceLabel(reclaimResource)}资源`)
+          : `${resourceLabel(reclaimResource)} ${formatSun(reclaimAvailable)} TRX 质押份额`;
       }
 
       function parseTrxToSunOrZero(value) {
@@ -3205,6 +3320,7 @@
         const amountSun = parsePositiveTrx(els.reclaimAmount.value);
         const resource = els.reclaimResource.value;
         const receiver = els.reclaimReceiver.value.trim();
+        if (!receiver) throw new Error("请选择取回方地址。");
         if (!isTronAddress(tronWeb, receiver)) throw new Error("取回方地址不是有效 TRON 地址。");
         const available = getReclaimableSun(resource, receiver);
         if (available !== null && available <= 0n) {
@@ -3339,12 +3455,7 @@
 
       function setupEvents() {
         els.connectBtn.addEventListener("click", connectWallet);
-        els.mobileWalletCard.addEventListener("click", connectWallet);
-        els.mobileWalletCard.addEventListener("keydown", (event) => {
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          connectWallet();
-        });
+        els.mobileWalletAddress.addEventListener("click", connectWallet);
         els.mobileStakeAction.addEventListener("click", () => openMobileWorkspace("stake", "stakeAmount"));
         els.mobileRedeemAction.addEventListener("click", () =>
           openMobileWorkspace("unstake", "unstakeAmount"),
@@ -3398,6 +3509,11 @@
         ].forEach((el) => {
           el.addEventListener("input", updateEstimates);
           el.addEventListener("change", updateEstimates);
+        });
+
+        els.reclaimResource.addEventListener("change", () => {
+          renderReclaimReceiverOptions();
+          updateEstimates();
         });
 
         [els.calcEnergy, els.calcBandwidth].forEach((el) => {
@@ -3454,6 +3570,7 @@
             const amountSun = parsePositiveTrx(els.reclaimAmount.value);
             const resource = els.reclaimResource.value;
             const receiver = els.reclaimReceiver.value.trim();
+            if (!receiver) throw new Error("请选择取回方地址。");
             if (!isTronAddress(tronWeb, receiver)) throw new Error("原接收地址不是有效 TRON 地址。");
             return tronWeb.transactionBuilder.undelegateResource(
               toSafeNumber(amountSun),
