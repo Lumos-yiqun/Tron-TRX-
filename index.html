@@ -2903,8 +2903,12 @@
       }
 
       function setMobileShare(el, value) {
+        if (value === null || value === undefined || value === "") {
+          setMobileText(el, "-", true);
+          return;
+        }
         const amount = toBigIntSafe(value);
-        setMobileText(el, amount > 0n ? formatSun(amount) : "-", amount <= 0n);
+        setMobileText(el, formatSun(amount), false);
       }
 
       function clearMobilePlaceholders() {
