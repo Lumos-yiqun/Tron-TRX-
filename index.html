@@ -778,7 +778,7 @@
       .mobile-resource-usage {
         display: block;
         overflow: hidden;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 800;
         line-height: 1.1;
         text-overflow: ellipsis;
@@ -1339,7 +1339,7 @@
 
         .mobile-resource-usage {
           display: block;
-          font-size: clamp(18px, 4.4vw, 20px);
+          font-size: clamp(16px, 4vw, 18px);
           line-height: 1.1;
         }
 
@@ -1886,7 +1886,7 @@
               <div id="mobileStakedBalance" class="mobile-balance-value is-placeholder">-</div>
             </div>
             <div class="mobile-balance-item">
-              <div class="mobile-balance-label">等待赎回</div>
+              <div class="mobile-balance-label">赎回中</div>
               <div id="mobilePendingRedeem" class="mobile-balance-value is-placeholder">-</div>
             </div>
             <div class="mobile-balance-item">
@@ -3420,7 +3420,7 @@
           pendingText: "取消中",
           rows: [
             ["操作", "取消全部赎回"],
-            ["等待赎回数量", `${formatSun(pending)} TRX`],
+            ["赎回中数量", `${formatSun(pending)} TRX`],
             ["钱包", confirmationAddress(state.address)],
           ],
           note: "该操作会取消所有等待中的赎回请求，已到期可提现的记录不受影响。",
