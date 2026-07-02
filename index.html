@@ -2852,7 +2852,9 @@
           getDelegatedFrozenSunByResource(input.account, "BANDWIDTH"),
           bandwidthLent,
         );
-        const totalStaked = energyStaked + bandwidthStaked + delegatedEnergyStake + delegatedBandwidthStake;
+        const energyStakedTotal = energyStaked + delegatedEnergyStake;
+        const bandwidthStakedTotal = bandwidthStaked + delegatedBandwidthStake;
+        const totalStaked = energyStakedTotal + bandwidthStakedTotal;
         const pendingRedeem = getPendingUnfreezeSun(input.account);
         const redeemable = state.withdrawableAmount ?? 0n;
         const walletTotal = input.balance + totalStaked + pendingRedeem;
@@ -2882,9 +2884,13 @@
           `${formatUnits(input.energyAvailable)} / ${formatUnits(input.energyLimit)}`,
           energyEmpty,
         );
-        setMobileText(els.mobileEnergyCost, `质押 ${formatSun(energyStaked)} TRX`, energyStaked <= 0n);
+        setMobileText(
+          els.mobileEnergyCost,
+          `质押 ${formatSun(energyStakedTotal)} TRX`,
+          energyStakedTotal <= 0n,
+        );
         els.mobileEnergyFill.style.width = `${percent(input.energyAvailable, input.energyLimit)}%`;
-        setMobileShare(els.mobileEnergyStaked, energyStaked);
+        setMobileShare(els.mobileEnergyStaked, energyStakedTotal);
         setMobileShare(els.mobileEnergyLent, energyLent);
         setMobileShare(els.mobileEnergyBorrowed, energyBorrowed);
 
@@ -2896,11 +2902,11 @@
         );
         setMobileText(
           els.mobileBandwidthCost,
-          `质押 ${formatSun(bandwidthStaked)} TRX`,
-          bandwidthStaked <= 0n,
+          `质押 ${formatSun(bandwidthStakedTotal)} TRX`,
+          bandwidthStakedTotal <= 0n,
         );
         els.mobileBandwidthFill.style.width = `${percent(input.bandwidthAvailable, input.bandwidthLimit)}%`;
-        setMobileShare(els.mobileBandwidthStaked, bandwidthStaked);
+        setMobileShare(els.mobileBandwidthStaked, bandwidthStakedTotal);
         setMobileShare(els.mobileBandwidthLent, bandwidthLent);
         setMobileShare(els.mobileBandwidthBorrowed, bandwidthBorrowed);
       }
