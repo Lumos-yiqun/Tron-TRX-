@@ -304,6 +304,7 @@
       }
 
       .tabbar {
+        display: none;
         gap: 8px;
         margin-bottom: 14px;
         overflow-x: auto;
@@ -521,7 +522,15 @@
       }
 
       .mobile-staking-shell {
-        display: none;
+        display: grid;
+        grid-template-columns: minmax(330px, 0.9fr) minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-areas:
+          "wallet energy bandwidth"
+          "balance energy bandwidth"
+          "balance rent guide";
+        gap: 14px;
+        align-items: stretch;
+        margin-bottom: 14px;
       }
 
       .mobile-wallet-card,
@@ -529,12 +538,14 @@
       .mobile-resource-card,
       .mobile-list-button {
         border-radius: 8px;
+        box-shadow: 0 12px 28px rgba(20, 32, 45, 0.06);
       }
 
       .mobile-wallet-card {
+        grid-area: wallet;
         background: var(--tron);
         color: #fff;
-        padding: 18px 24px 44px;
+        padding: 22px 28px 56px;
       }
 
       .mobile-wallet-top {
@@ -563,10 +574,10 @@
       }
 
       .mobile-balance-sheet {
+        grid-area: balance;
         overflow: hidden;
         margin-top: -34px;
         background: #fff;
-        box-shadow: 0 12px 28px rgba(20, 32, 45, 0.08);
       }
 
       .mobile-balance-grid {
@@ -639,8 +650,17 @@
       }
 
       .mobile-resource-card {
+        min-width: 0;
         overflow: hidden;
         background: #fff;
+      }
+
+      .mobile-resource-card.energy {
+        grid-area: energy;
+      }
+
+      .mobile-resource-card.bandwidth {
+        grid-area: bandwidth;
       }
 
       .mobile-resource-head {
@@ -757,6 +777,18 @@
         text-align: left;
       }
 
+      #mobileRentAction {
+        grid-area: rent;
+      }
+
+      #mobileGuideAction {
+        grid-area: guide;
+      }
+
+      .desktop-status {
+        display: none;
+      }
+
       .mobile-list-left {
         display: flex;
         align-items: center;
@@ -782,10 +814,190 @@
         line-height: 1;
       }
 
+      .operation-view.active {
+        gap: 22px;
+      }
+
+      .operation-view > .section-head {
+        display: none;
+      }
+
+      .operation-segment {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0;
+        max-width: 520px;
+        border: 1px solid var(--line-strong);
+        background: #fff;
+        padding: 0;
+      }
+
+      .operation-segment button {
+        min-height: 36px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #7d8a99;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .operation-segment button + button {
+        border-left: 1px solid var(--line-strong);
+      }
+
+      .operation-segment button.active {
+        color: #172026;
+      }
+
+      .operation-form-card,
+      .operation-change-card {
+        border: 1px solid var(--line-strong);
+        background: #fff;
+      }
+
+      .operation-form-card {
+        display: grid;
+        gap: 18px;
+        max-width: 760px;
+        padding: 18px;
+      }
+
+      .operation-form-card .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .operation-form-card .form-grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .operation-form-card label {
+        gap: 8px;
+        color: #172026;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .operation-form-card input,
+      .operation-form-card select {
+        min-height: 42px;
+        border-color: var(--line-strong);
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .operation-form-card input::placeholder {
+        color: #a7b3c1;
+        font-weight: 800;
+      }
+
+      .operation-change {
+        display: grid;
+        gap: 10px;
+        max-width: 760px;
+      }
+
+      .operation-change h3 {
+        margin: 0;
+        color: #172026;
+        font-size: 15px;
+        font-weight: 850;
+      }
+
+      .operation-change-card {
+        display: grid;
+        gap: 0;
+        padding: 10px 14px;
+      }
+
+      .change-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 34px;
+        color: #718092;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .change-row strong {
+        color: #5f6f82;
+        font-weight: 900;
+        text-align: right;
+      }
+
+      .operation-submit {
+        max-width: 760px;
+      }
+
+      .operation-submit button {
+        width: 100%;
+        min-height: 48px;
+        border-color: #6553f4;
+        border-radius: 4px;
+        background: #6553f4;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .operation-submit button:hover:not(:disabled) {
+        border-color: #5948dc;
+        background: #5948dc;
+      }
+
+      .operation-secondary {
+        max-width: 760px;
+        gap: 8px;
+        margin-top: -10px;
+      }
+
+      .operation-secondary button {
+        min-height: 40px;
+        border-radius: 4px;
+        background: #fff;
+        color: #5f6f82;
+        font-size: 12px;
+      }
+
+      .operation-note {
+        display: block;
+        max-width: 760px;
+        margin: -10px 0 0;
+        color: #718092;
+        font-size: 11px;
+        font-weight: 750;
+        line-height: 1.6;
+      }
+
+      .operation-subpanel {
+        display: grid;
+        gap: 14px;
+      }
+
+      #delegateView[data-mobile-mode="delegate"] #delegatePanel,
+      #delegateView[data-mobile-mode="reclaim"] #reclaimPanel {
+        display: grid;
+      }
+
+      #delegateView[data-mobile-mode="delegate"] #reclaimPanel,
+      #delegateView[data-mobile-mode="reclaim"] #delegatePanel {
+        display: none;
+      }
+
       .split {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 12px;
+      }
+
+      .main-grid {
+        display: none;
+      }
+
+      .main-grid.is-open {
+        display: grid;
       }
 
       @media (max-width: 1040px) {
@@ -794,6 +1006,15 @@
         .metric-grid,
         .split {
           grid-template-columns: 1fr;
+        }
+
+        .mobile-staking-shell {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          grid-template-areas:
+            "wallet wallet"
+            "balance balance"
+            "energy bandwidth"
+            "rent guide";
         }
       }
 
@@ -852,6 +1073,14 @@
 
         .mobile-staking-shell {
           display: grid;
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "wallet"
+            "balance"
+            "energy"
+            "bandwidth"
+            "rent"
+            "guide";
           gap: 14px;
           margin-bottom: 14px;
         }
@@ -892,32 +1121,7 @@
         }
 
         .tabbar {
-          position: sticky;
-          top: 0;
-          z-index: 10;
-          gap: 6px;
-          margin: -12px -10px 12px;
-          padding: 10px 10px 8px;
-          width: calc(100vw - 20px);
-          max-width: calc(100vw - 20px);
-          background: rgba(246, 247, 249, 0.96);
-          backdrop-filter: blur(12px);
-          scrollbar-width: none;
-        }
-
-        .tabbar::-webkit-scrollbar {
           display: none;
-        }
-
-        .tabbar button[data-tab="overview"] {
-          display: none;
-        }
-
-        .tabbar button {
-          flex: 0 0 auto;
-          min-height: 38px;
-          padding: 0 12px;
-          font-size: 13px;
         }
 
         .section-head {
@@ -934,6 +1138,180 @@
 
         .view.active {
           gap: 12px;
+        }
+
+        .operation-view.active {
+          min-height: calc(100dvh - 110px);
+          gap: 22px;
+          padding: 0 0 10px;
+        }
+
+        .operation-view > .section-head {
+          display: none;
+        }
+
+        .operation-segment {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0;
+          border: 1px solid var(--line-strong);
+          background: #fff;
+          padding: 0;
+        }
+
+        .operation-segment button {
+          min-height: 34px;
+          border: 0;
+          border-radius: 0;
+          background: transparent;
+          color: #7d8a99;
+          font-size: 13px;
+          font-weight: 850;
+        }
+
+        .operation-segment button + button {
+          border-left: 1px solid var(--line-strong);
+        }
+
+        .operation-segment button.active {
+          color: #172026;
+        }
+
+        .operation-form-card,
+        .operation-change-card {
+          border: 1px solid var(--line-strong);
+          background: #fff;
+        }
+
+        .operation-form-card {
+          display: grid;
+          gap: 18px;
+          padding: 18px 14px 22px;
+        }
+
+        .operation-form-card .form-grid,
+        .operation-form-card .form-grid.three {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
+        .operation-form-card label {
+          gap: 8px;
+          color: #172026;
+          font-size: 13px;
+          font-weight: 850;
+        }
+
+        .operation-form-card input,
+        .operation-form-card select {
+          min-height: 42px;
+          border-color: var(--line-strong);
+          border-radius: 4px;
+          font-size: 14px;
+        }
+
+        .operation-form-card input::placeholder {
+          color: #a7b3c1;
+          font-weight: 800;
+        }
+
+        .operation-change {
+          display: grid;
+          gap: 10px;
+        }
+
+        .operation-change h3 {
+          margin: 0;
+          color: #172026;
+          font-size: 15px;
+          font-weight: 850;
+        }
+
+        .operation-change-card {
+          display: grid;
+          gap: 0;
+          padding: 10px 14px;
+        }
+
+        .change-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          min-height: 34px;
+          color: #718092;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .change-row strong {
+          color: #5f6f82;
+          font-weight: 900;
+          text-align: right;
+        }
+
+        .operation-submit {
+          margin-top: auto;
+        }
+
+        .operation-submit button {
+          width: 100%;
+          min-height: 48px;
+          border-color: #6553f4;
+          border-radius: 4px;
+          background: #6553f4;
+          color: #fff;
+          font-size: 16px;
+          font-weight: 900;
+        }
+
+        .operation-submit button:hover:not(:disabled) {
+          border-color: #5948dc;
+          background: #5948dc;
+        }
+
+        .operation-secondary {
+          gap: 8px;
+          margin-top: -10px;
+        }
+
+        .operation-secondary button {
+          min-height: 40px;
+          border-radius: 4px;
+          background: #fff;
+          color: #5f6f82;
+          font-size: 12px;
+        }
+
+        .operation-note {
+          display: block;
+          margin: -10px 0 0;
+          color: #718092;
+          font-size: 11px;
+          font-weight: 750;
+          line-height: 1.6;
+        }
+
+        .operation-view .inline-box {
+          display: none;
+        }
+
+        .operation-subpanel {
+          gap: 22px;
+        }
+
+        .operation-subpanel.active {
+          display: grid;
+        }
+
+        #delegateView[data-mobile-mode="delegate"] #delegatePanel,
+        #delegateView[data-mobile-mode="reclaim"] #reclaimPanel {
+          display: grid;
+        }
+
+        #delegateView[data-mobile-mode="delegate"] #reclaimPanel,
+        #delegateView[data-mobile-mode="reclaim"] #delegatePanel {
+          display: none;
         }
 
         .metric-grid {
@@ -1352,137 +1730,207 @@
             </section>
           </section>
 
-          <section id="stakeView" class="view">
+          <section id="stakeView" class="view operation-view">
+            <div class="operation-segment" aria-label="质押赎回切换">
+              <button type="button" class="active" data-mobile-open="stake">质押</button>
+              <button type="button" data-mobile-open="unstake">赎回</button>
+            </div>
             <div class="section-head">
               <h2>质押 TRX 获取资源</h2>
               <span class="status-pill ok">FreezeBalanceV2</span>
             </div>
-            <div class="form-grid three">
-              <label>
-                资源类型
-                <select id="stakeResource">
-                  <option value="ENERGY">Energy</option>
-                  <option value="BANDWIDTH">Bandwidth</option>
-                </select>
-              </label>
-              <label>
-                质押数量 TRX
-                <input id="stakeAmount" inputmode="decimal" placeholder="例如 100" />
-              </label>
-              <label>
-                预估获得资源
-                <input id="stakeEstimate" readonly value="-" />
-              </label>
+            <div class="operation-form-card">
+              <div class="form-grid three">
+                <label>
+                  资源
+                  <select id="stakeResource">
+                    <option value="ENERGY">能量</option>
+                    <option value="BANDWIDTH">带宽</option>
+                  </select>
+                </label>
+                <label>
+                  质押数量
+                  <input id="stakeAmount" inputmode="decimal" placeholder="可质押 TRX=0" />
+                </label>
+                <label>
+                  预估获得资源
+                  <input id="stakeEstimate" readonly value="-" />
+                </label>
+              </div>
+            </div>
+            <div class="operation-change">
+              <h3>账户变动</h3>
+              <div class="operation-change-card">
+                <div class="change-row">
+                  <span>获得 <span id="stakeChangeResourceName">能量</span></span>
+                  <strong id="stakeChangeResourceValue">-</strong>
+                </div>
+                <div class="change-row">
+                  <span>获得投票权</span>
+                  <strong id="stakeChangeVotes">-</strong>
+                </div>
+              </div>
             </div>
             <div class="inline-box mt">
               <strong>执行结果</strong>
               质押会立即获得对应资源和等量 TRON Power。后续取消质押需要等待网络参数指定的解锁期，目前主网通常为 14 天。
             </div>
-            <div class="row mt">
-              <button id="stakeBtn" type="button" class="primary">发起 Stake</button>
+            <div class="row mt operation-submit">
+              <button id="stakeBtn" type="button" class="primary">确认</button>
             </div>
+            <p class="operation-note">说明：质押后可立即使用资源，赎回后需等待约 14 天才可取回 TRX。</p>
           </section>
 
-          <section id="delegateView" class="view">
+          <section id="delegateView" class="view operation-view" data-mobile-mode="delegate">
+            <div class="operation-segment" aria-label="借出取回切换">
+              <button type="button" class="active" data-mobile-delegate-mode="delegate">借出</button>
+              <button type="button" data-mobile-delegate-mode="reclaim">取回</button>
+            </div>
             <div class="section-head">
               <h2>委托与取回资源</h2>
               <span class="status-pill ok">DelegateResource</span>
             </div>
-            <div class="form-grid">
-              <label>
-                资源类型
-                <select id="delegateResource">
-                  <option value="ENERGY">Energy</option>
-                  <option value="BANDWIDTH">Bandwidth</option>
-                </select>
-              </label>
-              <label>
-                质押份额 TRX
-                <input id="delegateAmount" inputmode="decimal" placeholder="例如 50" />
-              </label>
-              <label>
-                接收地址
-                <input id="delegateReceiver" autocomplete="off" placeholder="T..." />
-              </label>
-              <label>
-                预估资源数量
-                <input id="delegateEstimate" readonly value="-" />
-              </label>
-            </div>
-            <label class="checkbox-line mt">
-              <input id="delegateLock" type="checkbox" />
-              锁定委托，锁定期间不能取回，主网最短约 3 天
-            </label>
-            <label id="lockPeriodLabel" class="mt" style="display: none">
-              锁定区块数
-              <input id="lockPeriod" inputmode="numeric" value="86400" />
-            </label>
-            <div class="inline-box mt">
-              <strong>地址校验</strong>
-              委托目标必须是已激活的普通 TRON 账户，不能是合约地址，也不能是当前钱包地址。这里的数量是 API 需要的质押份额，不是直接输入 Energy/Bandwidth 单位。
-            </div>
-            <div class="row mt">
-              <button id="delegateBtn" type="button" class="primary">发起 Delegate</button>
+            <div id="delegatePanel" class="operation-subpanel active">
+              <div class="operation-form-card">
+                <div class="form-grid">
+                  <label>
+                    资源
+                    <select id="delegateResource">
+                      <option value="ENERGY">能量</option>
+                      <option value="BANDWIDTH">带宽</option>
+                    </select>
+                  </label>
+                  <label>
+                    借出方地址
+                    <input id="delegateReceiver" autocomplete="off" placeholder="T..." />
+                  </label>
+                  <label>
+                    数量
+                    <input id="delegateAmount" inputmode="decimal" placeholder="可借出能量=0" />
+                  </label>
+                  <label>
+                    预估资源数量
+                    <input id="delegateEstimate" readonly value="-" />
+                  </label>
+                </div>
+                <label class="checkbox-line">
+                  <input id="delegateLock" type="checkbox" />
+                  锁定委托，锁定期间不能取回，主网最短约 3 天
+                </label>
+                <label id="lockPeriodLabel" style="display: none">
+                  锁定区块数
+                  <input id="lockPeriod" inputmode="numeric" value="86400" />
+                </label>
+              </div>
+              <div class="operation-change">
+                <h3>账户变动</h3>
+                <div class="operation-change-card">
+                  <div class="change-row">
+                    <span><span id="delegateChangeResourceName">能量</span>变动</span>
+                    <strong id="delegateChangeResourceValue">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-box mt">
+                <strong>地址校验</strong>
+                委托目标必须是已激活的普通 TRON 账户，不能是合约地址，也不能是当前钱包地址。这里的数量是 API 需要的质押份额，不是直接输入 Energy/Bandwidth 单位。
+              </div>
+              <div class="row mt operation-submit">
+                <button id="delegateBtn" type="button" class="primary">确认</button>
+              </div>
+              <p class="operation-note">说明：已借出的资源可随时取回；锁定委托需等待锁定期结束。</p>
             </div>
 
-            <div class="section-head mt">
-              <h2>取回已委托资源</h2>
-              <span class="status-pill">UndelegateResource</span>
-            </div>
-            <div class="form-grid">
-              <label>
-                资源类型
-                <select id="reclaimResource">
-                  <option value="ENERGY">Energy</option>
-                  <option value="BANDWIDTH">Bandwidth</option>
-                </select>
-              </label>
-              <label>
-                取回质押份额 TRX
-                <input id="reclaimAmount" inputmode="decimal" placeholder="例如 50" />
-              </label>
-              <label>
-                原接收地址
-                <input id="reclaimReceiver" autocomplete="off" placeholder="T..." />
-              </label>
-              <label>
-                可取回提示
-                <input id="reclaimHint" readonly value="可从总览列表填入" />
-              </label>
-            </div>
-            <div class="row mt">
-              <button id="reclaimBtn" type="button" class="soft">发起 Reclaim</button>
+            <div id="reclaimPanel" class="operation-subpanel">
+              <div class="operation-form-card">
+                <div class="form-grid">
+                  <label>
+                    资源
+                    <select id="reclaimResource">
+                      <option value="ENERGY">能量</option>
+                      <option value="BANDWIDTH">带宽</option>
+                    </select>
+                  </label>
+                  <label>
+                    取回方地址
+                    <input id="reclaimReceiver" autocomplete="off" placeholder="T..." />
+                  </label>
+                  <label>
+                    数量
+                    <input id="reclaimAmount" inputmode="decimal" placeholder="可取回能量=0" />
+                  </label>
+                  <label>
+                    可取回提示
+                    <input id="reclaimHint" readonly value="可从总览列表填入" />
+                  </label>
+                </div>
+              </div>
+              <div class="operation-change">
+                <h3>账户变动</h3>
+                <div class="operation-change-card">
+                  <div class="change-row">
+                    <span><span id="reclaimChangeResourceName">能量</span>变动</span>
+                    <strong id="reclaimChangeResourceValue">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt operation-submit">
+                <button id="reclaimBtn" type="button" class="primary">确认</button>
+              </div>
+              <p class="operation-note">说明：被使用中的资源无法取回，请确认接收地址与可取回数量。</p>
             </div>
           </section>
 
-          <section id="unstakeView" class="view">
+          <section id="unstakeView" class="view operation-view">
+            <div class="operation-segment" aria-label="质押赎回切换">
+              <button type="button" data-mobile-open="stake">质押</button>
+              <button type="button" class="active" data-mobile-open="unstake">赎回</button>
+            </div>
             <div class="section-head">
               <h2>取消质押与提现</h2>
               <span class="status-pill warn">UnfreezeBalanceV2</span>
             </div>
-            <div class="form-grid three">
-              <label>
-                资源类型
-                <select id="unstakeResource">
-                  <option value="ENERGY">Energy</option>
-                  <option value="BANDWIDTH">Bandwidth</option>
-                </select>
-              </label>
-              <label>
-                取消质押 TRX
-                <input id="unstakeAmount" inputmode="decimal" placeholder="例如 20" />
-              </label>
-              <label>
-                剩余发起次数
-                <input id="unfreezeCount" readonly value="-" />
-              </label>
+            <div class="operation-form-card">
+              <div class="form-grid three">
+                <label>
+                  资源
+                  <select id="unstakeResource">
+                    <option value="ENERGY">能量</option>
+                    <option value="BANDWIDTH">带宽</option>
+                  </select>
+                </label>
+                <label>
+                  赎回数量
+                  <input id="unstakeAmount" inputmode="decimal" placeholder="可赎回 TRX=0" />
+                </label>
+                <label>
+                  剩余发起次数
+                  <input id="unfreezeCount" readonly value="-" />
+                </label>
+              </div>
+            </div>
+            <div class="operation-change">
+              <h3>账户变动</h3>
+              <div class="operation-change-card">
+                <div class="change-row">
+                  <span id="unstakeChangeResourceName">能量</span>
+                  <strong id="unstakeChangeResourceValue">-</strong>
+                </div>
+                <div class="change-row">
+                  <span>投票权</span>
+                  <strong id="unstakeChangeVotes">-</strong>
+                </div>
+              </div>
             </div>
             <div class="inline-box mt">
               <strong>重要规则</strong>
               已委托出去的资源对应的质押份额不能直接 Unstake，需要先 Reclaim。Unstake 后进入等待期，到期后才能 Withdraw。Cancel 会取消所有等待中的 Unstake 请求。
             </div>
-            <div class="row mt">
-              <button id="unstakeBtn" type="button" class="primary">发起 Unstake</button>
+            <div class="row mt operation-submit">
+              <button id="unstakeBtn" type="button" class="primary">确认</button>
+            </div>
+            <p class="operation-note">说明：赎回后约 14 天可以取回 TRX；已借出的资源需要先取回再赎回。</p>
+            <div class="row mt operation-secondary">
               <button id="withdrawBtn" type="button">Withdraw 到期 TRX</button>
               <button id="cancelUnstakeBtn" type="button" class="soft">Cancel 所有 Unstake</button>
             </div>
@@ -1597,10 +2045,13 @@
         connectBtn: $("connectBtn"),
         delegateAmount: $("delegateAmount"),
         delegateBtn: $("delegateBtn"),
+        delegateChangeResourceName: $("delegateChangeResourceName"),
+        delegateChangeResourceValue: $("delegateChangeResourceValue"),
         delegateEstimate: $("delegateEstimate"),
         delegateLock: $("delegateLock"),
         delegateReceiver: $("delegateReceiver"),
         delegateResource: $("delegateResource"),
+        delegateView: $("delegateView"),
         delegationsInBody: $("delegationsInBody"),
         delegationsOutBody: $("delegationsOutBody"),
         energyAvailable: $("energyAvailable"),
@@ -1645,12 +2096,17 @@
         outDelegationCount: $("outDelegationCount"),
         reclaimAmount: $("reclaimAmount"),
         reclaimBtn: $("reclaimBtn"),
+        reclaimChangeResourceName: $("reclaimChangeResourceName"),
+        reclaimChangeResourceValue: $("reclaimChangeResourceValue"),
         reclaimHint: $("reclaimHint"),
         reclaimReceiver: $("reclaimReceiver"),
         reclaimResource: $("reclaimResource"),
         refreshBtn: $("refreshBtn"),
         stakeAmount: $("stakeAmount"),
         stakeBtn: $("stakeBtn"),
+        stakeChangeResourceName: $("stakeChangeResourceName"),
+        stakeChangeResourceValue: $("stakeChangeResourceValue"),
+        stakeChangeVotes: $("stakeChangeVotes"),
         stakeEstimate: $("stakeEstimate"),
         stakeResource: $("stakeResource"),
         tpAvailable: $("tpAvailable"),
@@ -1663,6 +2119,9 @@
         unfreezeCount: $("unfreezeCount"),
         unstakeAmount: $("unstakeAmount"),
         unstakeBtn: $("unstakeBtn"),
+        unstakeChangeResourceName: $("unstakeChangeResourceName"),
+        unstakeChangeResourceValue: $("unstakeChangeResourceValue"),
+        unstakeChangeVotes: $("unstakeChangeVotes"),
         unstakeResource: $("unstakeResource"),
         walletStatus: $("walletStatus"),
         withdrawBtn: $("withdrawBtn"),
@@ -2134,6 +2593,80 @@
       function updateEstimates() {
         updateResourceEstimate(els.stakeAmount, els.stakeResource, els.stakeEstimate);
         updateResourceEstimate(els.delegateAmount, els.delegateResource, els.delegateEstimate);
+        updateOperationPreviews();
+      }
+
+      function updateOperationPreviews() {
+        updateOperationHints();
+        const stakeAmount = parseTrxToSunOrZero(els.stakeAmount.value);
+        const stakeResource = els.stakeResource.value;
+        const stakeEstimate = estimateResourceFromStake(stakeAmount, stakeResource);
+        els.stakeChangeResourceName.textContent = resourceLabel(stakeResource);
+        els.stakeChangeResourceValue.textContent =
+          stakeEstimate === null || stakeAmount <= 0n ? "-" : `+ ${formatUnits(stakeEstimate)}`;
+        els.stakeChangeVotes.textContent = stakeAmount > 0n ? `+ ${formatSun(stakeAmount)}` : "-";
+
+        const unstakeAmount = parseTrxToSunOrZero(els.unstakeAmount.value);
+        const unstakeResource = els.unstakeResource.value;
+        const unstakeDelta = estimateResourceFromStake(unstakeAmount, unstakeResource);
+        const current = currentResourceLimit(unstakeResource);
+        const after =
+          unstakeDelta === null || unstakeAmount <= 0n ? null : clamp(current - toBigIntSafe(unstakeDelta));
+        els.unstakeChangeResourceName.textContent = resourceLabel(unstakeResource);
+        els.unstakeChangeResourceValue.textContent =
+          after === null ? "-" : `${formatUnits(current)} → ${formatUnits(after)}`;
+        const tp = toBigIntSafe(state.resources?.tronPowerLimit);
+        const tpAfter = unstakeAmount > 0n ? clamp(tp - unstakeAmount / SUN) : null;
+        els.unstakeChangeVotes.textContent =
+          tpAfter === null ? "-" : `${formatUnits(tp)} → ${formatUnits(tpAfter)}`;
+
+        const delegateAmount = parseTrxToSunOrZero(els.delegateAmount.value);
+        const delegateResource = els.delegateResource.value;
+        const delegateEstimate = estimateResourceFromStake(delegateAmount, delegateResource);
+        els.delegateChangeResourceName.textContent = resourceLabel(delegateResource);
+        els.delegateChangeResourceValue.textContent =
+          delegateEstimate === null || delegateAmount <= 0n ? "-" : `- ${formatUnits(delegateEstimate)}`;
+
+        const reclaimAmount = parseTrxToSunOrZero(els.reclaimAmount.value);
+        const reclaimResource = els.reclaimResource.value;
+        const reclaimEstimate = estimateResourceFromStake(reclaimAmount, reclaimResource);
+        els.reclaimChangeResourceName.textContent = resourceLabel(reclaimResource);
+        els.reclaimChangeResourceValue.textContent =
+          reclaimEstimate === null || reclaimAmount <= 0n ? "-" : `+ ${formatUnits(reclaimEstimate)}`;
+      }
+
+      function updateOperationHints() {
+        const account = state.account || {};
+        const balance = toBigIntSafe(account.balance);
+        const unstakeAvailable = getFrozenSunByResource(account, els.unstakeResource.value);
+        const delegateMax = state.maxDelegatable[els.delegateResource.value];
+        const reclaimAvailable = sumDelegationSun(state.delegationsOut, els.reclaimResource.value);
+        els.stakeAmount.placeholder = `可质押 TRX=${formatSun(balance)}`;
+        els.unstakeAmount.placeholder = `可赎回 TRX=${formatSun(unstakeAvailable)}`;
+        els.delegateAmount.placeholder =
+          `可借出${resourceLabel(els.delegateResource.value)}=${delegateMax === null ? "-" : `${formatSun(delegateMax)} TRX`}`;
+        els.reclaimAmount.placeholder =
+          `可取回${resourceLabel(els.reclaimResource.value)}=${formatSun(reclaimAvailable)} TRX`;
+      }
+
+      function parseTrxToSunOrZero(value) {
+        try {
+          return parseTrxToSun(value || "0");
+        } catch {
+          return 0n;
+        }
+      }
+
+      function resourceLabel(resource) {
+        return resource === "BANDWIDTH" ? "带宽" : "能量";
+      }
+
+      function currentResourceLimit(resource) {
+        const resources = state.resources || {};
+        if (resource === "BANDWIDTH") {
+          return toBigIntSafe(resources.freeNetLimit) + toBigIntSafe(resources.NetLimit);
+        }
+        return toBigIntSafe(resources.EnergyLimit);
       }
 
       function updateResourceEstimate(amountEl, resourceEl, resultEl) {
@@ -2263,10 +2796,10 @@
           openMobileWorkspace("unstake", "unstakeAmount"),
         );
         els.mobileDelegateAction.addEventListener("click", () =>
-          openMobileWorkspace("delegate", "delegateReceiver"),
+          openMobileWorkspace("delegate", "delegateReceiver", "delegate"),
         );
         els.mobileReclaimAction.addEventListener("click", () =>
-          openMobileWorkspace("delegate", "reclaimReceiver"),
+          openMobileWorkspace("delegate", "reclaimReceiver", "reclaim"),
         );
         els.mobileRentAction.addEventListener("click", () => openMobileWorkspace("tools"));
         els.mobileGuideAction.addEventListener("click", () => openMobileWorkspace("tools"));
@@ -2283,7 +2816,24 @@
           button.addEventListener("click", () => switchTab(button.dataset.tab));
         });
 
-        [els.stakeAmount, els.stakeResource, els.delegateAmount, els.delegateResource].forEach((el) => {
+        document.querySelectorAll("[data-mobile-open]").forEach((button) => {
+          button.addEventListener("click", () => openMobileWorkspace(button.dataset.mobileOpen));
+        });
+
+        document.querySelectorAll("[data-mobile-delegate-mode]").forEach((button) => {
+          button.addEventListener("click", () => setDelegateMode(button.dataset.mobileDelegateMode));
+        });
+
+        [
+          els.stakeAmount,
+          els.stakeResource,
+          els.delegateAmount,
+          els.delegateResource,
+          els.unstakeAmount,
+          els.unstakeResource,
+          els.reclaimAmount,
+          els.reclaimResource,
+        ].forEach((el) => {
           el.addEventListener("input", updateEstimates);
           el.addEventListener("change", updateEstimates);
         });
@@ -2417,8 +2967,19 @@
         $(`${tab}View`).classList.add("active");
       }
 
-      function openMobileWorkspace(tab, focusId) {
+      function setDelegateMode(mode) {
+        const normalized = mode === "reclaim" ? "reclaim" : "delegate";
+        els.delegateView.dataset.mobileMode = normalized;
+        document.querySelectorAll("[data-mobile-delegate-mode]").forEach((button) => {
+          button.classList.toggle("active", button.dataset.mobileDelegateMode === normalized);
+        });
+      }
+
+      function openMobileWorkspace(tab, focusId, delegateMode) {
         els.operationWorkspace.classList.add("is-open");
+        if (tab === "delegate") {
+          setDelegateMode(delegateMode);
+        }
         switchTab(tab);
         if (window.matchMedia("(max-width: 720px)").matches) {
           els.operationWorkspace.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -2444,7 +3005,7 @@
       }
 
       function parseTrxToSun(value) {
-        const text = String(value || "").trim();
+        const text = String(value || "").trim().replace(/,/g, "");
         if (!/^\d+(\.\d{1,6})?$/.test(text)) {
           throw new Error("TRX 数量最多支持 6 位小数。");
         }
