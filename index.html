@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TRON Resource Manager</title>
+    <title>TRON Staking</title>
     <style>
       :root {
         color-scheme: light;
@@ -520,6 +520,268 @@
         display: none;
       }
 
+      .mobile-staking-shell {
+        display: none;
+      }
+
+      .mobile-wallet-card,
+      .mobile-balance-sheet,
+      .mobile-resource-card,
+      .mobile-list-button {
+        border-radius: 8px;
+      }
+
+      .mobile-wallet-card {
+        background: var(--tron);
+        color: #fff;
+        padding: 18px 24px 44px;
+      }
+
+      .mobile-wallet-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .mobile-wallet-name {
+        font-size: 22px;
+        font-weight: 800;
+      }
+
+      .mobile-wallet-address,
+      .mobile-wallet-fiat {
+        margin-top: 6px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 13px;
+      }
+
+      .mobile-wallet-balance {
+        text-align: right;
+        font-size: 20px;
+        font-weight: 850;
+        white-space: nowrap;
+      }
+
+      .mobile-balance-sheet {
+        overflow: hidden;
+        margin-top: -34px;
+        background: #fff;
+        box-shadow: 0 12px 28px rgba(20, 32, 45, 0.08);
+      }
+
+      .mobile-balance-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 18px 24px 10px;
+      }
+
+      .mobile-balance-item {
+        padding: 0 0 16px;
+        border-bottom: 1px solid #edf1f5;
+      }
+
+      .mobile-balance-item:nth-child(odd) {
+        padding-right: 18px;
+      }
+
+      .mobile-balance-item:nth-child(even) {
+        padding-left: 18px;
+      }
+
+      .mobile-balance-label,
+      .mobile-detail-label {
+        color: #7d8696;
+        font-size: 13px;
+      }
+
+      .mobile-balance-value {
+        margin-top: 8px;
+        overflow: hidden;
+        color: #141b22;
+        font-size: 19px;
+        font-weight: 750;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .mobile-action-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid #edf1f5;
+      }
+
+      .mobile-action {
+        display: grid;
+        place-items: center;
+        gap: 6px;
+        min-height: 72px;
+        border: 0;
+        border-radius: 0;
+        background: #fff;
+        color: #141b22;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 8px 4px;
+      }
+
+      .mobile-action + .mobile-action {
+        border-left: 1px solid #edf1f5;
+      }
+
+      .mobile-action-icon {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        color: #111827;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .mobile-resource-card {
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .mobile-resource-head {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 22px 24px 14px;
+      }
+
+      .mobile-resource-icon {
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .mobile-resource-icon.energy {
+        background: #ea72ff;
+      }
+
+      .mobile-resource-icon.bandwidth {
+        background: #7c7cff;
+      }
+
+      .mobile-resource-title {
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .mobile-resource-values {
+        text-align: right;
+      }
+
+      .mobile-resource-usage {
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .mobile-resource-cost {
+        margin-top: 4px;
+        color: #506176;
+        font-size: 12px;
+      }
+
+      .mobile-segment-bar {
+        height: 12px;
+        margin: 0 24px 18px 66px;
+        overflow: hidden;
+        border-radius: 2px;
+        background:
+          repeating-linear-gradient(
+            90deg,
+            rgba(125, 124, 255, 0.1) 0 6px,
+            transparent 6px 8px
+          );
+      }
+
+      .mobile-resource-card.energy .mobile-segment-bar {
+        background:
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 115, 183, 0.16) 0 6px,
+            transparent 6px 8px
+          );
+      }
+
+      .mobile-segment-fill {
+        width: 0;
+        height: 100%;
+        background:
+          repeating-linear-gradient(
+            90deg,
+            #7c7cff 0 6px,
+            transparent 6px 8px
+          );
+      }
+
+      .mobile-resource-card.energy .mobile-segment-fill {
+        background:
+          repeating-linear-gradient(
+            90deg,
+            #ff73b7 0 6px,
+            transparent 6px 8px
+          );
+      }
+
+      .mobile-resource-detail {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        border-top: 1px solid #edf1f5;
+        padding: 16px 24px 18px;
+      }
+
+      .mobile-detail-value {
+        margin-top: 8px;
+        font-size: 18px;
+        font-weight: 750;
+      }
+
+      .mobile-list-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+        border: 0;
+        background: #fff;
+        padding: 0 24px;
+        text-align: left;
+      }
+
+      .mobile-list-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .mobile-list-icon {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: #eef3fb;
+        color: var(--tron);
+        font-weight: 900;
+      }
+
+      .mobile-chevron {
+        color: #111827;
+        font-size: 26px;
+        line-height: 1;
+      }
+
       .split {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -546,20 +808,22 @@
         }
 
         .topbar {
-          align-items: center;
-          flex-direction: row;
-          margin-bottom: 10px;
+          justify-content: center;
+          margin-bottom: 18px;
+          padding-top: env(safe-area-inset-top);
         }
 
         .brand-mark {
-          width: 38px;
-          height: 38px;
-          font-size: 13px;
-          box-shadow: none;
+          display: none;
+        }
+
+        .brand {
+          justify-content: center;
+          width: 100%;
         }
 
         h1 {
-          font-size: 20px;
+          font-size: 17px;
           line-height: 1.1;
         }
 
@@ -568,7 +832,7 @@
         }
 
         .eyebrow {
-          font-size: 10px;
+          display: none;
         }
 
         .notice {
@@ -579,6 +843,17 @@
 
         .topbar > .row {
           display: none;
+        }
+
+        .desktop-notice,
+        .desktop-status {
+          display: none;
+        }
+
+        .mobile-staking-shell {
+          display: grid;
+          gap: 14px;
+          margin-bottom: 14px;
         }
 
         .status {
@@ -608,7 +883,12 @@
         }
 
         .main-grid {
+          display: none;
           gap: 10px;
+        }
+
+        .main-grid.is-open {
+          display: grid;
         }
 
         .tabbar {
@@ -626,6 +906,10 @@
         }
 
         .tabbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        .tabbar button[data-tab="overview"] {
           display: none;
         }
 
@@ -818,7 +1102,7 @@
           <div class="brand-mark" aria-hidden="true">TRX</div>
           <div>
             <p class="eyebrow">TRON Mainnet DApp</p>
-            <h1>TRON Resource Manager</h1>
+            <h1>TRON Staking</h1>
           </div>
         </div>
         <div class="row">
@@ -827,12 +1111,134 @@
         </div>
       </header>
 
-      <section class="notice">
+      <section class="notice desktop-notice">
         <strong>正式环境提示：</strong>
         本页面只构造交易并调用用户钱包签名，所有 Stake、Unstake、Delegate、Reclaim、Withdraw 操作都会发生在 TRON 主网。请先用小额账户验证流程。
       </section>
 
-      <section class="status" aria-label="wallet status">
+      <section class="mobile-staking-shell" aria-label="TRON staking mobile overview">
+        <section class="mobile-wallet-card">
+          <div class="mobile-wallet-top">
+            <div>
+              <div class="mobile-wallet-name">TRON Wallet</div>
+              <div id="mobileWalletAddress" class="mobile-wallet-address">连接钱包查看地址</div>
+            </div>
+            <div>
+              <div id="mobileWalletBalance" class="mobile-wallet-balance">- TRX</div>
+              <div id="mobileWalletFiat" class="mobile-wallet-fiat">主网资产</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mobile-balance-sheet">
+          <div class="mobile-balance-grid">
+            <div class="mobile-balance-item">
+              <div class="mobile-balance-label">可用余额</div>
+              <div id="mobileAvailableBalance" class="mobile-balance-value">-</div>
+            </div>
+            <div class="mobile-balance-item">
+              <div class="mobile-balance-label">质押中</div>
+              <div id="mobileStakedBalance" class="mobile-balance-value">-</div>
+            </div>
+            <div class="mobile-balance-item">
+              <div class="mobile-balance-label">等待赎回</div>
+              <div id="mobilePendingRedeem" class="mobile-balance-value">-</div>
+            </div>
+            <div class="mobile-balance-item">
+              <div class="mobile-balance-label">赎回</div>
+              <div id="mobileRedeemableBalance" class="mobile-balance-value">-</div>
+            </div>
+          </div>
+          <div class="mobile-action-strip">
+            <button id="mobileStakeAction" type="button" class="mobile-action">
+              <span class="mobile-action-icon">↻</span>
+              <span>质押</span>
+            </button>
+            <button id="mobileRedeemAction" type="button" class="mobile-action">
+              <span class="mobile-action-icon">↺</span>
+              <span>赎回</span>
+            </button>
+            <button id="mobileDelegateAction" type="button" class="mobile-action">
+              <span class="mobile-action-icon">⌁</span>
+              <span>借出</span>
+            </button>
+            <button id="mobileReclaimAction" type="button" class="mobile-action">
+              <span class="mobile-action-icon">⌂</span>
+              <span>取回</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="mobile-resource-card energy">
+          <div class="mobile-resource-head">
+            <span class="mobile-resource-icon energy">E</span>
+            <span class="mobile-resource-title">能量</span>
+            <span class="mobile-resource-values">
+              <span id="mobileEnergyUsage" class="mobile-resource-usage">- / -</span>
+              <span id="mobileEnergyCost" class="mobile-resource-cost">- TRX</span>
+            </span>
+          </div>
+          <div class="mobile-segment-bar"><div id="mobileEnergyFill" class="mobile-segment-fill"></div></div>
+          <div class="mobile-resource-detail">
+            <div>
+              <div class="mobile-detail-label">质押</div>
+              <div id="mobileEnergyStaked" class="mobile-detail-value">-</div>
+            </div>
+            <div>
+              <div class="mobile-detail-label">借出</div>
+              <div id="mobileEnergyLent" class="mobile-detail-value">-</div>
+            </div>
+            <div>
+              <div class="mobile-detail-label">借入</div>
+              <div id="mobileEnergyBorrowed" class="mobile-detail-value">-</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mobile-resource-card bandwidth">
+          <div class="mobile-resource-head">
+            <span class="mobile-resource-icon bandwidth">B</span>
+            <span class="mobile-resource-title">带宽</span>
+            <span class="mobile-resource-values">
+              <span id="mobileBandwidthUsage" class="mobile-resource-usage">- / -</span>
+              <span id="mobileBandwidthCost" class="mobile-resource-cost">- TRX</span>
+            </span>
+          </div>
+          <div class="mobile-segment-bar"><div id="mobileBandwidthFill" class="mobile-segment-fill"></div></div>
+          <div class="mobile-resource-detail">
+            <div>
+              <div class="mobile-detail-label">质押</div>
+              <div id="mobileBandwidthStaked" class="mobile-detail-value">-</div>
+            </div>
+            <div>
+              <div class="mobile-detail-label">借出</div>
+              <div id="mobileBandwidthLent" class="mobile-detail-value">-</div>
+            </div>
+            <div>
+              <div class="mobile-detail-label">借入</div>
+              <div id="mobileBandwidthBorrowed" class="mobile-detail-value">-</div>
+            </div>
+          </div>
+        </section>
+
+        <button id="mobileRentAction" type="button" class="mobile-list-button">
+          <span class="mobile-list-left">
+            <span class="mobile-list-icon">R</span>
+            <span>租用资源</span>
+          </span>
+          <span class="mobile-chevron">›</span>
+        </button>
+
+        <button id="mobileGuideAction" type="button" class="mobile-list-button">
+          <span class="mobile-list-left">
+            <span class="mobile-list-icon">G</span>
+            <span>使用教程</span>
+          </span>
+          <span class="mobile-chevron">›</span>
+        </button>
+      </section>
+
+      <section class="status desktop-status" aria-label="wallet status">
         <div class="status-cell">
           <span>钱包</span>
           <strong id="walletStatus">未连接</strong>
@@ -851,7 +1257,7 @@
         </div>
       </section>
 
-      <section class="main-grid">
+      <section id="operationWorkspace" class="main-grid">
         <section class="panel">
           <div class="tabbar" role="tablist" aria-label="resource views">
             <button type="button" class="active" data-tab="overview">资源总览</button>
@@ -1208,8 +1614,34 @@
         lockPeriodLabel: $("lockPeriodLabel"),
         logList: $("logList"),
         mobileConnectBtn: $("mobileConnectBtn"),
+        mobileAvailableBalance: $("mobileAvailableBalance"),
+        mobileBandwidthBorrowed: $("mobileBandwidthBorrowed"),
+        mobileBandwidthCost: $("mobileBandwidthCost"),
+        mobileBandwidthFill: $("mobileBandwidthFill"),
+        mobileBandwidthLent: $("mobileBandwidthLent"),
+        mobileBandwidthStaked: $("mobileBandwidthStaked"),
+        mobileBandwidthUsage: $("mobileBandwidthUsage"),
+        mobileDelegateAction: $("mobileDelegateAction"),
+        mobileEnergyBorrowed: $("mobileEnergyBorrowed"),
+        mobileEnergyCost: $("mobileEnergyCost"),
+        mobileEnergyFill: $("mobileEnergyFill"),
+        mobileEnergyLent: $("mobileEnergyLent"),
+        mobileEnergyStaked: $("mobileEnergyStaked"),
+        mobileEnergyUsage: $("mobileEnergyUsage"),
+        mobileGuideAction: $("mobileGuideAction"),
+        mobilePendingRedeem: $("mobilePendingRedeem"),
+        mobileReclaimAction: $("mobileReclaimAction"),
+        mobileRedeemAction: $("mobileRedeemAction"),
+        mobileRedeemableBalance: $("mobileRedeemableBalance"),
         mobileRefreshBtn: $("mobileRefreshBtn"),
+        mobileRentAction: $("mobileRentAction"),
+        mobileStakeAction: $("mobileStakeAction"),
+        mobileStakedBalance: $("mobileStakedBalance"),
+        mobileWalletAddress: $("mobileWalletAddress"),
+        mobileWalletBalance: $("mobileWalletBalance"),
+        mobileWalletFiat: $("mobileWalletFiat"),
         networkStatus: $("networkStatus"),
+        operationWorkspace: $("operationWorkspace"),
         outDelegationCount: $("outDelegationCount"),
         reclaimAmount: $("reclaimAmount"),
         reclaimBtn: $("reclaimBtn"),
@@ -1485,6 +1917,16 @@
         els.tpSub.textContent = `已投票 ${formatUnits(tpUsed)} / 总 TP ${formatUnits(tpLimit)}`;
         els.tpBar.style.width = `${percent(tpAvailable, tpLimit)}%`;
 
+        renderMobileStakingOverview({
+          account,
+          balance,
+          bandwidthLimit,
+          bandwidthUsed,
+          energyLimit,
+          energyUsed,
+          resources,
+        });
+
         els.chainParamsBox.innerHTML = renderChainParams();
         els.limitsBox.innerHTML = renderLimits();
         els.unfreezeCount.value = state.availableUnfreezeCount ?? "-";
@@ -1501,6 +1943,43 @@
           ? `更新于 ${state.lastRefresh.toLocaleTimeString()}`
           : "已连接";
         els.freshnessPill.className = "status-pill ok";
+      }
+
+      function renderMobileStakingOverview(input) {
+        const energyStaked = getFrozenSunByResource(input.account, "ENERGY");
+        const bandwidthStaked = getFrozenSunByResource(input.account, "BANDWIDTH");
+        const totalStaked = energyStaked + bandwidthStaked;
+        const pendingRedeem = getPendingUnfreezeSun(input.account);
+        const redeemable = state.withdrawableAmount ?? 0n;
+        const walletTotal = input.balance + totalStaked + pendingRedeem;
+        const energyLent = sumDelegationSun(state.delegationsOut, "ENERGY");
+        const bandwidthLent = sumDelegationSun(state.delegationsOut, "BANDWIDTH");
+        const energyBorrowed = sumDelegationSun(state.delegationsIn, "ENERGY");
+        const bandwidthBorrowed = sumDelegationSun(state.delegationsIn, "BANDWIDTH");
+
+        els.mobileWalletAddress.textContent = state.address ? shortAddress(state.address) : "连接钱包查看地址";
+        els.mobileWalletBalance.textContent = `${formatSun(walletTotal)} TRX`;
+        els.mobileWalletFiat.textContent = "TRON 主网资源";
+        els.mobileAvailableBalance.textContent = formatSun(input.balance);
+        els.mobileStakedBalance.textContent = formatSun(totalStaked);
+        els.mobilePendingRedeem.textContent = formatSun(pendingRedeem);
+        els.mobileRedeemableBalance.textContent = formatSun(redeemable);
+
+        els.mobileEnergyUsage.textContent =
+          `${formatUnits(input.energyUsed)} / ${formatUnits(input.energyLimit)}`;
+        els.mobileEnergyCost.textContent = `${formatSun(energyStaked)} TRX`;
+        els.mobileEnergyFill.style.width = `${percent(input.energyUsed, input.energyLimit)}%`;
+        els.mobileEnergyStaked.textContent = formatMobileShare(energyStaked);
+        els.mobileEnergyLent.textContent = formatMobileShare(energyLent);
+        els.mobileEnergyBorrowed.textContent = formatMobileShare(energyBorrowed);
+
+        els.mobileBandwidthUsage.textContent =
+          `${formatUnits(input.bandwidthUsed)} / ${formatUnits(input.bandwidthLimit)}`;
+        els.mobileBandwidthCost.textContent = `${formatSun(bandwidthStaked)} TRX`;
+        els.mobileBandwidthFill.style.width = `${percent(input.bandwidthUsed, input.bandwidthLimit)}%`;
+        els.mobileBandwidthStaked.textContent = formatMobileShare(bandwidthStaked);
+        els.mobileBandwidthLent.textContent = formatMobileShare(bandwidthLent);
+        els.mobileBandwidthBorrowed.textContent = formatMobileShare(bandwidthBorrowed);
       }
 
       function renderChainParams() {
@@ -1594,6 +2073,62 @@
             </tr>`;
           })
           .join("");
+      }
+
+      function getFrozenSunByResource(account, resource) {
+        const wanted = resource === "BANDWIDTH" ? "BANDWIDTH" : "ENERGY";
+        const items = account?.frozenV2 || account?.frozen_balance_v2 || [];
+        let total = 0n;
+        if (Array.isArray(items)) {
+          for (const item of items) {
+            const type = String(item.type || item.resource || item.resource_code || "").toUpperCase();
+            const amount = toBigIntSafe(item.amount || item.frozen_balance || item.frozenBalance);
+            if (!type && wanted === "BANDWIDTH") total += amount;
+            if (type.includes(wanted) || (wanted === "BANDWIDTH" && type.includes("NET"))) {
+              total += amount;
+            }
+          }
+        }
+
+        if (wanted === "ENERGY") {
+          total += toBigIntSafe(
+            account?.account_resource?.frozen_balance_for_energy?.frozen_balance ||
+              account?.accountResource?.frozenBalanceForEnergy?.frozenBalance,
+          );
+        } else {
+          const oldFrozen = account?.frozen;
+          if (Array.isArray(oldFrozen)) {
+            total += oldFrozen.reduce(
+              (sum, item) => sum + toBigIntSafe(item.frozen_balance || item.frozenBalance),
+              0n,
+            );
+          } else {
+            total += toBigIntSafe(oldFrozen?.frozen_balance || oldFrozen?.frozenBalance);
+          }
+        }
+
+        return total;
+      }
+
+      function getPendingUnfreezeSun(account) {
+        const items = account?.unfrozenV2 || account?.unfreezeV2 || [];
+        if (!Array.isArray(items)) return 0n;
+        return items.reduce(
+          (sum, item) =>
+            sum + toBigIntSafe(item.unfreeze_amount || item.unfreezeAmount || item.amount || item.balance),
+          0n,
+        );
+      }
+
+      function sumDelegationSun(rows, resource) {
+        return rows
+          .filter((row) => row.resource === resource)
+          .reduce((sum, row) => sum + toBigIntSafe(row.amountSun), 0n);
+      }
+
+      function formatMobileShare(value) {
+        const amount = toBigIntSafe(value);
+        return amount > 0n ? formatSun(amount) : "-";
       }
 
       function updateEstimates() {
@@ -1723,6 +2258,18 @@
         els.mobileConnectBtn.addEventListener("click", connectWallet);
         els.refreshBtn.addEventListener("click", refreshAll);
         els.mobileRefreshBtn.addEventListener("click", refreshAll);
+        els.mobileStakeAction.addEventListener("click", () => openMobileWorkspace("stake", "stakeAmount"));
+        els.mobileRedeemAction.addEventListener("click", () =>
+          openMobileWorkspace("unstake", "unstakeAmount"),
+        );
+        els.mobileDelegateAction.addEventListener("click", () =>
+          openMobileWorkspace("delegate", "delegateReceiver"),
+        );
+        els.mobileReclaimAction.addEventListener("click", () =>
+          openMobileWorkspace("delegate", "reclaimReceiver"),
+        );
+        els.mobileRentAction.addEventListener("click", () => openMobileWorkspace("tools"));
+        els.mobileGuideAction.addEventListener("click", () => openMobileWorkspace("tools"));
         els.clearLogsBtn.addEventListener("click", () => {
           els.logList.innerHTML = "";
           addLog("Ready", "日志已清空。");
@@ -1868,6 +2415,17 @@
         });
         document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
         $(`${tab}View`).classList.add("active");
+      }
+
+      function openMobileWorkspace(tab, focusId) {
+        els.operationWorkspace.classList.add("is-open");
+        switchTab(tab);
+        if (window.matchMedia("(max-width: 720px)").matches) {
+          els.operationWorkspace.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (focusId) {
+            window.setTimeout(() => $(focusId)?.focus(), 450);
+          }
+        }
       }
 
       function paramsToMap(params) {
