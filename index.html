@@ -670,8 +670,8 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         border-top: 1px solid #edf1f5;
-        padding: 10px 14px 12px;
-        gap: 9px;
+        padding: 12px 14px 14px;
+        gap: 10px;
       }
 
       .mobile-action {
@@ -679,7 +679,7 @@
         place-items: center;
         min-height: 44px;
         border: 1px solid #cbd5e1;
-        border-radius: 8px;
+        border-radius: 10px;
         background: #fff;
         color: #141b22;
         font-size: 15px;
@@ -721,7 +721,7 @@
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 12px;
         align-items: center;
-        padding: 22px 24px 10px;
+        padding: 22px 24px 0;
       }
 
       .mobile-resource-icon {
@@ -794,7 +794,7 @@
       }
 
       .mobile-resource-cost {
-        margin: -4px 24px 14px;
+        margin: 14px 24px 0;
         color: #697486;
         font-size: 13px;
         font-weight: 750;
@@ -811,7 +811,7 @@
 
       .mobile-segment-bar {
         height: 14px;
-        margin: 0 24px 18px;
+        margin: 16px 24px 0;
         overflow: hidden;
         border-radius: 4px;
         background:
@@ -862,8 +862,8 @@
 
       .mobile-resource-detail {
         display: grid;
-        gap: 8px;
-        padding: 0 24px 22px;
+        gap: 10px;
+        padding: 18px 24px 20px;
       }
 
       .mobile-detail-value {
@@ -909,7 +909,7 @@
       .confirm-card {
         width: min(440px, 100%);
         overflow: hidden;
-        border-radius: 8px;
+        border-radius: 18px;
         background: #fff;
         box-shadow: 0 24px 80px rgba(15, 23, 42, 0.28);
       }
@@ -921,34 +921,28 @@
       }
 
       .confirm-head {
-        border-bottom: 1px solid var(--line);
+        padding-bottom: 0;
       }
 
       .confirm-title {
         margin: 0;
-        font-size: 18px;
-        font-weight: 900;
+        font-size: 20px;
+        font-weight: 850;
       }
 
       .confirm-rows {
         display: grid;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 8px;
+        gap: 12px;
       }
 
       .confirm-row {
         display: flex;
         justify-content: space-between;
         gap: 16px;
-        padding: 11px 12px;
         color: #718092;
         font-size: 13px;
-        font-weight: 750;
-      }
-
-      .confirm-row + .confirm-row {
-        border-top: 1px solid #edf1f5;
+        font-weight: 700;
+        line-height: 1.45;
       }
 
       .confirm-row strong {
@@ -958,18 +952,22 @@
       }
 
       .confirm-note {
-        margin: 12px 0 0;
-        color: #718092;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 1.6;
+        margin: 18px 0 0;
+        border: 1px solid #ffe0e3;
+        border-radius: 10px;
+        background: #fff6f7;
+        color: #8f1b22;
+        padding: 12px;
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.55;
       }
 
       .confirm-actions {
         display: grid;
-        grid-template-columns: 1fr 1.4fr;
+        grid-template-columns: 1fr 1.35fr;
         gap: 10px;
-        border-top: 1px solid var(--line);
+        border-top: 0;
       }
 
       .operation-view > .section-head {
@@ -987,7 +985,7 @@
       }
 
       .operation-segment button {
-        min-height: 36px;
+        min-height: 40px;
         border: 0;
         border-radius: 0;
         background: transparent;
@@ -1006,15 +1004,15 @@
 
       .operation-form-card,
       .operation-change-card {
-        border: 1px solid var(--line-strong);
+        border: 1px solid var(--line);
         background: #fff;
       }
 
       .operation-form-card {
         display: grid;
-        gap: 18px;
+        gap: 16px;
         max-width: 760px;
-        padding: 18px;
+        padding: 18px 16px;
       }
 
       .operation-form-card .form-grid {
@@ -1028,16 +1026,16 @@
       .operation-form-card label {
         gap: 8px;
         color: #172026;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 850;
       }
 
       .operation-form-card input,
       .operation-form-card select {
-        min-height: 42px;
+        min-height: 46px;
         border-color: var(--line-strong);
-        border-radius: 4px;
-        font-size: 14px;
+        border-radius: 7px;
+        font-size: 15px;
       }
 
       .operation-form-card input::placeholder {
@@ -1060,8 +1058,8 @@
 
       .operation-change-card {
         display: grid;
-        gap: 0;
-        padding: 10px 14px;
+        gap: 11px;
+        padding: 15px 16px;
       }
 
       .change-row {
@@ -1069,15 +1067,16 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        min-height: 34px;
+        min-height: 0;
         color: #718092;
-        font-size: 12px;
-        font-weight: 800;
+        font-size: 13px;
+        font-weight: 750;
+        line-height: 1.45;
       }
 
       .change-row strong {
-        color: #5f6f82;
-        font-weight: 900;
+        color: #172026;
+        font-weight: 850;
         overflow-wrap: anywhere;
         text-align: right;
       }
@@ -1089,17 +1088,17 @@
       .operation-submit button {
         width: 100%;
         min-height: 48px;
-        border-color: #6553f4;
-        border-radius: 4px;
-        background: #6553f4;
+        border-color: var(--tron);
+        border-radius: 10px;
+        background: var(--tron);
         color: #fff;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 900;
       }
 
       .operation-submit button:hover:not(:disabled) {
-        border-color: #5948dc;
-        background: #5948dc;
+        border-color: var(--tron-dark);
+        background: var(--tron-dark);
       }
 
       .operation-secondary {
@@ -1110,7 +1109,7 @@
 
       .operation-secondary button {
         min-height: 40px;
-        border-radius: 4px;
+        border-radius: 10px;
         background: #fff;
         color: #5f6f82;
         font-size: 12px;
@@ -1165,12 +1164,12 @@
       @media (max-width: 720px) {
         body {
           padding-bottom: env(safe-area-inset-bottom);
-          background: #f2f4f7;
+          background: #f3f5f8;
         }
 
         .shell {
           width: 100%;
-          padding: 12px 10px 26px;
+          padding: 16px 12px 24px;
         }
 
         .topbar {
@@ -1237,7 +1236,7 @@
         .mobile-balance-sheet,
         .mobile-resource-panel,
         .mobile-resource-card {
-          border-radius: 17px;
+          border-radius: 19px;
           box-shadow: none;
         }
 
@@ -1279,11 +1278,11 @@
         }
 
         .mobile-balance-sheet {
-          margin-top: -28px;
+          margin-top: -24px;
         }
 
         .mobile-balance-grid {
-          padding: 18px 24px 6px;
+          padding: 17px 24px 6px;
         }
 
         .mobile-balance-item {
@@ -1326,7 +1325,7 @@
         .mobile-resource-head {
           grid-template-columns: minmax(0, 1fr) auto;
           gap: 14px;
-          padding: 22px 24px 10px;
+          padding: 22px 24px 0;
         }
 
         .mobile-resource-icon {
@@ -1352,7 +1351,7 @@
 
         .mobile-resource-cost {
           display: block;
-          margin: -4px 24px 14px;
+          margin: 14px 24px 0;
           color: #697486;
           font-size: 13px;
           line-height: 1.1;
@@ -1365,7 +1364,7 @@
 
         .mobile-segment-bar {
           height: 14px;
-          margin: 0 24px 18px;
+          margin: 16px 24px 0;
           border-radius: 4px;
           background:
             repeating-linear-gradient(
@@ -1412,8 +1411,8 @@
         }
 
         .mobile-resource-detail {
-          gap: 8px;
-          padding: 0 24px 22px;
+          gap: 10px;
+          padding: 18px 24px 20px;
         }
 
         .mobile-detail-value {
@@ -1469,14 +1468,13 @@
           z-index: 10;
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 14px;
           grid-column: 1 / -1;
-          min-height: 46px;
-          margin: -12px -10px 2px;
-          padding: 6px 10px;
-          border-bottom: 1px solid #e4eaf1;
-          background: rgba(242, 244, 247, 0.96);
-          backdrop-filter: blur(12px);
+          min-height: 58px;
+          margin: -16px -12px -2px;
+          padding: 0 20px;
+          border-bottom: 1px solid #e8edf3;
+          background: #fff;
         }
 
         .mobile-back-button {
@@ -1489,13 +1487,13 @@
           background: transparent;
           padding: 0;
           color: #111821;
-          font-size: 28px;
+          font-size: 30px;
           line-height: 1;
         }
 
         .mobile-operation-title {
-          font-size: 17px;
-          font-weight: 900;
+          font-size: 20px;
+          font-weight: 850;
         }
 
         .tabbar {
@@ -1520,7 +1518,7 @@
 
         .operation-view.active {
           min-height: auto;
-          gap: 14px;
+          gap: 16px;
           padding: 0 0 12px;
         }
 
@@ -1538,7 +1536,7 @@
         }
 
         .operation-segment button {
-          min-height: 34px;
+          min-height: 40px;
           border: 0;
           border-radius: 0;
           background: transparent;
@@ -1557,14 +1555,14 @@
 
         .operation-form-card,
         .operation-change-card {
-          border: 1px solid var(--line-strong);
+          border: 1px solid var(--line);
           background: #fff;
         }
 
         .operation-form-card {
           display: grid;
-          gap: 18px;
-          padding: 18px 14px 22px;
+          gap: 16px;
+          padding: 18px 16px;
         }
 
         .operation-form-card .form-grid,
@@ -1576,16 +1574,16 @@
         .operation-form-card label {
           gap: 8px;
           color: #172026;
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 850;
         }
 
         .operation-form-card input,
         .operation-form-card select {
-          min-height: 42px;
+          min-height: 46px;
           border-color: var(--line-strong);
-          border-radius: 4px;
-          font-size: 14px;
+          border-radius: 7px;
+          font-size: 15px;
         }
 
         .operation-form-card input::placeholder {
@@ -1607,8 +1605,8 @@
 
         .operation-change-card {
           display: grid;
-          gap: 0;
-          padding: 10px 14px;
+          gap: 11px;
+          padding: 15px 16px;
         }
 
         .change-row {
@@ -1616,15 +1614,16 @@
           align-items: center;
           justify-content: space-between;
           gap: 12px;
-          min-height: 34px;
+          min-height: 0;
           color: #718092;
-          font-size: 12px;
-          font-weight: 800;
+          font-size: 13px;
+          font-weight: 750;
+          line-height: 1.45;
         }
 
         .change-row strong {
-          color: #5f6f82;
-          font-weight: 900;
+          color: #172026;
+          font-weight: 850;
           text-align: right;
         }
 
@@ -1635,17 +1634,17 @@
         .operation-submit button {
           width: 100%;
           min-height: 48px;
-          border-color: #6553f4;
-          border-radius: 4px;
-          background: #6553f4;
+          border-color: var(--tron);
+          border-radius: 10px;
+          background: var(--tron);
           color: #fff;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 900;
         }
 
         .operation-submit button:hover:not(:disabled) {
-          border-color: #5948dc;
-          background: #5948dc;
+          border-color: var(--tron-dark);
+          background: var(--tron-dark);
         }
 
         .operation-secondary {
@@ -1655,7 +1654,7 @@
 
         .operation-secondary button {
           min-height: 40px;
-          border-radius: 4px;
+          border-radius: 10px;
           background: #fff;
           color: #5f6f82;
           font-size: 12px;
@@ -1663,11 +1662,13 @@
 
         .operation-view .inline-box {
           display: block;
-          padding: 10px 12px;
-          border-color: #e4eaf1;
+          padding: 13px 14px;
+          border-color: #e8edf3;
+          border-radius: 10px;
           background: #fff;
-          color: #718092;
-          font-size: 11px;
+          color: #66758b;
+          font-size: 13px;
+          line-height: 1.55;
         }
 
         .confirm-sheet {
@@ -1677,7 +1678,7 @@
 
         .confirm-card {
           width: 100%;
-          border-radius: 18px 18px 0 0;
+          border-radius: 22px 22px 0 0;
         }
 
         .confirm-head,
@@ -2395,7 +2396,7 @@
         </div>
         <div class="confirm-actions">
           <button id="confirmCancelBtn" type="button">取消</button>
-          <button id="confirmSubmitBtn" type="button" class="primary">确认并打开钱包</button>
+          <button id="confirmSubmitBtn" type="button" class="primary">打开钱包</button>
         </div>
       </section>
     </div>
@@ -2578,8 +2579,9 @@
       function requestTransactionConfirmation(summary) {
         if (state.confirmResolve) return Promise.resolve(false);
         els.confirmTitle.textContent = summary.title || "确认操作";
-        els.confirmSubmitBtn.textContent = summary.confirmText || "确认并打开钱包";
-        els.confirmNote.textContent = summary.note || "请确认信息无误，下一步将打开钱包签名。";
+        els.confirmSubmitBtn.textContent = summary.confirmText || "打开钱包";
+        els.confirmNote.textContent =
+          summary.note || "确认后将打开钱包签名。签名前请再次核对地址和数量，链上交易提交后无法撤回。";
         els.confirmRows.innerHTML = "";
         (summary.rows || []).forEach(([label, value]) => {
           const row = document.createElement("div");
